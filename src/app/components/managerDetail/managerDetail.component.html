@@ -1,4 +1,11 @@
 <!-- src/app/components/managerDetail/managerDetail.component.html -->
-<div class="login-container">
-  <h2>Bonjour !</h2>
+<div *ngIf="manager">
+  <h2>Informations du manager</h2>
+  <p><strong>Prénom:</strong> {{ manager.firstName }}</p>
+  <p><strong>Nom:</strong> {{ manager.lastName }}</p>
+  <p><strong>Email:</strong> {{ manager.email }}</p>
+  <p><strong>Téléphone:</strong> {{ manager.phone }}</p>
+  <p><strong>Adresse:</strong> {{ manager.address }}</p>
+  <p><strong>Admin:</strong> {{ manager.admin ? 'Oui' : 'Non' }}</p>
 </div>
+<p *ngIf="!manager">Chargement des informations...</p>

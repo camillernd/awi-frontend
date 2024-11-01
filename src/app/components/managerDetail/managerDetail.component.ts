@@ -1,6 +1,7 @@
 // src/app/components/managerDetail/managerDetail.component.ts
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-manager-detail',
@@ -9,8 +10,22 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule]
 })
-export class ManagerDetailComponent {
-  constructor() {
-    console.log('ManagerDetailComponent est chargé.');
+export class ManagerDetailComponent implements OnInit {
+  manager: any;
+
+  constructor(private authService: AuthService) {}
+
+  ngOnInit(): void {
+    this.getManagerProfile();
+  }
+
+  getManagerProfile(): void {
+    this.authService.getManagerProfile().subscribe({
+      next: (managerData) => {
+        console.log('Données du manager récupérées :', managerData);
+        this.manager = managerData;
+      },
+      error: (error) => console.error('Erreur de récupération du profil manager:', error),
+    });
   }
 }
