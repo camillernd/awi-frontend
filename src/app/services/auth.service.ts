@@ -17,4 +17,14 @@ export class AuthService {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.http.post(url, { email, password }, { headers });
   }
+  
+  getManagerProfile(): Observable<any> {
+    const url = `${this.apiUrl}/profile`;
+    const token = localStorage.getItem('token'); // Assurez-vous que le token est bien stocké
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.get(url, { headers });
+  }
+  
 }

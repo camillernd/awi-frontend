@@ -9,4 +9,6 @@ import { LoginComponent } from './components/login/login.component';
   standalone: true,
   imports: [LoginComponent] // Ajoutez LoginComponent ici
 })
-export class AppComponent {}
+export class AppComponent {
+  title = 'temp-angular';  // Ajout de la propriété title
+}
