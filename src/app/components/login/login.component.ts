@@ -1,10 +1,9 @@
 // src/app/components/login/login.component.ts
-
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router'; // Import du Router
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +19,7 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder, 
     private authService: AuthService, 
-    private router: Router  // Injection du Router pour la redirection
+    private router: Router
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -32,22 +31,16 @@ export class LoginComponent {
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value;
       this.authService.login(email, password).subscribe({
-        next: (response) => {
-          console.log('Connexion réussie, réponse :', response);
-  
-          // Redirection avec vérification de succès/échec
+        next: () => {
           this.router.navigate(['/managerDetail']).then(
             (success) => console.log('Navigation vers /managerDetail réussie :', success),
             (error) => console.error('Erreur de navigation :', error)
           );
         },
-        error: (error) => {
-          console.error('Erreur de connexion, détail :', error);
+        error: () => {
           this.errorMessage = 'Invalid email or password';
         }
       });
-    } else {
-      console.log('Formulaire invalide');
     }
   }
 }
