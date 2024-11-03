@@ -18,11 +18,26 @@ export class AuthService {
     const url = `${this.apiUrl}/login`;
     return this.http.post<{ token: string }>(url, { email, password }).pipe(
       tap(response => {
-        this.token = response.token; // Stocke le token après connexion
-        localStorage.setItem('authToken', this.token); // Sauvegarde également le token dans localStorage pour persistance
+        this.token = response.token;
+        localStorage.setItem('authToken', this.token);
+
+        // Décodage du token pour extraire l'ID du manager
+        const payload = JSON.parse(atob(this.token.split('.')[1]));
+        const managerId = payload.id;
+
+        // Récupération des informations du manager
+        this.getManagerProfile().subscribe(managerData => {
+          console.log('Profil du manager récupéré:', managerData); // Vérifier que les données sont correctes
+          
+          // Stocker les données du manager
+          localStorage.setItem('managerId', managerId);
+          localStorage.setItem('firstName', managerData.firstName);
+          localStorage.setItem('lastName', managerData.lastName);
+        });
       })
     );
-  }
+}
+
 
   getToken(): string | null {
     return this.token || localStorage.getItem('authToken'); // Récupère le token stocké

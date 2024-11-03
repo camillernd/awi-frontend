@@ -1,18 +1,18 @@
-// src/app/components/accueil/accueil.component.ts
+// src/app/components/home/home.component.ts
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-accueil',
-  templateUrl: './accueil.component.html',
-  styleUrls: ['./accueil.component.css'],
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.css'],
   standalone: true,
   imports: [CommonModule] // Assure-toi d'importer CommonModule
 })
-export class AccueilComponent {
+export class HomeComponent {
     constructor(private router: Router) {
-      console.log('AccueilComponent est chargé');
+      console.log('HomeComponent est chargé');
     }
   
     navigateToLogin() {

@@ -1,0 +1,13 @@
+<!-- src/app/components/sessions/sessions.component.html -->
+<h2>Liste des sessions</h2>
+<button (click)="goToCreateSession()">Créer une session</button>
+
+<div *ngFor="let session of sessions" class="session-item">
+  <h3>Nom: {{ session.name }}</h3>
+  <p><strong>Lieu:</strong> {{ session.location }}</p>
+  <p><strong>Date de début:</strong> {{ session.startDate | date }}</p>
+  <p><strong>Date de fin:</strong> {{ session.endDate | date }}</p>
+  <button (click)="goToSessionDetail(session._id)">Détail</button>
+</div>
+
+  

@@ -1,0 +1,15 @@
+<!-- src/app/components/sessionDetail/sessionDetail.component.html -->
+<div *ngIf="session">
+    <h2>Détails de la session</h2>
+    <p><strong>Nom:</strong> {{ session.name }}</p>
+    <p><strong>Lieu:</strong> {{ session.location }}</p>
+    <p><strong>Description:</strong> {{ session.description }}</p>
+    <p><strong>Date de début:</strong> {{ session.startDate | date }}</p>
+    <p><strong>Date de fin:</strong> {{ session.endDate | date }}</p>
+    <p><strong>Frais de dépôt:</strong> {{ session.depositFee }}</p>
+    <p><strong>Limite avant remise:</strong> {{ session.depositFeeLimitBeforeDiscount }}</p>
+    <p><strong>Réduction des frais:</strong> {{ session.depositFeeDiscount }}</p>
+    <p><strong>Commission de vente:</strong> {{ session.saleComission }}</p>
+    <p><strong>ID du manager:</strong> {{ session.managerId }}</p>
+  </div>
+  

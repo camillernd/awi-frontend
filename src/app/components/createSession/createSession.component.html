@@ -1,0 +1,55 @@
+<div class="create-session-container">
+    <h2>Créer une session</h2>
+    <p>Connecté en tant que : {{ firstName }} {{ lastName }}</p>
+  
+    <form (ngSubmit)="createSession()" class="session-form">
+      <!-- Formulaire de création de session -->
+      <div class="form-group">
+        <label for="name">Nom</label>
+        <input id="name" [(ngModel)]="sessionData.name" name="name" required />
+      </div>
+      
+      <div class="form-group">
+        <label for="location">Lieu</label>
+        <input id="location" [(ngModel)]="sessionData.location" name="location" required />
+      </div>
+      
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea id="description" [(ngModel)]="sessionData.description" name="description"></textarea>
+      </div>
+      
+      <div class="form-group">
+        <label for="startDate">Date de début</label>
+        <input id="startDate" type="date" [(ngModel)]="sessionData.startDate" name="startDate" required />
+      </div>
+      
+      <div class="form-group">
+        <label for="endDate">Date de fin</label>
+        <input id="endDate" type="date" [(ngModel)]="sessionData.endDate" name="endDate" required />
+      </div>
+      
+      <div class="form-group">
+        <label for="depositFee">Frais de dépôt</label>
+        <input id="depositFee" type="number" [(ngModel)]="sessionData.depositFee" name="depositFee" required />
+      </div>
+      
+      <div class="form-group">
+        <label for="depositFeeLimitBeforeDiscount">Limite avant remise</label>
+        <input id="depositFeeLimitBeforeDiscount" type="number" [(ngModel)]="sessionData.depositFeeLimitBeforeDiscount" name="depositFeeLimitBeforeDiscount" />
+      </div>
+      
+      <div class="form-group">
+        <label for="depositFeeDiscount">Réduction des frais</label>
+        <input id="depositFeeDiscount" type="number" [(ngModel)]="sessionData.depositFeeDiscount" name="depositFeeDiscount" />
+      </div>
+      
+      <div class="form-group">
+        <label for="saleComission">Commission de vente</label>
+        <input id="saleComission" type="number" [(ngModel)]="sessionData.saleComission" name="saleComission" required />
+      </div>
+  
+      <button type="submit" class="submit-button">Créer</button>
+    </form>
+  </div>
+  

@@ -1,4 +1,3 @@
-// src/app/components/login/login.component.ts
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
@@ -31,9 +30,15 @@ export class LoginComponent {
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value;
       this.authService.login(email, password).subscribe({
-        next: () => {
-          this.router.navigate(['/managerDetail']).then(
-            (success) => console.log('Navigation vers /managerDetail réussie :', success),
+        next: (response) => {
+          console.log('Connexion réussie, réponse :', response);
+
+          // Enregistrez le token et le managerId dans localStorage
+          localStorage.setItem('authToken', response.token); // Sauvegarder le token JWT
+          localStorage.setItem('managerId', response.managerId); // Sauvegarder l'ID du manager
+
+          this.router.navigate(['/homeConnected']).then(
+            (success) => console.log('Navigation vers /homeConnected réussie :', success),
             (error) => console.error('Erreur de navigation :', error)
           );
         },

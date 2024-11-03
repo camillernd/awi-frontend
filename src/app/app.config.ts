@@ -4,6 +4,7 @@ import { provideRouter } from '@angular/router';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common'; // Ajout de CommonModule pour les pipes et ngModel
 import { routes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {
@@ -11,6 +12,6 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),  // Définit le routage
     provideHttpClient(withFetch()),
-    importProvidersFrom(ReactiveFormsModule, HttpClientModule) // Modules nécessaires pour le fonctionnement
+    importProvidersFrom(ReactiveFormsModule, HttpClientModule, CommonModule) // Ajout de CommonModule
   ]
 };

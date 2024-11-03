@@ -1,0 +1,11 @@
+<div class="home-connected">
+    <h2>Connexion réussie</h2>
+    <ng-container *ngIf="manager.firstName; else loading">
+        <p><strong>Bienvenue</strong> {{ manager.firstName }} {{ manager.lastName }}</p>
+        <button (click)="goToProfile()">Profil</button>
+        <button (click)="goToSessions()">Sessions</button>
+    </ng-container>
+    <ng-template #loading>
+        <p>Chargement des informations du manager...</p>
+    </ng-template>
+</div>
