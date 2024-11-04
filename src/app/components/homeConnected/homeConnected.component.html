@@ -4,6 +4,7 @@
         <p><strong>Bienvenue</strong> {{ manager.firstName }} {{ manager.lastName }}</p>
         <button (click)="goToProfile()">Profil</button>
         <button (click)="goToSessions()">Sessions</button>
+        <button (click)="goToDepositedGames()">Jeux Déposés</button>
     </ng-container>
     <ng-template #loading>
         <p>Chargement des informations du manager...</p>

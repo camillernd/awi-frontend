@@ -1,0 +1,14 @@
+<div *ngIf="depositedGame">
+    <h2>Détails du jeu déposé</h2>
+    <p><strong>Étiquette:</strong> {{ depositedGame._id }}</p>
+    <p><strong>Prix de vente:</strong> {{ depositedGame.salePrice }}</p>
+    <p><strong>À vendre:</strong> {{ depositedGame.forSale ? 'Oui' : 'Non' }}</p>
+    <p><strong>Ramassé:</strong> {{ depositedGame.pickedUp ? 'Oui' : 'Non' }}</p>
+    <p><strong>Vendu:</strong> {{ depositedGame.sold ? 'Oui' : 'Non' }}</p>
+    <p><strong>ID de la session:</strong> {{ depositedGame.sessionId?._id }}</p>
+    <p><strong>Nom de la session:</strong> {{ depositedGame.sessionId?.name }}</p>
+    <p><strong>ID du vendeur:</strong> {{ depositedGame.sellerId?._id }}</p>
+    <p><strong>Nom du vendeur:</strong> {{ depositedGame.sellerId?.name }}</p>
+    <p><strong>ID de la description du jeu:</strong> {{ depositedGame.gameDescriptionId?._id }}</p>
+  </div>
+  

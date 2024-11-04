@@ -1,0 +1,52 @@
+.create-deposited-game-container {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  h2 {
+    color: #333;
+    font-size: 1.5em;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .create-deposited-game-container label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+  }
+  
+  .create-deposited-game-container input[type="text"],
+  .create-deposited-game-container input[type="number"],
+  .create-deposited-game-container select {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0 15px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  .create-deposited-game-container button {
+    width: 100%;
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s;
+  }
+  
+  .create-deposited-game-container button:hover {
+    background-color: #45a049;
+  }
+  

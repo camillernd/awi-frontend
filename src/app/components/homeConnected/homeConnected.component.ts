@@ -38,4 +38,9 @@ export class HomeConnectedComponent implements OnInit {
   goToSessions() {
     this.router.navigate(['/sessions']);
   }
+
+  // Navigate to the depositedGames page
+  goToDepositedGames() {
+    this.router.navigate(['/depositedGames']);
+  }
 }

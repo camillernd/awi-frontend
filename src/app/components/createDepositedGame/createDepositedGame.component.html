@@ -1,0 +1,35 @@
+<div class="create-deposited-game-container">
+    <h2>Créer un dépôt de jeu</h2>
+    <p>Connecté en tant que : {{ firstName }} {{ lastName }}</p>
+  
+    <form (ngSubmit)="createDepositedGame()" class="deposited-game-form">
+      <div class="form-group">
+        <label for="sellerId">ID du vendeur</label>
+        <input id="sellerId" [(ngModel)]="depositedGameData.sellerId" name="sellerId" required />
+      </div>
+      
+      <div class="form-group">
+        <label for="sessionId">ID de la session</label>
+        <input id="sessionId" [(ngModel)]="depositedGameData.sessionId" name="sessionId" required />
+      </div>
+      
+      <div class="form-group">
+        <label for="gameDescriptionId">ID de la description du jeu</label>
+        <input id="gameDescriptionId" [(ngModel)]="depositedGameData.gameDescriptionId" name="gameDescriptionId" required />
+      </div>
+      
+      <div class="form-group">
+        <label for="salePrice">Prix de vente</label>
+        <input id="salePrice" type="number" [(ngModel)]="depositedGameData.salePrice" name="salePrice" required />
+      </div>
+  
+      <div class="form-group">
+        <label>
+          <input type="checkbox" [(ngModel)]="depositedGameData.forSale" name="forSale" />
+          À vendre
+        </label>
+      </div>
+      <button type="submit" class="submit-button">Créer</button>
+    </form>
+  </div>
+  

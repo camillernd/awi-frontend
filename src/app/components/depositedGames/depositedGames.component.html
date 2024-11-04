@@ -1,0 +1,17 @@
+<!-- src/app/components/depositedGames/depositedGames.component.html -->
+<h2>Liste des jeux déposés</h2>
+<button (click)="goToCreateDepositedGame()">Créer un dépôt</button>
+
+<div *ngIf="depositedGames.length > 0; else noGames">
+  <div *ngFor="let depositedGame of depositedGames" class="depositedGame-item">
+    <h3>Etiquette: {{ depositedGame._id }}</h3>
+    <p><strong>salePrice:</strong> {{ depositedGame.salePrice }}</p>
+    <button (click)="goToDepositedGameDetail(depositedGame._id)">Détail</button>
+  </div>
+</div>
+<ng-template #noGames>
+  <p>Aucun jeu déposé trouvé.</p>
+</ng-template>
+
+
+  
