@@ -1,29 +1,93 @@
 <!-- src/app/components/login/login.component.html -->
+<app-navbar></app-navbar>
+<div class="login-page">
+  <!-- Formes SVG ajoutées -->
+  <div class="svg-container blue-shape">
+    <svg xmlns="http://www.w3.org/2000/svg" width="376" height="277" viewBox="0 0 376 277" fill="none">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M406.859 0.600841C433.421 41.1124 407.179 1.08893 448.302 63.8086C473.104 101.636 473.584 102.368 489.426 126.528C505.267 150.689 521.748 175.825 554.871 226.343C525.686 261.431 475.024 262.459 432.01 264.454C388.995 266.45 136.701 283.679 86.5289 272.179C35.985 260.593 -18.4974 209.263 6.37784 177.494C108.771 46.7265 173.953 159.919 257.491 134.006C320.727 114.39 364.415 2.31345 406.859 0.600841Z" fill="rgba(35, 143, 242, 0.7)"/>
+    </svg>
+  </div>
+  
+  <div class="svg-container yellow-shape">
+    <svg xmlns="http://www.w3.org/2000/svg" width="378" height="229" viewBox="0 0 378 229" fill="none">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M218.559 1.82206C279.864 -3.31476 412.323 7.58349 442.99 41.7907C476.047 78.6645 562.907 87.1049 568.197 129.816C570.853 151.264 552.182 144.608 554.655 196.855C561.001 248.202 395.104 221.15 395.104 221.15L348.416 205.36L309.797 188.747L293.981 180.427L272.376 174.322C271.1 173.961 269.808 173.721 268.506 173.593C256.132 172.383 185.665 165.081 78.0547 145.924C8.654 130.865 -17.9787 73.4937 14.0722 43.7976C49.3462 11.1153 157.433 6.94392 218.559 1.82206Z" fill="rgba(255, 220, 13, 0.7)"/>
+    </svg>
+  </div>
+  
+  <div class="svg-container red-shape">
+    <svg xmlns="http://www.w3.org/2000/svg" width="273" height="220" viewBox="0 0 273 220" fill="none">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M153.724 45.7602C184.121 51.3003 216.369 32.2592 241.539 51.0706C277.583 78.0081 321.919 117.701 310.031 162.578C298.199 207.239 240.447 213.129 196.91 219.542C169.791 223.537 149.582 200.374 124.036 189.974C92.7452 177.236 52.6425 183.554 34.8431 153.567C9.34081 110.602 -19.1081 43.2525 17.3322 10.2066C54.6948 -23.6756 105.172 36.9112 153.724 45.7602Z" fill="rgba(255, 49, 38, 0.8)"/>
+    </svg>
+  </div>
+  
+  <div class="svg-container pink-shape">
+    <svg xmlns="http://www.w3.org/2000/svg" width="210" height="242" viewBox="0 0 210 242" fill="none">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M190.155 0.861641C227.601 2.38349 214.979 29.5442 218.001 64.0074C221.023 98.4705 222.857 119.388 225.883 153.889C228.5 183.732 243.505 235.928 233.885 237.133C197.353 241.707 164.267 243.555 129.143 238.83C95.6553 234.326 60.9686 230.909 38.5337 209.511C13.3697 185.51 -6.87554 152.347 3.43923 118.935C13.4297 86.5729 55.4725 73.1687 86.8018 53.1569C117.323 33.6616 154.063 -0.60524 190.155 0.861641Z" fill="rgba(255, 110, 142, 0.7)"/>
+    </svg>
+  </div>
+  
+  <div class="svg-container green-shape">
+    <svg xmlns="http://www.w3.org/2000/svg" width="228" height="215" viewBox="0 0 228 215" fill="none">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M145.968 28.8406C165.177 -25.5358 282.833 14.6066 282.833 14.6066C282.833 14.6066 275.612 117.664 265.425 152.649C254.785 189.191 260.297 224.622 205.392 211.232C144.565 196.396 10.7813 205.652 0.717876 132.725C-9.63138 84.903 145.118 98.2832 145.968 28.8406Z" fill="rgba(13, 156, 11, 0.7)"/>
+    </svg>
+  </div>
 
-<div class="login-container">
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-    <h2>Login</h2>
-
-    <div class="form-group">
-      <label for="email">Email</label>
-      <input type="email" id="email" formControlName="email" />
-      <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" class="error">
-        Email is required and must be valid.
+  <div class="svg-container pink-shape-left">
+    <svg xmlns="http://www.w3.org/2000/svg" width="285" height="274" viewBox="0 0 285 274" fill="none">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M-0.803807 273.27C-50.7903 267.743 -27.919 238.18 -24.4803 198.736C-21.0416 159.293 -18.9547 135.354 -15.5122 95.8661C-12.5347 61.7115 -21.3399 0.914636 -8.15033 0.522442C41.9363 -0.966866 86.7978 0.290444 132.968 9.21835C176.987 17.7304 222.854 25.1283 248.345 51.704C276.937 81.5124 296.925 121.225 275.793 158.123C255.326 193.86 195.914 204.818 149.459 224.365C104.204 243.409 47.3773 278.596 -0.803807 273.27Z" fill="rgba(255, 110, 142, 0.7)"/>
+    </svg>
+  </div>
+  
+  <div class="svg-container red-shape-left">
+    <svg xmlns="http://www.w3.org/2000/svg" width="310" height="326" viewBox="0 0 310 326" fill="none">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M58.5747 290.862C-10.754 234.571 19.9526 247.393 -34.2111 200.296C-95.9676 146.596 -180.252 219.1 -191.007 168.265C-203.016 111.498 -39.8243 148.578 -19.7168 101.288C-2.21231 60.1194 -63.9269 34.4355 -23.9806 8.78647C12.4203 -14.5862 115.263 7.36325 151.5 101.288C183.1 183.192 276.226 240.828 276.226 240.828C276.226 240.828 341.395 260.037 289.197 294.725C241.716 326.279 147.634 345.816 58.5747 290.862Z" fill="rgba(255, 49, 38, 0.8)"/>
+    </svg>
+  </div>
+  
+  <div class="svg-container yellow-shape-left">
+    <svg xmlns="http://www.w3.org/2000/svg" width="387" height="303" viewBox="0 0 387 303" fill="none">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M93.813 291.595C19.8004 285.023 -129.857 247.952 -149.727 206.429C-171.146 161.669 -268.681 136.015 -254.938 90.5819C-248.038 67.7683 -229.33 78.3166 -207.849 23.5169C-191.312 -31.0992 -10.1276 29.2637 -10.1276 29.2637L37.0487 54.7529L74.4159 79.5287L89.0119 91.2521L111.864 102.015C112.88 102.494 113.896 102.864 115.01 103.157C127.147 106.345 206.661 127.651 325.166 169.084C399.217 198.226 403.57 263.048 352.277 287.693C295.825 314.816 167.61 298.149 93.813 291.595Z" fill="rgba(255, 220, 13, 0.7)"/>
+    </svg>
+  </div>
+  
+  <div class="svg-container blue-shape-left">
+    <svg xmlns="http://www.w3.org/2000/svg" width="183" height="386" viewBox="0 0 183 386" fill="none">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M-465.66 301.059C-430.439 247.935 -465.235 300.419 -410.707 218.173C-377.82 168.57 -377.184 167.61 -356.178 135.928C-335.173 104.246 -313.319 71.2838 -269.4 5.03958C-196.638 -10.5854 -154.182 17.9554 -116.562 41.1444C-78.9414 64.3334 149.449 195.208 173.966 235.11C198.665 275.308 170.901 354.744 106.277 369.792C-159.732 431.734 -54.0073 288.563 -157.927 264.015C-236.592 245.432 -428.898 324.179 -465.66 301.059Z" fill="rgba(35, 143, 242, 0.7)"/>
+    </svg>
+  </div>
+  
+  <div class="svg-container green-shape-left">
+    <svg xmlns="http://www.w3.org/2000/svg" width="203" height="147" viewBox="0 0 203 147" fill="none">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M37.5086 5.91809C-6.71807 -17.2215 1.37633 41.1092 1.37633 41.1092C1.37633 41.1092 11.7206 97.2147 28.8086 120.68C45.7202 143.903 73.742 159.028 102.828 130.646C135.051 99.2015 230.071 53.4948 194.772 8.83387C174.139 -21.8791 78.1148 44.4767 37.5086 5.91809Z" fill="rgba(13, 156, 11, 0.6)"/>
+    </svg>
+  </div>
+  <h2 class="login-title">CONNEXION</h2>
+  <div class="login-container">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" formControlName="email" />
+        <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" class="error">
+          Veuillez entrer un email valide.
+        </div>
       </div>
-    </div>
 
-    <div class="form-group">
-      <label for="password">Password</label>
-      <input type="password" id="password" formControlName="password" />
-      <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="error">
-        Password is required and must be at least 6 characters.
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" formControlName="password" />
+        <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="error">
+          Le mot de passe doit contenir au moins 6 caractères.
+        </div>
       </div>
-    </div>
 
-    <div *ngIf="errorMessage" class="error-message">
-      {{ errorMessage }}
-    </div>
+      <div class="button-container">
+        <button type="submit" [disabled]="loginForm.invalid">Connexion</button>
+      </div>
 
-    <button type="submit" [disabled]="loginForm.invalid">Login</button>
-  </form>
+      <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
+    </form>
+  </div>
 </div>
+

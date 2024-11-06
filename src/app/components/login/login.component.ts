@@ -3,13 +3,14 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { NavbarComponent } from '../navbar/navbar.component';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule]
+  imports: [ReactiveFormsModule, CommonModule, NavbarComponent]
 })
 export class LoginComponent {
   loginForm: FormGroup;
@@ -27,25 +28,27 @@ export class LoginComponent {
   }
 
   onSubmit() {
+    console.log('Formulaire soumis', this.loginForm.value); // Ajout de cette ligne
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value;
       this.authService.login(email, password).subscribe({
         next: (response) => {
           console.log('Connexion réussie, réponse :', response);
-
-          // Enregistrez le token et le managerId dans localStorage
-          localStorage.setItem('authToken', response.token); // Sauvegarder le token JWT
-          localStorage.setItem('managerId', response.managerId); // Sauvegarder l'ID du manager
-
+  
+          localStorage.setItem('authToken', response.token);
+          localStorage.setItem('managerId', response.managerId);
+  
           this.router.navigate(['/homeConnected']).then(
             (success) => console.log('Navigation vers /homeConnected réussie :', success),
             (error) => console.error('Erreur de navigation :', error)
           );
         },
-        error: () => {
-          this.errorMessage = 'Invalid email or password';
+        error: (err) => {
+          console.error('Erreur de connexion :', err); // Ajout d'un log pour l'erreur
+          this.errorMessage = 'Email ou mot de passe incorrect.';
         }
       });
     }
   }
+  
 }

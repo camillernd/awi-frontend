@@ -1,54 +1,184 @@
-/* src/app/components/login/login.component.css */
+.login-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 85vh; /* Ajustement pour remonter les éléments */
+  background-color: #FFF6EB;
+}
+
+.login-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 45px;
+  font-weight: 600;
+  color: #000000;
+  margin-bottom: 15px;
+  text-align: center;
+}
 
 .login-container {
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 2rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-  }
-  
-  .form-group {
-    margin-bottom: 1rem;
-  }
-  
-  label {
-    display: block;
-    margin-bottom: 0.5rem;
-  }
-  
-  input {
-    width: 100%;
-    padding: 0.5rem;
-    font-size: 1rem;
-  }
-  
-  button {
-    width: 100%;
-    padding: 0.75rem;
-    font-size: 1rem;
-    color: #fff;
-    background-color: #007bff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-  }
-  
-  .error {
-    color: red;
-    font-size: 0.875rem;
-  }
-  
-  .error-message {
-    color: red;
-    font-weight: bold;
-    text-align: center;
-    margin-top: 1rem;
-  }
-  
+  position: relative;
+  width: 320px;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid #000000;
+  border-radius: 20px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.svg-container {
+  position: absolute;
+  transform-origin: center;
+}
+
+.blue-shape {
+  top: 50%;
+  right: -10%;
+  transform: rotate(-7.973deg);
+  width: 482.516px;
+  height: 282.861px;
+}
+
+.yellow-shape {
+  top: 10%;
+  right: -20%;
+  transform: rotate(-9.286deg);
+  width: 600.55px;
+  height: 600.405px;
+}
+
+.red-shape {
+  bottom: 45%;
+  right: -5%;
+  width: 312px;
+  height: 220px;
+}
+
+.pink-shape {
+  top: 40%;
+  right: -5%;
+  transform: rotate(12.271deg);
+  width: 254.273px;
+  height: 244.886px;
+}
+
+.green-shape {
+  top: 70%;
+  right: -10%;
+  transform: rotate(-6.499deg);
+  width: 317.961px;
+  height: 226.74px;
+}
+
+.pink-shape-left {
+  left: -7%;
+  top: 10%;
+  transform: rotate(5.926deg);
+  width: 338.606px;
+  height: 293.274px;
+}
+
+.red-shape-left {
+  left: -3%;
+  top: 15%;
+  transform: rotate(-15.844deg);
+  width: 393.13px;
+  height: 385.742px;
+}
+
+.yellow-shape-left {
+  left: -5%;
+  top: 35%;
+  transform: rotate(-1.056deg);
+  width: 667.921px;
+  height: 271.083px;
+}
+
+.blue-shape-left {
+  left: -3%;
+  top: 45%;
+  transform: rotate(-1.848deg);
+  width: 580.03px;
+  height: 382.346px;
+}
+
+.green-shape-left {
+  left: 5%;
+  top: 70%;
+  transform: rotate(-15.301deg);
+  width: 201.585px;
+  height: 155.147px;
+}
+
+.form-group {
+  width: 100%;
+  margin-bottom: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+label {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  margin-bottom: 0.3rem;
+  color: #333;
+  width: 100%;
+  text-align: left;
+}
+
+input[type="email"],
+input[type="password"] {
+  width: 90%;
+  padding: 0.5rem;
+  height: 38px;
+  font-size: 16px;
+  font-family: 'Poppins', sans-serif;
+  font-style: italic;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid #000000;
+  border-radius: 4px;
+  color: #333;
+  margin-bottom: 0.3rem;
+}
+
+.error {
+  color: red;
+  font-size: 0.875rem;
+  margin-top: 0.2rem;
+  text-align: center;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+button[type="submit"] {
+  width: 60%;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid #000000;
+  border-radius: 20px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  font-family: 'Poppins', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: #000000;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.error-message {
+  color: red;
+  font-weight: bold;
+  margin-top: 1rem;
+  text-align: center;
+}

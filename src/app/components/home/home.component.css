@@ -1,0 +1,119 @@
+/*src/app/components/home/home.component.html*/
+
+.welcome-container {
+    position: relative;
+    text-align: center;
+    padding: 2rem;
+    width: 100vw;
+}
+
+.svg-container {
+    position: absolute;
+    transform-origin: center;
+}
+
+.blue-shape {
+    top: 120%;
+    right: 0%;
+    transform: rotate(-7.973deg);
+    width: 482.516px;
+    height: 282.861px;
+}
+
+.yellow-shape {
+    top: 10%;
+    right: -7%;
+    transform: rotate(-9.286deg);
+    width: 600.55px;
+    height: 600.405px;
+}
+
+.red-shape {
+    bottom: -25%;
+    right: -2%;
+    width: 312px;
+    height: 220px;
+}
+
+.pink-shape {
+    top: 90%;
+    right: 0%;
+    transform: rotate(12.271deg);
+    width: 254.273px;
+    height: 244.886px;
+}
+
+.green-shape {
+    top: 180%;
+    right: 0%;
+    transform: rotate(-6.499deg);
+    width: 317.961px;
+    height: 226.74px;
+}
+
+.pink-shape-left {
+    left: -7%;
+    top: 5%;
+    transform: rotate(5.926deg);
+    width: 338.606px;
+    height: 293.274px;
+}
+
+.red-shape-left {
+    left: -7%;
+    top: 20%;
+    transform: rotate(-15.844deg);
+    width: 393.13px;
+    height: 385.742px;
+}
+
+.yellow-shape-left {
+    left: -10%;
+    top: 85%;
+    transform: rotate(-1.056deg);
+    width: 667.921px;
+    height: 271.083px;
+}
+
+.blue-shape-left {
+    left: -15%;
+    top: 110%;
+    transform: rotate(-1.848deg);
+    width: 580.03px;
+    height: 382.346px;
+}
+
+.green-shape-left {
+    left: 5%;
+    top: 200%;
+    transform: rotate(-15.301deg);
+    width: 201.585px;
+    height: 155.147px;
+}
+
+.text-container {
+    position: relative;
+    z-index: 1; /* Pour que le texte soit au-dessus des SVG */
+    text-align: center;
+    margin-top: 2rem; /* Ajustez la marge pour centrer verticalement */
+}
+
+.text-container h1 {
+    font-size: 2.5rem;
+    color: #333;
+}
+
+.text-container h2 {
+    font-size: 1.8rem;
+    color: #333;
+}
+
+/* Styles pour le texte et le bouton */
+h1 {
+    font-size: 2.5rem;
+    color: #333;
+    margin-top: 3rem;
+    position: relative;
+    z-index: 1;
+}
+
