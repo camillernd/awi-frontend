@@ -1,12 +1,20 @@
 <!-- src/components/navbar/navbar.component.html -->
 <nav class="navbar">
     <div class="navbar-left">
-        <img src="assets/logo.png" alt="Logo" class="logo">
+        <img src="assets/logo.png" alt="Logo" class="logo" (click)="navigateToHome()">
     </div>
     <div class="navbar-center">
-        <button class="session-button">SESSIONS</button>
+        <button class="sessions-button" (click)="goToSessions()">Sessions</button>
+        <!-- Afficher ces boutons seulement si un manager est connecté -->
+        <ng-container *ngIf="managerConnected">
+            <button class="profile-button" (click)="goToProfile()">Profil</button>
+            <button class="deposited-games-button" (click)="goToDepositedGames()">Jeux Déposés</button>
+        </ng-container>
     </div>
     <div class="navbar-right">
-        <a (click)="navigateToLogin()" class="manager-link">Manager ?</a>
+        <!-- Afficher "Manager ?" seulement si aucun manager n'est connecté -->
+        <a *ngIf="!managerConnected" (click)="navigateToLogin()" class="manager-link">Manager ?</a>
+        <!-- Ajouter un bouton de déconnexion si un manager est connecté -->
+        <a *ngIf="managerConnected" (click)="logout()" class="logout-link">Déconnexion</a>
     </div>
 </nav>

@@ -1,13 +1,17 @@
 <!-- src/app/components/sessions/sessions.component.html -->
+<app-navbar></app-navbar>
 <h2>Liste des sessions</h2>
-<button (click)="goToCreateSession()">Créer une session</button>
+<button class="create-session-button" (click)="goToCreateSession()">Créer une session</button>
 
-<div *ngFor="let session of sessions" class="session-item">
-  <h3>Nom: {{ session.name }}</h3>
-  <p><strong>Lieu:</strong> {{ session.location }}</p>
-  <p><strong>Date de début:</strong> {{ session.startDate | date }}</p>
-  <p><strong>Date de fin:</strong> {{ session.endDate | date }}</p>
-  <button (click)="goToSessionDetail(session._id)">Détail</button>
+<div class="sessions-grid">
+  <div *ngFor="let session of sessions" class="session-card">
+    <h3 class="session-title">{{ session.name }}</h3>
+    <p><strong>Date :</strong> {{ session.date }}</p>
+    <p><strong>Horaires :</strong> {{ session.horaires }}</p>
+    <p><strong>Lieu :</strong> {{ session.location }}</p>
+    <div class="session-actions">
+      <button class="session-button" (click)="goToSessionDetail(session._id)">Bilan</button>
+      <button class="session-button" (click)="goToSessionDetail(session._id)">Catalogue</button>
+    </div>
+  </div>
 </div>
-
-  

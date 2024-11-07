@@ -38,8 +38,8 @@ export class LoginComponent {
           localStorage.setItem('authToken', response.token);
           localStorage.setItem('managerId', response.managerId);
   
-          this.router.navigate(['/homeConnected']).then(
-            (success) => console.log('Navigation vers /homeConnected réussie :', success),
+          this.router.navigate(['/home']).then(
+            (success) => console.log('Navigation vers /homeréussie :', success),
             (error) => console.error('Erreur de navigation :', error)
           );
         },

@@ -21,33 +21,38 @@ export class AuthService {
         this.token = response.token;
         localStorage.setItem('authToken', this.token);
 
-        // Décodage du token pour extraire l'ID du manager
         const payload = JSON.parse(atob(this.token.split('.')[1]));
         const managerId = payload.id;
 
-        // Récupération des informations du manager
         this.getManagerProfile().subscribe(managerData => {
-          console.log('Profil du manager récupéré:', managerData); // Vérifier que les données sont correctes
-          
-          // Stocker les données du manager
+          console.log('Profil du manager récupéré:', managerData);
           localStorage.setItem('managerId', managerId);
           localStorage.setItem('firstName', managerData.firstName);
           localStorage.setItem('lastName', managerData.lastName);
         });
       })
     );
-}
-
+  }
 
   getToken(): string | null {
-    return this.token || localStorage.getItem('authToken'); // Récupère le token stocké
+    return this.token || localStorage.getItem('authToken');
   }
 
   getManagerProfile(): Observable<any> {
     const url = `${this.apiUrl}/profile`;
     const headers = new HttpHeaders({
-      Authorization: `Bearer ${this.getToken()}` // Inclut le token JWT dans l'en-tête
+      Authorization: `Bearer ${this.getToken()}`
     });
     return this.http.get(url, { headers });
+  }
+
+  isManagerConnected(): boolean {
+    return !!this.getToken();
+  }
+
+  logout() {
+    this.token = null;
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('managerId');
   }
 }

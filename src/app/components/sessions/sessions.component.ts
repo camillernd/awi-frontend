@@ -1,14 +1,16 @@
+//src/app/components/sessions/sessions.component.ts
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { SessionService } from '../../services/session.service';
+import { NavbarComponent } from '../navbar/navbar.component';
 
 @Component({
   selector: 'app-sessions',
   templateUrl: './sessions.component.html',
   styleUrls: ['./sessions.component.css'],
   standalone: true,
-  imports: [CommonModule]
+  imports: [CommonModule, NavbarComponent]
 })
 export class SessionsComponent implements OnInit {
   sessions: any[] = [];
@@ -16,6 +18,7 @@ export class SessionsComponent implements OnInit {
   constructor(private sessionService: SessionService, private router: Router) {}
 
   ngOnInit(): void {
+    document.body.style.overflow = 'visible';
     this.sessionService.getSessions().subscribe({
       next: (sessionsData) => {
         console.log('Sessions récupérées :', sessionsData);
@@ -23,6 +26,11 @@ export class SessionsComponent implements OnInit {
       },
       error: (error) => console.error('Erreur de récupération des sessions :', error),
     });
+  }
+
+  ngOnDestroy(): void {
+    // Réinitialiser overflow à 'hidden' quand le composant est détruit
+    document.body.style.overflow = 'hidden';
   }
 
   goToCreateSession(): void {

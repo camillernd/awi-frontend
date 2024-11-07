@@ -1,20 +1,80 @@
+/*src/app/components/sessions/sessions.component.css*/
+body {
+  overflow: visible;
+}
+
+/* Style global */
 h2 {
-    text-align: center;
-    margin-top: 20px;
-  }
-  
-  ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  li {
-    cursor: pointer;
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  button {
-    margin-bottom: 20px;
-  }
+  text-align: center;
+  margin-top: 20px;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Bouton pour créer une session */
+.create-session-button {
+  display: block;
+  margin: 0 auto 20px;
+  padding: 10px 20px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  background-color: rgba(255, 255, 255, 0.5);
+  border: 1px solid #000000;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.create-session-button:hover {
+  background-color: #f0e5d8;
+}
+
+/* Grille des sessions */
+.sessions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+/* Carte pour chaque session */
+.session-card {
+  background: rgba(255, 255, 255, 0.5);
+  border: 2px solid #000000;
+  border-radius: 20px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  padding: 20px;
+  text-align: left;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Titre de la session */
+.session-title {
+  font-weight: 600;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+/* Style des boutons Bilan et Catalogue */
+.session-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.session-button {
+  width: 100px;
+  padding: 10px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #000000;
+  background: #FFFFFF;
+  border: 1px solid #000000;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.session-button:hover {
+  background-color: #f0e5d8;
+}
   

@@ -100,18 +100,18 @@
 
 .text-container h1 {
     font-size: 2.5rem;
-    color: #333;
+    color: #000000;
 }
 
 .text-container h2 {
     font-size: 1.8rem;
-    color: #333;
+    color: #000000;
 }
 
 /* Styles pour le texte et le bouton */
 h1 {
     font-size: 2.5rem;
-    color: #333;
+    color: #000000;
     margin-top: 3rem;
     position: relative;
     z-index: 1;
