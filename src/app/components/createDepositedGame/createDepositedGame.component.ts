@@ -11,7 +11,7 @@ import { DepositedGameService } from '../../services/depositedGame.service';
   standalone: true,
   imports: [FormsModule, CommonModule]
 })
-export class CreateDepositedGameComponent implements OnInit {
+export class CreateDepositedGameComponent {
   depositedGameData = {
     sellerId: '',
     sessionId: '',
@@ -22,22 +22,7 @@ export class CreateDepositedGameComponent implements OnInit {
     sold: false
   };
 
-  firstName: string | null = null;
-  lastName: string | null = null;
-
   constructor(private depositedGameService: DepositedGameService, private router: Router) {}
-
-  ngOnInit(): void {
-    this.firstName = localStorage.getItem('firstName');
-    this.lastName = localStorage.getItem('lastName');
-    this.depositedGameData.sellerId = localStorage.getItem('sellerId') || ''; // Récupérer l'ID du vendeur connecté
-
-    console.log('Vendeur connecté après récupération dans ngOnInit:', {
-      firstName: this.firstName,
-      lastName: this.lastName,
-      sellerId: this.depositedGameData.sellerId
-    });
-  }
 
   createDepositedGame() {
     console.log('Données du jeu à déposer à créer avec vendeur:', this.depositedGameData);
