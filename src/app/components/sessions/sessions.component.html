@@ -1,8 +1,6 @@
 <!-- src/app/components/sessions/sessions.component.html -->
 <app-navbar></app-navbar>
 <h2>Liste des sessions</h2>
-<button class="create-session-button" (click)="goToCreateSession()">Créer une session</button>
-
 <div class="sessions-grid">
   <div *ngFor="let session of sessions" class="session-card">
     <h3 class="session-title">{{ session.name }}</h3>

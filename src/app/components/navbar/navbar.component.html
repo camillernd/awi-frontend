@@ -5,10 +5,18 @@
     </div>
     <div class="navbar-center">
         <button class="sessions-button" (click)="goToSessions()">Sessions</button>
+
+        <ng-container *ngIf="managerConnected">
+            <button class="create-session-button" (click)="goToCreateSession()">+ Session</button>
+        </ng-container>
+
+        <button class="deposited-games-button" (click)="goToDepositedGames()">Catalogue</button>
         <!-- Afficher ces boutons seulement si un manager est connecté -->
         <ng-container *ngIf="managerConnected">
+            <button class="deposited-games-admin-button" (click)="goToDepositedGamesAdmin()">Jeux déposés</button>
+            <button class="deposited-games-button" (click)="goToCreateDepositedGame()">+ Dépôt</button>
+            <button class="checkout-button" (click)="goToCheckout()">Encaissement</button>
             <button class="profile-button" (click)="goToProfile()">Profil</button>
-            <button class="deposited-games-button" (click)="goToDepositedGames()">Jeux Déposés</button>
         </ng-container>
     </div>
     <div class="navbar-right">

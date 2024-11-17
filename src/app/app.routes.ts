@@ -10,6 +10,8 @@ import { CreateSessionComponent } from './components/createSession/createSession
 import { DepositedGameComponent } from './components/depositedGames/depositedGames.component';
 import { CreateDepositedGameComponent } from './components/createDepositedGame/createDepositedGame.component';
 import { DepositedGameDetailComponent } from './components/depositedGameDetail/depositedGameDetail.component';
+import { DepositedGamesAdminComponent } from './components/depositedGamesAdmin/depositedGamesAdmin.component';
+import { CheckoutComponent } from './components/checkout/checkout.component';
 
 export const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -22,5 +24,7 @@ export const routes: Routes = [
   { path: 'depositedGames', component: DepositedGameComponent },
   { path: 'createDepositedGame', component: CreateDepositedGameComponent },
   { path: 'depositedGameDetail/:id', component: DepositedGameDetailComponent },
+  { path: 'depositedGamesAdmin', component: DepositedGamesAdminComponent},
+  { path: 'checkout', component: CheckoutComponent},
   { path: '', redirectTo: '/home', pathMatch: 'full' },
 ];

@@ -46,6 +46,22 @@ export class NavbarComponent implements OnInit {
     this.router.navigate(['/depositedGames']);
   }
 
+  goToCreateSession(){
+    this.router.navigate(['/createSession']);
+  }
+
+  goToCreateDepositedGame(){
+    this.router.navigate(['/createDepositedGame']);
+  }
+
+  goToDepositedGamesAdmin(){
+    this.router.navigate(['/depositedGamesAdmin']);
+  }
+
+  goToCheckout(){
+    this.router.navigate(['/checkout']);
+  }
+
   logout() {
     this.authService.logout();
     this.managerConnected = false;

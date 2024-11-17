@@ -1,17 +1,21 @@
-<!-- src/app/components/depositedGames/depositedGames.component.html -->
-<h2>Liste des jeux déposés</h2>
-<button (click)="goToCreateDepositedGame()">Créer un dépôt</button>
+<app-navbar></app-navbar>
+<h2 class="page-title">Liste des jeux déposés</h2>
 
-<div *ngIf="depositedGames.length > 0; else noGames">
-  <div *ngFor="let depositedGame of depositedGames" class="depositedGame-item">
-    <h3>Etiquette: {{ depositedGame._id }}</h3>
-    <p><strong>salePrice:</strong> {{ depositedGame.salePrice }}</p>
-    <button (click)="goToDepositedGameDetail(depositedGame._id)">Détail</button>
+<div class="games-container">
+  <div
+    *ngFor="let game of depositedGames"
+    class="game-card"
+    (click)="goToDepositedGameDetail(game._id)"
+  >
+    <img class="game-photo" [src]="game.gameDescriptionId.photoURL" alt="Photo du jeu" />
+    <div class="game-details">
+      <h3 class="game-name">{{ game.gameDescriptionId.name }}</h3>
+      <p class="game-publisher">Éditeur : {{ game.gameDescriptionId.publisher }}</p>
+      <p class="game-price">{{ game.salePrice }}$</p>
+    </div>
   </div>
 </div>
+
 <ng-template #noGames>
-  <p>Aucun jeu déposé trouvé.</p>
+  <p class="no-games-message">Aucun jeu déposé trouvé.</p>
 </ng-template>
-
-
-  

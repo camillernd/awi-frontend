@@ -16,6 +16,7 @@ export class ManagerDetailComponent implements OnInit {
   constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
+    document.body.style.overflow = 'visible';
     this.getManagerProfile();
   }
 

@@ -17,6 +17,7 @@ export class SessionDetailComponent implements OnInit {
   constructor(private route: ActivatedRoute, private sessionService: SessionService) {}
 
   ngOnInit(): void {
+    document.body.style.overflow = 'visible';
     const sessionId = this.route.snapshot.paramMap.get('id');
     if (sessionId) {
       this.sessionService.getSessionById(sessionId).subscribe({

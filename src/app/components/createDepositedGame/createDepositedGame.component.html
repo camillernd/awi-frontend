@@ -1,34 +1,78 @@
-<div class="create-deposited-game-container">
-    <h2>Créer un dépôt de jeu</h2>
-  
-    <form (ngSubmit)="createDepositedGame()" class="deposited-game-form">
-      <div class="form-group">
-        <label for="sellerId">ID du vendeur</label>
-        <input id="sellerId" [(ngModel)]="depositedGameData.sellerId" name="sellerId" required />
-      </div>
-      
-      <div class="form-group">
-        <label for="sessionId">ID de la session</label>
-        <input id="sessionId" [(ngModel)]="depositedGameData.sessionId" name="sessionId" required />
-      </div>
-      
-      <div class="form-group">
-        <label for="gameDescriptionId">ID de la description du jeu</label>
-        <input id="gameDescriptionId" [(ngModel)]="depositedGameData.gameDescriptionId" name="gameDescriptionId" required />
-      </div>
-      
-      <div class="form-group">
-        <label for="salePrice">Prix de vente</label>
-        <input id="salePrice" type="number" [(ngModel)]="depositedGameData.salePrice" name="salePrice" required />
-      </div>
-  
-      <div class="form-group">
-        <label>
-          <input type="checkbox" [(ngModel)]="depositedGameData.forSale" name="forSale" />
-          À vendre
-        </label>
-      </div>
-      <button type="submit" class="submit-button">Créer</button>
-    </form>
+<app-navbar></app-navbar>
+
+<div class="page-container">
+  <!-- Section gauche -->
+  <div class="left-container">
+    <!-- Section Vendeur -->
+    <div class="vendeur-container">
+      <h3>Vendeur</h3>
+      <label for="sellerEmail">Adresse email</label>
+      <select id="sellerEmail" (change)="onSellerSelect($event)" required>
+        <option *ngFor="let seller of sellers" [value]="seller._id">{{ seller.email }}</option>
+      </select>
+
+      <label for="sellerId">IdVendeur</label>
+      <input id="sellerId" type="text" [value]="selectedSeller?._id || ''" disabled />
+
+      <label for="sellerName">Nom Prénom</label>
+      <input id="sellerName" type="text" [value]="selectedSeller?.name || ''" disabled />
+
+      <label for="sellerPhone">Num téléphone</label>
+      <input id="sellerPhone" type="text" [value]="selectedSeller?.phone || ''" disabled />
+    </div>
+
+    <!-- Section Session -->
+    <div class="session-container">
+      <h3>Session</h3>
+      <label for="sessionId">Sélectionner une session</label>
+      <select id="sessionId" (change)="onSessionSelect($event)" required>
+        <option *ngFor="let session of sessions" [value]="session._id">{{ session.name }}</option>
+      </select>
+    </div>
+
+    <!-- Section Totaux -->
+    <div class="totals-container">
+      <h3>Total</h3>
+      <p>Total frais de dépôt : {{ totalDepositFee | currency }}</p>
+      <p>Total réduction frais : {{ totalDiscount | currency }}</p>
+      <p>Total après réduction : {{ totalAfterDiscount | currency }}</p>
+    </div>
+
+    <!-- Bouton Valider -->
+    <div class="submit-button-container">
+      <button type="button" class="submit-button" (click)="createDepositedGames()">VALIDER</button>
+    </div>
   </div>
-  
+
+  <!-- Section droite -->
+  <div class="right-container">
+    <h3>Jeux</h3>
+    <form>
+      <div *ngFor="let game of depositedGames; let i = index" class="game-container">
+        <label for="gameDescriptionId-{{ i }}">Description du jeu</label>
+        <select id="gameDescriptionId-{{ i }}" [(ngModel)]="game.gameDescriptionId" name="gameDescriptionId-{{ i }}" required>
+          <option *ngFor="let desc of gameDescriptions" [value]="desc._id">{{ desc.name }}</option>
+        </select>
+
+        <label for="salePrice-{{ i }}">Prix de vente</label>
+        <input
+          id="salePrice-{{ i }}"
+          type="number"
+          [(ngModel)]="game.salePrice"
+          name="salePrice-{{ i }}"
+          (input)="updateTotals()"
+          required
+        />
+
+        <label>
+          <input type="checkbox" [(ngModel)]="game.forSale" name="forSale-{{ i }}" />
+          Disponible à la vente
+        </label>
+
+        <button type="button" class="remove-button" (click)="removeGame(i)">SUPPRIMER</button>
+      </div>
+    </form>
+
+    <button type="button" class="add-button" (click)="addGame()">+ Ajouter un jeu</button>
+  </div>
+</div>

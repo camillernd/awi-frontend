@@ -31,6 +31,7 @@ export class CreateSessionComponent implements OnInit {
   constructor(private sessionService: SessionService, private router: Router) {}
 
   ngOnInit(): void {
+    document.body.style.overflow = 'visible';
     this.firstName = localStorage.getItem('firstName');
     this.lastName = localStorage.getItem('lastName');
     this.sessionData.managerId = localStorage.getItem('managerId') || '';

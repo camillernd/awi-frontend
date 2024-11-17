@@ -1,0 +1,112 @@
+/* Style général de la page */
+body {
+    background-color: #fff6eb; /* Couleur de fond */
+  }
+  
+  .game-detail-page {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 50px;
+    padding: 50px;
+    max-width: 1440px;
+    margin: 0 auto;
+    align-items: flex-start;
+  }
+  
+  /* Section gauche */
+  .game-detail-left {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .image-container {
+    background-color: #ffffff;
+    border-radius: 20px;
+    width: 350px; /* Taille du conteneur réduite */
+    height: 450px; /* Hauteur du conteneur ajustée */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
+  }
+  
+  .game-photo {
+    width: 60%; /* Ajuste la taille de l'image par rapport au conteneur */
+    height: auto;
+    border-radius: 9px;
+  }
+  
+  /* Section droite */
+  .game-detail-right {
+    position: relative;
+  }
+  
+  .game-title {
+    font-family: "Poppins", sans-serif;
+    font-weight: 700;
+    font-size: 27px;
+    line-height: 40px;
+    color: #000000;
+    margin-bottom: 20px;
+  }
+  
+  .game-status {
+    font-family: "Poppins", sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 20px;
+  }
+  
+  .game-status.in-stock {
+    color: #82a450;
+  }
+  
+  .game-status.sold {
+    color: #d9534f;
+  }
+  
+  .game-description {
+    font-family: "Poppins", sans-serif;
+    font-size: 13px;
+    line-height: 20px;
+    color: #000000;
+    margin-bottom: 30px;
+  }
+  
+  .game-info {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 20px;
+  }
+  
+  .game-info-item {
+    font-family: "Poppins", sans-serif;
+    font-size: 13px;
+  }
+  
+  .label {
+    font-weight: 500;
+    color: #b79ea0;
+  }
+  
+  .value {
+    font-weight: 600;
+    color: #000000;
+  }
+  
+  .seller-info {
+    font-family: "Poppins", sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 30px;
+    color: #000000;
+  }
+  
+  .game-price {
+    font-family: "Poppins", sans-serif;
+    font-size: 70px;
+    font-weight: 600;
+    color: #000000;
+    margin-top: 20px;
+  }
+   

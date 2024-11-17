@@ -23,4 +23,14 @@ export class DepositedGameService {
     console.log('Envoi des données du depositedGame au backend:', depositedGameData); // Log pour confirmer l'envoi
     return this.http.post<any>(`${this.apiUrl}`, depositedGameData);
   }
+
+  // Récupérer tous les jeux déposés
+  getAllDepositedGames(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}`);
+  }
+
+  // Mettre à jour la disponibilité d'un jeu
+  updateDepositedGame(id: string, data: any): Observable<any> {
+    return this.http.patch(`${this.apiUrl}/${id}`, data);
+  }
 }

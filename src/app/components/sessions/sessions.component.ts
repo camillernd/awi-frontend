@@ -33,10 +33,6 @@ export class SessionsComponent implements OnInit {
     document.body.style.overflow = 'hidden';
   }
 
-  goToCreateSession(): void {
-    this.router.navigate(['/createSession']);
-  }
-
   goToSessionDetail(sessionId: string): void {
     this.router.navigate(['/sessionDetail', sessionId]);
   }

@@ -1,52 +1,220 @@
-.create-deposited-game-container {
-    max-width: 600px;
-    margin: 0 auto;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  h2 {
-    color: #333;
-    font-size: 1.5em;
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .create-deposited-game-container label {
-    font-weight: bold;
-    margin-bottom: 5px;
-    display: block;
-  }
-  
-  .create-deposited-game-container input[type="text"],
-  .create-deposited-game-container input[type="number"],
-  .create-deposited-game-container select {
-    width: 100%;
-    padding: 10px;
-    margin: 8px 0 15px;
-    display: inline-block;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-  }
-  
-  .create-deposited-game-container button {
-    width: 100%;
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px;
-    margin-top: 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1em;
-    transition: background-color 0.3s;
-  }
-  
-  .create-deposited-game-container button:hover {
-    background-color: #45a049;
-  }
-  
+body {
+  overflow: visible;
+  font-family: 'Poppins', sans-serif;
+  background-color: #fdf3e7;
+}
+
+/* Structure principale */
+.page-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin: 50px auto;
+  padding: 20px;
+  max-width: 1200px;
+  background: transparent;
+}
+
+/* Conteneur gauche */
+.left-container {
+  flex: 1;
+  margin-right: 50px;
+}
+
+/* Section Vendeur */
+.vendeur-container {
+  margin-bottom: 20px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid #000000;
+  border-radius: 20px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.vendeur-container h3 {
+  text-align: center;
+  font-size: 27px;
+  font-weight: bold;
+  color: #000000;
+  margin-bottom: 20px;
+}
+
+.vendeur-container select,
+.vendeur-container input[type="text"] {
+  width: 80%; /* Réduction drastique de la largeur */
+  height: 30px; /* Réduction drastique de la hauteur */
+  margin: 10px auto;
+  padding: 5px;
+  border: 1px solid #000000;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.5);
+  font-size: 15px;
+  font-style: italic;
+  color: #000000;
+  display: block;
+}
+
+/* Section Session */
+.session-container {
+  margin-bottom: 20px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid #000000;
+  border-radius: 20px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.session-container h3 {
+  text-align: center;
+  font-size: 27px;
+  font-weight: bold;
+  color: #000000;
+  margin-bottom: 20px;
+}
+
+.session-container select {
+  width: 80%;
+  height: 40px;
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid #000000;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.5);
+  font-size: 17px;
+  font-style: italic;
+  color: #000000;
+}
+
+/* Section Totaux */
+.totals-container {
+  margin-bottom: 20px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid #000000;
+  border-radius: 20px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.totals-container h3 {
+  text-align: center;
+  font-size: 27px;
+  font-weight: bold;
+  color: #000000;
+  margin-bottom: 15px;
+}
+
+.totals-container p {
+  font-size: 20px;
+  font-weight: 300;
+  margin: 5px 0;
+  color: #000000;
+}
+
+/* Bouton Valider */
+.submit-button-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.submit-button {
+  width: 150px;
+  padding: 10px;
+  background: rgba(255, 151, 170, 0.61);
+  color: #000000;
+  font-size: 20px;
+  font-weight: 500;
+  border: 1px solid #000000;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.submit-button:hover {
+  background: rgba(255, 49, 38, 0.8);
+  color: #ffffff;
+}
+
+/* Conteneur droit */
+.right-container {
+  flex: 2;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid #000000;
+  border-radius: 20px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.right-container h3 {
+  text-align: center;
+  font-size: 27px;
+  font-weight: bold;
+  color: #000000;
+  margin-bottom: 30px;
+}
+
+.right-container .game-container {
+  margin-bottom: 40px;
+  padding: 50px;
+  border: 1px solid #000000;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.5);
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.right-container select,
+.right-container input[type="number"] {
+  width: 80%; /* Réduction drastique de la largeur */
+  height: 30px; /* Réduction drastique de la hauteur */
+  margin-bottom: 15px;
+  padding: 5px;
+  border: 1px solid #000000;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.5);
+  font-size: 15px;
+  font-style: italic;
+  color: #000000;
+}
+
+.right-container label {
+  display: block;
+  font-size: 17px;
+  font-style: italic;
+  margin-bottom: 10px;
+  color: #000000;
+}
+
+/* Boutons */
+.add-button {
+  background: rgba(255, 151, 170, 0.61);
+  color: #000000;
+  font-size: 20px;
+  border: 1px solid #000000;
+  border-radius: 10px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.add-button:hover {
+  background: rgba(255, 49, 38, 0.8);
+  color: #ffffff;
+}
+
+.remove-button {
+  background: rgba(255, 151, 170, 0.61);
+  color: #000000;
+  font-size: 20px;
+  border: 1px solid #000000;
+  border-radius: 10px;
+  padding: 10px 20px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: 0.3s;
+}
+
+.remove-button:hover {
+  background: rgba(255, 49, 38, 0.8);
+  color: #ffffff;
+}
+
+

@@ -16,6 +16,7 @@ export class HomeConnectedComponent implements OnInit {
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
+    document.body.style.overflow = 'hidden';
     this.getManagerProfile();
   }
 

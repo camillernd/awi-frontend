@@ -1,0 +1,48 @@
+<app-navbar></app-navbar>
+
+<div class="page-container">
+  <!-- Infos Client -->
+  <div class="left-container">
+    <div class="client-info-container">
+      <h3>Infos Client</h3>
+      <label for="clientEmail">Adresse email</label>
+      <select id="clientEmail" (change)="onClientSelect($event)">
+        <option *ngFor="let client of clients" [value]="client._id">
+          {{ client.email }}
+        </option>
+      </select>
+
+      <label for="clientId">IdClient</label>
+      <input id="clientId" type="text" [value]="selectedClient?._id || ''" disabled />
+
+      <label for="clientName">Nom Prénom</label>
+      <input id="clientName" type="text" [value]="selectedClient?.name || ''" disabled />
+
+      <label for="clientPhone">Num téléphone</label>
+      <input id="clientPhone" type="text" [value]="selectedClient?.phone || ''" disabled />
+    </div>
+
+    <div class="total-section">
+      <h3>TOTAL</h3>
+      <p>{{ totalCost }} $</p>
+      <button class="finalize-button" (click)="finalizeCheckout()">FINALISER</button>
+    </div>
+  </div>
+
+  <!-- Panier -->
+  <div class="right-container">
+    <h3>Panier</h3>
+    <div *ngFor="let game of scannedGames; let i = index" class="cart-item">
+      <div>
+        <label>Étiquette</label>
+        <input type="text" [value]="game._id" disabled />
+      </div>
+      <p>{{ game.salePrice }} $</p>
+    </div>
+
+    <div class="add-item">
+      <input #gameIdInput type="text" placeholder="Étiquette" />
+      <button (click)="addGame(gameIdInput.value)">+</button>
+    </div>
+  </div>
+</div>

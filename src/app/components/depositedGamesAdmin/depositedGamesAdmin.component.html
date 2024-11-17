@@ -1,0 +1,37 @@
+<app-navbar></app-navbar>
+
+<div class="page-container">
+  <h1 class="page-title">JEUX DEPOSES</h1>
+  <div class="game-list">
+    <div *ngFor="let game of depositedGames" class="game-card">
+      <div class="game-info">
+        <div class="seller-info">
+          <h3>Infos Vendeur</h3>
+          <p><strong>IdVendeur:</strong> {{ game.sellerId }}</p>
+          <p><strong>Adresse email:</strong> {{ game.sellerEmail }}</p>
+          <p><strong>Nom Prénom:</strong> {{ game.sellerName }}</p>
+          <p><strong>Numéro Tel:</strong> {{ game.sellerPhone }}</p>
+        </div>
+
+        <div class="deposit-info">
+          <h3>Infos Dépôt</h3>
+          <p><strong>IdJeu:</strong> {{ game._id }}</p>
+          <p><strong>Nom Jeu:</strong> {{ game.gameName }}</p>
+          <p><strong>Prix:</strong> {{ game.salePrice | currency }}</p>
+        </div>
+
+        <div class="availability">
+          <h3>Disponible à la vente</h3>
+          <div
+            class="toggle-switch"
+            [class.available]="game.forSale"
+            [class.not-available]="!game.forSale"
+            (click)="toggleAvailability(game)"
+          >
+            {{ game.forSale ? 'Oui' : 'Non' }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,14 +1,48 @@
-<div *ngIf="depositedGame">
-    <h2>Détails du jeu déposé</h2>
-    <p><strong>Étiquette:</strong> {{ depositedGame._id }}</p>
-    <p><strong>Prix de vente:</strong> {{ depositedGame.salePrice }}</p>
-    <p><strong>À vendre:</strong> {{ depositedGame.forSale ? 'Oui' : 'Non' }}</p>
-    <p><strong>Ramassé:</strong> {{ depositedGame.pickedUp ? 'Oui' : 'Non' }}</p>
-    <p><strong>Vendu:</strong> {{ depositedGame.sold ? 'Oui' : 'Non' }}</p>
-    <p><strong>ID de la session:</strong> {{ depositedGame.sessionId?._id }}</p>
-    <p><strong>Nom de la session:</strong> {{ depositedGame.sessionId?.name }}</p>
-    <p><strong>ID du vendeur:</strong> {{ depositedGame.sellerId?._id }}</p>
-    <p><strong>Nom du vendeur:</strong> {{ depositedGame.sellerId?.name }}</p>
-    <p><strong>ID de la description du jeu:</strong> {{ depositedGame.gameDescriptionId?._id }}</p>
+<app-navbar></app-navbar> <!-- Navbar en haut de la page -->
+
+<div class="game-detail-page">
+  <!-- Section gauche avec le conteneur blanc pour l'image -->
+  <div class="game-detail-left">
+    <div class="image-container">
+      <img
+        [src]="depositedGame.gameDescriptionId.photoURL"
+        alt="{{ depositedGame.gameDescriptionId.name }}"
+        class="game-photo"
+      />
+    </div>
   </div>
-  
+
+  <!-- Section droite avec le texte directement sur le fond -->
+  <div class="game-detail-right">
+    <h1 class="game-title">
+      {{ depositedGame.gameDescriptionId.name }} :
+      {{ depositedGame.gameDescriptionId.publisher }}
+    </h1>
+    <p class="game-status" [class.in-stock]="!depositedGame.sold" [class.sold]="depositedGame.sold">
+      {{ depositedGame.sold ? 'Vendu' : 'En stock' }}
+    </p>
+    <p class="game-description">
+      {{ depositedGame.gameDescriptionId.description }}
+    </p>
+
+    <div class="game-info">
+      <div class="game-info-item">
+        <span class="label">Tranche d’âge : </span>
+        <span class="value">{{ depositedGame.gameDescriptionId.ageRange }}</span>
+      </div>
+      <div class="game-info-item">
+        <span class="label">Nombre de joueurs : </span>
+        <span class="value">
+          {{ depositedGame.gameDescriptionId.minPlayers }} -
+          {{ depositedGame.gameDescriptionId.maxPlayers }}
+        </span>
+      </div>
+    </div>
+
+    <p class="seller-info">
+      <strong>Vendeur :</strong> {{ depositedGame.sellerId.name }}
+    </p>
+
+    <h2 class="game-price">{{ depositedGame.salePrice }}$</h2>
+  </div>
+</div>
