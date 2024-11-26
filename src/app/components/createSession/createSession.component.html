@@ -1,5 +1,12 @@
+<app-navbar></app-navbar>
+
+<div class="page-title-container">
+  <h1 class="page-title">CREER UNE SESSION</h1>
+  <p class="user-info">Connecté en tant que : {{ firstName }} {{ lastName }}</p>
+</div>
+
 <div class="page-container">
-  <!-- Section gauche -->
+  <!-- Conteneur gauche -->
   <div class="left-container">
     <div class="form-group">
       <label for="name">Nom de la session</label>
@@ -19,10 +26,10 @@
         name="description"
         maxlength="100"
       ></textarea>
-      <small>Max 100 mots</small>
+      <p class="max-words-info">Max 100 mots</p>
     </div>
 
-    <div class="form-row">
+    <div class="date-time-group">
       <div class="form-group">
         <label for="startDate">Date début</label>
         <input id="startDate" type="date" [(ngModel)]="sessionData.startDate" name="startDate" required />
@@ -33,7 +40,7 @@
       </div>
     </div>
 
-    <div class="form-row">
+    <div class="date-time-group">
       <div class="form-group">
         <label for="startTime">Heure début</label>
         <input id="startTime" type="time" [(ngModel)]="sessionData.startTime" name="startTime" />
@@ -45,12 +52,11 @@
     </div>
   </div>
 
-  <!-- Section droite -->
+  <!-- Conteneur droit -->
   <div class="right-container">
     <div class="form-group">
       <label for="depositFee">Frais de dépôt</label>
       <input id="depositFee" type="number" [(ngModel)]="sessionData.depositFee" name="depositFee" required />
-      <span class="input-suffix">$</span>
     </div>
 
     <div class="form-group">
@@ -78,7 +84,6 @@
   </div>
 </div>
 
-<!-- Bouton Créer la session -->
-<div class="submit-button-container">
-  <button type="submit" class="submit-button">Créer la session</button>
+<div class="button-container">
+  <button type="submit" class="submit-button">CREER LA SESSION</button>
 </div>

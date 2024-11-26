@@ -12,6 +12,10 @@ import { CreateDepositedGameComponent } from './components/createDepositedGame/c
 import { DepositedGameDetailComponent } from './components/depositedGameDetail/depositedGameDetail.component';
 import { DepositedGamesAdminComponent } from './components/depositedGamesAdmin/depositedGamesAdmin.component';
 import { CheckoutComponent } from './components/checkout/checkout.component';
+import { SellersComponent } from './components/sellers/sellers.component';
+import { ClientsComponent } from './components/clients/clients.component';
+import { ManagersComponent } from './components/managers/managers.component';
+import { AdminsComponent } from './components/admins/admins.component';
 
 export const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -26,5 +30,9 @@ export const routes: Routes = [
   { path: 'depositedGameDetail/:id', component: DepositedGameDetailComponent },
   { path: 'depositedGamesAdmin', component: DepositedGamesAdminComponent},
   { path: 'checkout', component: CheckoutComponent},
+  { path: 'sellers', component: SellersComponent},
+  { path: 'clients', component: ClientsComponent},
+  { path: 'managers', component: ManagersComponent},
+  { path: 'admins', component: AdminsComponent},
   { path: '', redirectTo: '/home', pathMatch: 'full' },
 ];

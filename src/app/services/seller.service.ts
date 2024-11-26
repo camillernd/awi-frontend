@@ -10,7 +10,13 @@ export class SellerService {
 
   constructor(private http: HttpClient) {}
 
+  // Récupérer tous les vendeurs
   getAllSellers(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}`);
+    return this.http.get<any[]>(this.apiUrl);
+  }
+
+  // Créer un nouveau vendeur
+  createSeller(sellerData: any): Observable<any> {
+    return this.http.post<any>(this.apiUrl, sellerData);
   }
 }

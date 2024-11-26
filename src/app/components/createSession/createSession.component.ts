@@ -3,13 +3,13 @@ import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { SessionService } from '../../services/session.service';
-
+import { NavbarComponent } from '../navbar/navbar.component';
 @Component({
   selector: 'app-create-session',
   templateUrl: './createSession.component.html',
   styleUrls: ['./createSession.component.css'],
   standalone: true,
-  imports: [FormsModule, CommonModule]
+  imports: [FormsModule, CommonModule, NavbarComponent]
 })
 export class CreateSessionComponent implements OnInit {
   sessionData = {

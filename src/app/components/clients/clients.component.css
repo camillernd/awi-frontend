@@ -1,0 +1,72 @@
+.page-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 50px auto;
+    padding: 20px;
+  }
+  
+  .left-container,
+  .right-container {
+    flex: 1;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.5);
+    border: 1px solid #000;
+    border-radius: 20px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  }
+  
+  .create-client-container h3,
+  .right-container h3 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .create-client-container label,
+  .create-client-container input {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  
+  .create-client-container input {
+    padding: 8px;
+    border: 1px solid #000;
+    border-radius: 5px;
+  }
+  
+  .error-message {
+    color: red;
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+  
+  .submit-button {
+    background-color: #ff97aa;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  
+  .submit-button:hover {
+    background-color: #ff3152;
+  }
+  
+  .client-card {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .client-card h4 {
+    margin: 0 0 10px;
+    font-size: 18px;
+  }
+  

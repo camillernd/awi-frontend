@@ -1,28 +1,40 @@
-<!-- src/components/navbar/navbar.component.html -->
 <nav class="navbar">
-    <div class="navbar-left">
-        <img src="assets/logo.png" alt="Logo" class="logo" (click)="navigateToHome()">
-    </div>
-    <div class="navbar-center">
-        <button class="sessions-button" (click)="goToSessions()">Sessions</button>
+  <div class="navbar-left">
+    <img src="assets/logo.png" alt="Logo" class="logo" (click)="navigateToHome()" />
+  </div>
+  <div class="navbar-center">
+    <button class="sessions-button" (click)="goToSessions()">Sessions</button>
 
-        <ng-container *ngIf="managerConnected">
-            <button class="create-session-button" (click)="goToCreateSession()">+ Session</button>
-        </ng-container>
+    <ng-container *ngIf="managerConnected">
+      <button class="create-session-button" (click)="goToCreateSession()">+ Session</button>
+    </ng-container>
+    <button class="deposited-games-button" (click)="goToDepositedGames()">Catalogue</button>
 
-        <button class="deposited-games-button" (click)="goToDepositedGames()">Catalogue</button>
-        <!-- Afficher ces boutons seulement si un manager est connecté -->
-        <ng-container *ngIf="managerConnected">
-            <button class="deposited-games-admin-button" (click)="goToDepositedGamesAdmin()">Jeux déposés</button>
-            <button class="deposited-games-button" (click)="goToCreateDepositedGame()">+ Dépôt</button>
-            <button class="checkout-button" (click)="goToCheckout()">Encaissement</button>
-            <button class="profile-button" (click)="goToProfile()">Profil</button>
-        </ng-container>
-    </div>
-    <div class="navbar-right">
-        <!-- Afficher "Manager ?" seulement si aucun manager n'est connecté -->
-        <a *ngIf="!managerConnected" (click)="navigateToLogin()" class="manager-link">Manager ?</a>
-        <!-- Ajouter un bouton de déconnexion si un manager est connecté -->
-        <a *ngIf="managerConnected" (click)="logout()" class="logout-link">Déconnexion</a>
-    </div>
+    <ng-container *ngIf="managerConnected">
+      <button class="deposited-games-admin-button" (click)="goToDepositedGamesAdmin()">Jeux déposés</button>
+      <button class="deposited-games-button" (click)="goToCreateDepositedGame()">+ Dépôt</button>
+      <button class="checkout-button" (click)="goToCheckout()">Encaissement</button>
+      <button class="profile-button" (click)="goToProfile()">Profil</button>
+    </ng-container>
+
+    <!-- User Management Dropdown -->
+    <ng-container *ngIf="managerConnected">
+      <div class="dropdown">
+        <button class="dropdown-button" (click)="toggleDropdown()">
+          User Management <span>▸</span>
+        </button>
+        <div class="dropdown-menu" *ngIf="isDropdownOpen">
+          <button (click)="goToClients()">Clients</button>
+          <button (click)="goToSellers()">Vendeurs</button>
+          <ng-container *ngIf="adminConnected">
+            <button (click)="goToManagers()">Gestionnaires</button>
+          </ng-container>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+  <div class="navbar-right">
+    <a *ngIf="!managerConnected" (click)="navigateToLogin()" class="manager-link">Manager ?</a>
+    <a *ngIf="managerConnected" (click)="logout()" class="logout-link">Déconnexion</a>
+  </div>
 </nav>

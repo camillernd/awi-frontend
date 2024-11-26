@@ -1,0 +1,63 @@
+<app-navbar></app-navbar>
+
+<div class="page-container">
+  <!-- Section gauche -->
+  <div class="left-container">
+    <div class="create-client-container">
+      <h3>Créer un nouveau client</h3>
+
+      <form (ngSubmit)="createClient()">
+        <label for="name">Nom</label>
+        <input
+          id="name"
+          [(ngModel)]="newClient.name"
+          name="name"
+          required
+          placeholder="Entrez le nom"
+        />
+
+        <label for="email">Email</label>
+        <input
+          id="email"
+          [(ngModel)]="newClient.email"
+          name="email"
+          required
+          placeholder="Entrez l'email"
+        />
+
+        <label for="phone">Téléphone</label>
+        <input
+          id="phone"
+          [(ngModel)]="newClient.phone"
+          name="phone"
+          required
+          placeholder="Entrez le numéro de téléphone"
+        />
+
+        <label for="address">Adresse</label>
+        <input
+          id="address"
+          [(ngModel)]="newClient.address"
+          name="address"
+          required
+          placeholder="Entrez l'adresse"
+        />
+
+        <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+        <button type="submit" class="submit-button">Créer</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Section droite -->
+  <div class="right-container">
+    <h3>Liste des clients</h3>
+
+    <div *ngFor="let client of clients" class="client-card">
+      <h4>{{ client.name }}</h4>
+      <p><strong>Email:</strong> {{ client.email }}</p>
+      <p><strong>Téléphone:</strong> {{ client.phone }}</p>
+      <p><strong>Adresse:</strong> {{ client.address }}</p>
+    </div>
+  </div>
+</div>

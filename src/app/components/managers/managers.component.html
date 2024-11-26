@@ -1,0 +1,91 @@
+<app-navbar></app-navbar>
+
+<div class="page-container">
+  <!-- Section gauche -->
+  <div class="left-container">
+    <div class="create-manager-container">
+      <h3>Créer un nouveau manager</h3>
+
+      <form (ngSubmit)="createManager()">
+        <label for="firstName">Prénom</label>
+        <input
+          id="firstName"
+          [(ngModel)]="newManager.firstName"
+          name="firstName"
+          required
+          placeholder="Entrez le prénom"
+        />
+
+        <label for="lastName">Nom</label>
+        <input
+          id="lastName"
+          [(ngModel)]="newManager.lastName"
+          name="lastName"
+          required
+          placeholder="Entrez le nom"
+        />
+
+        <label for="email">Email</label>
+        <input
+          id="email"
+          [(ngModel)]="newManager.email"
+          name="email"
+          required
+          placeholder="Entrez l'email"
+        />
+
+        <label for="phone">Téléphone</label>
+        <input
+          id="phone"
+          [(ngModel)]="newManager.phone"
+          name="phone"
+          required
+          placeholder="Entrez le numéro de téléphone"
+        />
+
+        <label for="address">Adresse</label>
+        <input
+          id="address"
+          [(ngModel)]="newManager.address"
+          name="address"
+          required
+          placeholder="Entrez l'adresse"
+        />
+
+        <label for="password">Mot de passe</label>
+        <input
+          id="password"
+          [(ngModel)]="newManager.password"
+          name="password"
+          required
+          placeholder="Entrez le mot de passe"
+          type="password"
+        />
+
+        <label for="admin">Admin ?</label>
+        <input
+          id="admin"
+          type="checkbox"
+          [(ngModel)]="newManager.admin"
+          name="admin"
+        />
+
+        <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+        <button type="submit" class="submit-button">Créer</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Section droite -->
+  <div class="right-container">
+    <h3>Liste des managers</h3>
+
+    <div *ngFor="let manager of managers" class="manager-card">
+      <h4>{{ manager.firstName }} {{ manager.lastName }}</h4>
+      <p><strong>Email:</strong> {{ manager.email }}</p>
+      <p><strong>Téléphone:</strong> {{ manager.phone }}</p>
+      <p><strong>Adresse:</strong> {{ manager.address }}</p>
+      <p><strong>Admin:</strong> {{ manager.admin ? 'Oui' : 'Non' }}</p>
+    </div>
+  </div>
+</div>
