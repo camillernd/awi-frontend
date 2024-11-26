@@ -7,6 +7,7 @@
       <h3>Infos Client</h3>
       <label for="clientEmail">Adresse email</label>
       <select id="clientEmail" (change)="onClientSelect($event)">
+        <option value="" disabled selected>Choisissez un client</option>
         <option *ngFor="let client of clients" [value]="client._id">
           {{ client.email }}
         </option>
@@ -22,6 +23,7 @@
       <input id="clientPhone" type="text" [value]="selectedClient?.phone || ''" disabled />
     </div>
 
+    <!-- Total -->
     <div class="total-section">
       <h3>TOTAL</h3>
       <p>{{ totalCost }} $</p>
@@ -29,20 +31,39 @@
     </div>
   </div>
 
-  <!-- Panier -->
+  <!-- Scan et Panier -->
   <div class="right-container">
-    <h3>Panier</h3>
-    <div *ngFor="let game of scannedGames; let i = index" class="cart-item">
-      <div>
-        <label>Étiquette</label>
-        <input type="text" [value]="game._id" disabled />
-      </div>
-      <p>{{ game.salePrice }} $</p>
+    <!-- Section Scan -->
+    <div class="scan-section">
+      <h3>Scanner un article</h3>
+      <input
+        type="text"
+        [(ngModel)]="scannedGameId"
+        placeholder="ID du jeu"
+      />
+      <button (click)="addScannedGame()">Ajouter</button>
+      <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
     </div>
 
-    <div class="add-item">
-      <input #gameIdInput type="text" placeholder="Étiquette" />
-      <button (click)="addGame(gameIdInput.value)">+</button>
+    <!-- Section Panier -->
+    <h3>Panier</h3>
+    <div *ngFor="let item of cartItems; let i = index" class="cart-item">
+      <div class="cart-item-details">
+        <img
+          [src]="item.gameData?.gameDescriptionId?.photoURL"
+          alt="{{ item.gameData?.gameDescriptionId?.name }}"
+          class="cart-item-image"
+        />
+        <div>
+          <h4>{{ item.gameData?.gameDescriptionId?.name }}</h4>
+          <p>{{ item.gameData?.gameDescriptionId?.description }}</p>
+          <p><strong>Éditeur :</strong> {{ item.gameData?.gameDescriptionId?.publisher }}</p>
+          <p><strong>Prix :</strong> {{ item.gameData?.salePrice }} $</p>
+        </div>
+      </div>
+      <button class="remove-item-button" (click)="removeCartItem(i)">
+        Supprimer
+      </button>
     </div>
   </div>
 </div>

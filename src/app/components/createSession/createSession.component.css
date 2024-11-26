@@ -1,57 +1,97 @@
-.create-session-container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: center;
-  }
-  
-  h2 {
-    color: #333;
-    margin-bottom: 20px;
-  }
-  
-  .session-form .form-group {
-    margin-bottom: 15px;
-    text-align: left;
-  }
-  
-  .form-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: 500;
-    color: #555;
-  }
-  
-  .form-group input,
-  .form-group textarea {
-    width: 100%;
-    padding: 8px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    font-size: 14px;
-    box-sizing: border-box;
-  }
-  
-  textarea {
-    resize: vertical;
-  }
-  
-  .submit-button {
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
-    margin-top: 15px;
-  }
-  
-  .submit-button:hover {
-    background-color: #45a049;
-  }
-  
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #fdf3e7;
+  margin: 0;
+  padding: 0;
+}
+
+/* Structure principale */
+.page-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin: 50px auto;
+  padding: 20px;
+  max-width: 1200px;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid #000000;
+  border-radius: 20px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+/* Conteneur gauche */
+.left-container {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Conteneur droit */
+.right-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Champs communs */
+.form-group {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-size: 14px;
+  font-style: italic;
+  margin-bottom: 5px;
+  color: #000000;
+}
+
+input,
+textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #000000;
+  background: rgba(255, 255, 255, 0.5);
+  font-size: 14px;
+}
+
+textarea {
+  height: 80px;
+  resize: none; /* Empêche la redimension */
+}
+
+.input-suffix {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  font-size: 14px;
+  color: #000000;
+}
+
+/* Bouton Créer */
+.submit-button-container {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.submit-button {
+  width: 300px;
+  padding: 15px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #ffffff;
+  background: rgba(255, 151, 170, 0.61);
+  border: none;
+  border-radius: 20px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+}
+
+.submit-button:hover {
+  background: rgba(255, 49, 38, 0.8);
+}

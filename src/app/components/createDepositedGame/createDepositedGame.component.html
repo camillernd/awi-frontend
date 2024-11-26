@@ -8,6 +8,7 @@
       <h3>Vendeur</h3>
       <label for="sellerEmail">Adresse email</label>
       <select id="sellerEmail" (change)="onSellerSelect($event)" required>
+        <option value="" disabled selected>Choisissez un vendeur</option>
         <option *ngFor="let seller of sellers" [value]="seller._id">{{ seller.email }}</option>
       </select>
 
@@ -26,6 +27,7 @@
       <h3>Session</h3>
       <label for="sessionId">Sélectionner une session</label>
       <select id="sessionId" (change)="onSessionSelect($event)" required>
+        <option value="" disabled selected>Choisissez une session</option>
         <option *ngFor="let session of sessions" [value]="session._id">{{ session.name }}</option>
       </select>
     </div>

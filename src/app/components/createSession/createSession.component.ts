@@ -17,7 +17,9 @@ export class CreateSessionComponent implements OnInit {
     location: '',
     description: '',
     startDate: '',
+    startTime: '',
     endDate: '',
+    endTime: '',
     depositFee: 0,
     depositFeeLimitBeforeDiscount: 30,
     depositFeeDiscount: 0,
@@ -41,14 +43,24 @@ export class CreateSessionComponent implements OnInit {
       lastName: this.lastName,
       managerId: this.sessionData.managerId
     });
-}
-
+  }
 
   createSession() {
-    console.log('Données de la session à créer avec manager:', this.sessionData);
+    // Combine la date et l'heure pour créer des dates ISO complètes
+    const startDate = `${this.sessionData.startDate}T${this.sessionData.startTime || '00:00'}:00.000Z`;
+    const endDate = `${this.sessionData.endDate}T${this.sessionData.endTime || '23:59'}:00.000Z`;
 
-    // Envoi de la requête de création de session
-    this.sessionService.createSession(this.sessionData).subscribe({
+    // Remplace les champs startDate et endDate par les dates ISO
+    const formattedSessionData = {
+      ...this.sessionData,
+      startDate,
+      endDate
+    };
+
+    console.log('Données envoyées au backend:', formattedSessionData);
+
+    // Envoie des données au service
+    this.sessionService.createSession(formattedSessionData).subscribe({
       next: () => {
         console.log('Session créée avec succès');
         this.router.navigate(['/sessions']);
