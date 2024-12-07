@@ -18,6 +18,32 @@ body {
     font-weight: 600;
     margin-bottom: 30px;
   }
+
+  .filters-container {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px;
+  }
+  
+  .filters-container label,
+  .filters-container select {
+    font-family: 'Poppins', sans-serif;
+    margin: 0 10px;
+  }
+  
+  .filters-container button {
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .filters-container button:hover {
+    background-color: #0056b3;
+  }
+  
   
   /* Liste des jeux déposés */
   .game-list {
@@ -97,4 +123,20 @@ body {
   .toggle-switch.not-available {
     background-color: rgba(255, 49, 38, 0.8);
   }
+  
+  .deposit-info p strong {
+    color: rgba(0, 0, 0, 0.8);
+  }
+  
+  .deposit-info p strong.sold {
+    color: red; /* Exemple pour indiquer le statut vendu en rouge */
+  }
+
+  .toggle-switch.sold {
+    background-color: #b0b0b0; /* Fond gris */
+    color: white;
+    cursor: not-allowed; /* Curseur non interactif */
+    border: 1px solid #808080;
+  }
+  
   

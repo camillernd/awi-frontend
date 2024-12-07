@@ -27,4 +27,15 @@ export class SessionService {
     console.log('Envoi des données de la session au backend:', sessionData); // Log pour confirmer l'envoi
     return this.http.post<any>(`${this.apiUrl}`, sessionData);
   }
+
+  getSessionReport(sessionId: string): Observable<any> {
+    return this.http.get<any>(`http://localhost:8000/session/${sessionId}/report`);
+  }
+
+  getActiveSessions(): Observable<any[]> {
+    const headers = { Authorization: `Bearer ${localStorage.getItem('token')}` }; // Exemple avec localStorage
+    return this.http.get<any[]>(`${this.apiUrl}/active`, { headers });
+  }
+  
+
 }

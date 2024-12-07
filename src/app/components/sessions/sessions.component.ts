@@ -10,7 +10,7 @@ import { NavbarComponent } from '../navbar/navbar.component';
   templateUrl: './sessions.component.html',
   styleUrls: ['./sessions.component.css'],
   standalone: true,
-  imports: [CommonModule, NavbarComponent]
+  imports: [CommonModule, NavbarComponent],
 })
 export class SessionsComponent implements OnInit {
   sessions: any[] = [];
@@ -19,21 +19,69 @@ export class SessionsComponent implements OnInit {
 
   ngOnInit(): void {
     document.body.style.overflow = 'visible';
-    this.sessionService.getSessions().subscribe({
-      next: (sessionsData) => {
-        console.log('Sessions récupérées :', sessionsData);
-        this.sessions = sessionsData;
+    this.loadSessions();
+  }
+
+  loadSessions(): void {
+    this.sessionService.getAllSessions().subscribe({
+      next: (sessions) => {
+        // Ajouter le tri des sessions par date décroissante
+        this.sessions = sessions
+          .map((session) => ({
+            ...session,
+            formattedStartDate: this.formatDate(session.startDate),
+            formattedStartTime: this.formatTime(session.startDate),
+            formattedEndDate: this.formatDate(session.endDate),
+            formattedEndTime: this.formatTime(session.endDate),
+            status: this.getSessionStatus(session),
+          }))
+          .sort((a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime());
       },
-      error: (error) => console.error('Erreur de récupération des sessions :', error),
+      error: (err) => console.error('Erreur lors du chargement des sessions', err),
+    });
+  }
+  
+
+  formatDate(dateString: string): string {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('fr-FR', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
     });
   }
 
-  ngOnDestroy(): void {
-    // Réinitialiser overflow à 'hidden' quand le composant est détruit
-    document.body.style.overflow = 'hidden';
+  formatTime(dateString: string): string {
+    const date = new Date(dateString);
+    return date.toLocaleTimeString('fr-FR', {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+  }
+
+  getSessionStatus(session: any): string {
+    const now = new Date();
+    const startDate = new Date(session.startDate);
+    const endDate = new Date(session.endDate);
+
+    if (now >= startDate && now <= endDate) {
+      return 'ouverte'; // Session en cours
+    } else if (now < startDate) {
+      return 'aVenir'; // Session à venir
+    } else {
+      return 'cloturee'; // Session clôturée
+    }
   }
 
   goToSessionDetail(sessionId: string): void {
     this.router.navigate(['/sessionDetail', sessionId]);
+  }
+
+  goToDepositedGames(sessionId: string): void {
+    this.router.navigate([`/depositedGames/${sessionId}`]); // Navigue avec l'identifiant
+  }
+
+  goToSessionReport(sessionId: string): void {
+    this.router.navigate([`/session/${sessionId}/report`]);
   }
 }

@@ -25,7 +25,7 @@
 
 .session-button,
 .create-session-button,
-.profile-button,
+.transactions-button,
 .sessions-button,
 .deposited-games-button,
 .deposited-games-admin-button,
@@ -43,7 +43,7 @@
 
 .session-button:hover,
 .create-session-button:hover,
-.profile-button:hover,
+.transactions-button:hover,
 .sessions-button:hover,
 .deposited-games-button:hover,
 .deposited-games-admin-button:hover,

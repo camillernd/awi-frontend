@@ -61,15 +61,14 @@ export class CreateDepositedGameComponent implements OnInit {
   }
 
   loadSessions(): void {
-    this.sessionService.getAllSessions().subscribe({
+    this.sessionService.getActiveSessions().subscribe({
       next: (sessions) => {
         this.sessions = sessions;
       },
-      error: (error) => console.error('Erreur lors du chargement des sessions', error),
+      error: (error) => console.error('Erreur lors du chargement des sessions actives', error),
     });
   }
-
-
+  
   loadGameDescriptions(): void {
     this.gameDescriptionService.getAllGameDescriptions().subscribe({
       next: (gameDescriptions) => {

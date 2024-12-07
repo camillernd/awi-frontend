@@ -2,35 +2,56 @@
 
 <div class="page-container">
   <h1 class="page-title">JEUX DEPOSES</h1>
+
+  <!-- Filtres -->
+  <div class="filters-container">
+    <label for="sessionFilter">Filtrer par session :</label>
+    <select id="sessionFilter" [(ngModel)]="selectedSession" (change)="applyFilters()">
+      <option value="">Toutes les sessions</option>
+      <option *ngFor="let session of sessions" [value]="session._id">{{ session.name }}</option>
+    </select>
+
+    <label for="sellerFilter">Filtrer par vendeur :</label>
+    <select id="sellerFilter" [(ngModel)]="selectedSeller" (change)="applyFilters()">
+      <option value="">Tous les vendeurs</option>
+      <option *ngFor="let seller of sellers" [value]="seller._id">{{ seller.name }}</option>
+    </select>
+
+    <button (click)="resetFilters()">Réinitialiser</button>
+  </div>
+
+  <!-- Liste des jeux filtrés -->
   <div class="game-list">
-    <div *ngFor="let game of depositedGames" class="game-card">
+    <div *ngFor="let game of filteredGames" class="game-card">
       <div class="game-info">
         <div class="seller-info">
           <h3>Infos Vendeur</h3>
-          <p><strong>IdVendeur:</strong> {{ game.sellerId }}</p>
-          <p><strong>Adresse email:</strong> {{ game.sellerEmail }}</p>
-          <p><strong>Nom Prénom:</strong> {{ game.sellerName }}</p>
-          <p><strong>Numéro Tel:</strong> {{ game.sellerPhone }}</p>
+          <p><strong>Nom:</strong> {{ game.sellerId?.name }}</p>
+          <p><strong>Email:</strong> {{ game.sellerId?.email }}</p>
+          <h3>Infos Session</h3>
+          <p><strong>Nom:</strong> {{ game.sessionId?.name }}</p>
         </div>
 
         <div class="deposit-info">
           <h3>Infos Dépôt</h3>
-          <p><strong>IdJeu:</strong> {{ game._id }}</p>
-          <p><strong>Nom Jeu:</strong> {{ game.gameName }}</p>
+          <p><strong>Id Jeu:</strong> {{ game._id }}</p>
+          <p><strong>Nom Jeu:</strong> {{ game.gameDescriptionId?.name }}</p>
           <p><strong>Prix:</strong> {{ game.salePrice | currency }}</p>
+          <p><strong>Vendu :</strong> {{ game.sold ? 'Oui' : 'Non' }}</p> <!-- Nouveau champ -->
         </div>
 
         <div class="availability">
-          <h3>Disponible à la vente</h3>
+          <h3>A vendre ?</h3>
           <div
             class="toggle-switch"
-            [class.available]="game.forSale"
-            [class.not-available]="!game.forSale"
-            (click)="toggleAvailability(game)"
+            [class.sold]="game.sold"
+            [class.available]="!game.sold && game.forSale"
+            [class.not-available]="!game.sold && !game.forSale"
+            (click)="!game.sold && toggleAvailability(game)"
           >
-            {{ game.forSale ? 'Oui' : 'Non' }}
+            {{ game.sold ? 'Vendu' : (game.forSale ? 'Oui' : 'Non') }}
           </div>
-        </div>
+        </div>        
       </div>
     </div>
   </div>

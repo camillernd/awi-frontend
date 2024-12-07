@@ -21,7 +21,7 @@ export class CreateSessionComponent implements OnInit {
     endDate: '',
     endTime: '',
     depositFee: 0,
-    depositFeeLimitBeforeDiscount: 30,
+    depositFeeLimitBeforeDiscount: 3,
     depositFeeDiscount: 0,
     saleComission: 0,
     managerId: ''

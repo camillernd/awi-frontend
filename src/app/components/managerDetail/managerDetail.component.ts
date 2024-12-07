@@ -29,4 +29,8 @@ export class ManagerDetailComponent implements OnInit {
       error: (error) => console.error('Erreur de récupération du profil manager:', error),
     });
   }
+
+  getTransactions():void{
+    
+  }
 }

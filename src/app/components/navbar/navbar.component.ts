@@ -86,6 +86,10 @@ export class NavbarComponent implements OnInit {
     this.router.navigate(['/checkout']);
   }
 
+  goToTransactions() {
+    this.router.navigate(['/transactions']);
+  }
+
   logout() {
     this.authService.logout();
     this.managerConnected = false;

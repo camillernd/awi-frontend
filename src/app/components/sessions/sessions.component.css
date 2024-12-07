@@ -28,7 +28,7 @@ h2 {
   background-color: #f0e5d8;
 }
 
-/* Grille des sessions */
+/* Conteneur général */
 .sessions-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -47,14 +47,28 @@ h2 {
   font-family: 'Poppins', sans-serif;
 }
 
-/* Titre de la session */
+/* Sessions ouvertes */
+.session-ouverte {
+  border-color: green;
+}
+
+/* Sessions à venir */
+.session-aVenir {
+  border-color: blue;
+}
+
+/* Sessions clôturées */
+.session-cloturee {
+  border-color: red;
+}
+
+/* Autres styles */
 .session-title {
   font-weight: 600;
   font-size: 20px;
   margin-bottom: 10px;
 }
 
-/* Style des boutons Bilan et Catalogue */
 .session-actions {
   display: flex;
   justify-content: center;
@@ -77,4 +91,3 @@ h2 {
 .session-button:hover {
   background-color: #f0e5d8;
 }
-  

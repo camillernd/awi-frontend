@@ -1,9 +1,11 @@
+//src/app/components/checkout/checkout.component.ts :
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ClientService } from '../../services/client.service';
 import { DepositedGameService } from '../../services/depositedGame.service';
 import { NavbarComponent } from '../navbar/navbar.component';
+import { TransactionService } from '../../services/transaction.service';
 
 @Component({
   selector: 'app-checkout',
@@ -23,7 +25,8 @@ export class CheckoutComponent implements OnInit {
 
   constructor(
     private clientService: ClientService,
-    private depositedGameService: DepositedGameService
+    private depositedGameService: DepositedGameService,
+    private transactionService: TransactionService, // Ajout du service des transactions
   ) {}
 
   ngOnInit(): void {
@@ -91,10 +94,32 @@ export class CheckoutComponent implements OnInit {
     }, 0);
   }
 
-  // Finaliser la transaction
+  // Méthode pour finaliser le paiement et créer des transactions
   finalizeCheckout(): void {
-    alert(`Transaction finalisée. Total à payer : ${this.totalCost} $`);
+    if (!this.selectedClient) {
+      alert('Veuillez sélectionner un client avant de finaliser.');
+      return;
+    }
+
+    const transactions = this.cartItems.map((item) => ({
+      labelId: item.gameData._id,
+      sessionId: item.gameData.sessionId,
+      sellerId: item.gameData.sellerId,
+      clientId: this.selectedClient._id,
+    }));
+
+    console.log('Transactions à envoyer :', transactions);
+
+    this.transactionService.createMultipleTransactions(transactions).subscribe({
+  next: (response: any) => { // Ajoutez un type explicite ici
+    alert(`Transaction réussie pour ${response.length} articles. Total : ${this.totalCost} $`);
     this.cartItems = [];
     this.totalCost = 0;
+  },
+  error: (error: any) => { // Ajoutez également un type ici
+    console.error('Erreur lors de la finalisation des transactions', error);
+    alert('Une erreur est survenue. Veuillez réessayer.');
+  },
+});
   }
 }

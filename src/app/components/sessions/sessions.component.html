@@ -1,15 +1,22 @@
-<!-- src/app/components/sessions/sessions.component.html -->
 <app-navbar></app-navbar>
 <h2>Liste des sessions</h2>
 <div class="sessions-grid">
-  <div *ngFor="let session of sessions" class="session-card">
+  <div 
+    *ngFor="let session of sessions" 
+    class="session-card" 
+    [ngClass]="{
+      'session-ouverte': session.status === 'ouverte',
+      'session-aVenir': session.status === 'aVenir',
+      'session-cloturee': session.status === 'cloturee'
+    }"
+  >
     <h3 class="session-title">{{ session.name }}</h3>
-    <p><strong>Date :</strong> {{ session.date }}</p>
-    <p><strong>Horaires :</strong> {{ session.horaires }}</p>
+    <p><strong>Date :</strong> {{ session.formattedStartDate }} - {{ session.formattedEndDate }}</p>
+    <p><strong>Horaires :</strong> {{ session.formattedStartTime }} - {{ session.formattedEndTime }}</p>
     <p><strong>Lieu :</strong> {{ session.location }}</p>
     <div class="session-actions">
-      <button class="session-button" (click)="goToSessionDetail(session._id)">Bilan</button>
-      <button class="session-button" (click)="goToSessionDetail(session._id)">Catalogue</button>
+      <button class="session-button" (click)="goToSessionReport(session._id)">Voir Bilan</button>
+      <button class="session-button" (click)="goToDepositedGames(session._id)">Catalogue</button>
     </div>
   </div>
 </div>
