@@ -1,0 +1,38 @@
+<app-navbar></app-navbar>
+
+<div class="client-detail-container">
+  <h2>Détails du Client</h2>
+  <div *ngIf="client">
+    <!-- Section affichée lorsque l'utilisateur n'est pas en mode édition -->
+    <div *ngIf="!isEditing">
+      <p><strong>Nom :</strong> {{ client.name }}</p>
+      <p><strong>Email :</strong> {{ client.email }}</p>
+      <p><strong>Téléphone :</strong> {{ client.phone }}</p>
+      <p><strong>Adresse :</strong> {{ client.address }}</p>
+
+      <button class="edit-button" (click)="editClient()">Modifier</button>
+      <button class="delete-button" (click)="deleteClient()">Supprimer</button>
+      <button class="transactions-button" (click)="goToTransactions()">Voir Transactions</button>
+    </div>
+
+    <!-- Section affichée lorsque l'utilisateur est en mode édition -->
+    <div *ngIf="isEditing">
+      <label>Nom</label>
+      <input [(ngModel)]="client.name" />
+
+      <label>Email</label>
+      <input [(ngModel)]="client.email" />
+
+      <label>Téléphone</label>
+      <input [(ngModel)]="client.phone" />
+
+      <label>Adresse</label>
+      <input [(ngModel)]="client.address" />
+
+      <button class="save-button" (click)="saveChanges()">Enregistrer</button>
+      <button class="cancel-button" (click)="cancelEdit()">Annuler</button>
+    </div>
+  </div>
+
+  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+</div>

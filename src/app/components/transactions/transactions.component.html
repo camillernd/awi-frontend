@@ -3,45 +3,36 @@
 <div class="page-container">
   <h2>Liste des Transactions</h2>
 
-  <!-- Formulaire de création -->
-  <div class="create-transaction-form">
-    <h3>Créer une Nouvelle Transaction</h3>
-
-    <label for="client">Client :</label>
-    <select id="client" [(ngModel)]="newTransaction.clientId">
-      <option *ngFor="let client of clients" [value]="client._id">{{ client.email }}</option>
-    </select>
-
-    <label for="seller">Vendeur :</label>
-    <select id="seller" [(ngModel)]="newTransaction.sellerId">
-      <option *ngFor="let seller of sellers" [value]="seller._id">{{ seller.email }}</option>
-    </select>
-
-    <label for="manager">Manager :</label>
-    <select id="manager" [(ngModel)]="newTransaction.managerId">
-      <option *ngFor="let manager of managers" [value]="manager._id">{{ manager.email }}</option>
-    </select>
-
-    <label for="session">Session :</label>
-    <select id="session" [(ngModel)]="newTransaction.sessionId">
+  <!-- Filtres -->
+  <div class="filters-container">
+    <label for="sessionFilter">Session :</label>
+    <select id="sessionFilter" [(ngModel)]="selectedSession" (change)="applyFilters()">
+      <option value="">Toutes les sessions</option>
       <option *ngFor="let session of sessions" [value]="session._id">{{ session.name }}</option>
     </select>
 
-    <label for="game">Jeu Déposé :</label>
-    <select id="game" [(ngModel)]="newTransaction.labelId">
-      <option *ngFor="let game of depositedGames" [value]="game._id">{{ game._id }}</option>
+    <label for="clientFilter">Client :</label>
+    <select id="clientFilter" [(ngModel)]="selectedClient" (change)="applyFilters()">
+      <option value="">Tous les clients</option>
+      <option *ngFor="let client of clients" [value]="client._id">{{ client.name }}</option>
     </select>
 
-    <button (click)="createTransaction()">Créer</button>
+    <label for="sellerFilter">Vendeur :</label>
+    <select id="sellerFilter" [(ngModel)]="selectedSeller" (change)="applyFilters()">
+      <option value="">Tous les vendeurs</option>
+      <option *ngFor="let seller of sellers" [value]="seller._id">{{ seller.name }}</option>
+    </select>
+
+    <button (click)="resetFilters()">Réinitialiser</button>
   </div>
 
   <!-- Liste des transactions -->
-  <div *ngIf="transactions.length === 0 && !errorMessage" class="no-data">
+  <div *ngIf="filteredTransactions.length === 0 && !errorMessage" class="no-data">
     Aucun résultat trouvé.
   </div>
 
-  <div *ngIf="transactions.length > 0" class="transactions-list">
-    <div *ngFor="let transaction of transactions" class="transaction-card">
+  <div *ngIf="filteredTransactions.length > 0" class="transactions-list">
+    <div *ngFor="let transaction of filteredTransactions" class="transaction-card">
       <h4>ID Transaction : {{ transaction._id }}</h4>
       <p><strong>Date :</strong> {{ transaction.transactionDate | date }}</p>
       <p><strong>Client :</strong> {{ transaction.clientId?.name }}</p>

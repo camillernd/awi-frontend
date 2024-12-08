@@ -1,11 +1,46 @@
-<!-- src/app/components/managerDetail/managerDetail.component.html -->
-<div *ngIf="manager">
-  <h2>Informations du manager</h2>
-  <p><strong>Prénom:</strong> {{ manager.firstName }}</p>
-  <p><strong>Nom:</strong> {{ manager.lastName }}</p>
-  <p><strong>Email:</strong> {{ manager.email }}</p>
-  <p><strong>Téléphone:</strong> {{ manager.phone }}</p>
-  <p><strong>Adresse:</strong> {{ manager.address }}</p>
-  <p><strong>Admin:</strong> {{ manager.admin ? 'Oui' : 'Non' }}</p>
+<app-navbar></app-navbar>
+
+<div class="manager-detail-container">
+  <h2>Détails du Manager</h2>
+  <div *ngIf="manager">
+    <!-- Section affichée lorsque l'utilisateur n'est pas en mode édition -->
+    <div *ngIf="!isEditing">
+      <p><strong>Prénom :</strong> {{ manager.firstName }}</p>
+      <p><strong>Nom :</strong> {{ manager.lastName }}</p>
+      <p><strong>Email :</strong> {{ manager.email }}</p>
+      <p><strong>Téléphone :</strong> {{ manager.phone }}</p>
+      <p><strong>Adresse :</strong> {{ manager.address }}</p>
+      <p><strong>Admin :</strong> {{ manager.admin ? 'Oui' : 'Non' }}</p>
+
+      <!-- Boutons affichés uniquement si l'utilisateur est admin -->
+      <button *ngIf="isAdmin" class="edit-button" (click)="editManager()">Modifier</button>
+      <button *ngIf="isAdmin" class="delete-button" (click)="deleteManager()">Supprimer</button>
+    </div>
+
+    <!-- Section affichée lorsque l'utilisateur est en mode édition -->
+    <div *ngIf="isEditing">
+      <label>Prénom</label>
+      <input [(ngModel)]="manager.firstName" />
+
+      <label>Nom</label>
+      <input [(ngModel)]="manager.lastName" />
+
+      <label>Email</label>
+      <input [(ngModel)]="manager.email" />
+
+      <label>Téléphone</label>
+      <input [(ngModel)]="manager.phone" />
+
+      <label>Adresse</label>
+      <input [(ngModel)]="manager.address" />
+
+      <label>Admin</label>
+      <input type="checkbox" [(ngModel)]="manager.admin" />
+
+      <button class="save-button" (click)="saveChanges()">Enregistrer</button>
+      <button class="cancel-button" (click)="cancelEdit()">Annuler</button>
+    </div>
+  </div>
+
+  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
 </div>
-<p *ngIf="!manager">Chargement des informations...</p>

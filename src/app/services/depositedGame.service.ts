@@ -2,6 +2,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators'; // Import nécessaire pour `tap`
 
 @Injectable({
   providedIn: 'root',
@@ -31,7 +32,16 @@ export class DepositedGameService {
 
   // Récupérer tous les jeux déposés
   getAllDepositedGames(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}`);
+    return this.http.get<any[]>(`${this.apiUrl}`).pipe(
+      tap((games) => {
+        // Vérifie si les sessions sont incluses
+        games.forEach((game) => {
+          if (!game.sessionId || !game.sessionId.startDate || !game.sessionId.endDate) {
+            console.error('Session manquante ou incomplète pour le jeu :', game);
+          }
+        });
+      })
+    );
   }
 
   // Mettre à jour un jeu déposé
@@ -50,9 +60,18 @@ export class DepositedGameService {
     return this.http.get<any[]>(`${this.apiUrl}/by-session-id/${sessionId}`);
   }
 
+  getAllDepositedGamesWithSessions(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/with-sessions`);
+  }
+  
+
   // Récupérer toutes les sessions
   getSessions(): Observable<any[]> {
-    return this.http.get<any[]>(this.sessionUrl);
+    return this.http.get<any[]>(this.sessionUrl).pipe(
+      tap((sessions) => {
+        console.log('Sessions retournées par l\'API :', sessions); // Log ajouté
+      })
+    );
   }
 
   // Récupérer tous les vendeurs

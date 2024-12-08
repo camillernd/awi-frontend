@@ -44,14 +44,12 @@
           <h3>A vendre ?</h3>
           <div
             class="toggle-switch"
-            [class.sold]="game.sold"
-            [class.available]="!game.sold && game.forSale"
-            [class.not-available]="!game.sold && !game.forSale"
-            (click)="!game.sold && toggleAvailability(game)"
+            [class]="getAvailabilityClass(game)"
+            (click)="toggleAvailability(game)"
           >
-            {{ game.sold ? 'Vendu' : (game.forSale ? 'Oui' : 'Non') }}
+            {{ getAvailabilityText(game) }}
           </div>
-        </div>        
+        </div>                
       </div>
     </div>
   </div>

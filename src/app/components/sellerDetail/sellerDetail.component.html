@@ -1,0 +1,83 @@
+<app-navbar></app-navbar>
+
+<div class="seller-detail-container">
+  <h2>Détails du Vendeur</h2>
+
+  <!-- Section Informations Vendeur -->
+  <div *ngIf="seller" class="seller-info-container">
+    <div *ngIf="!isEditing">
+      <p><strong>Nom :</strong> {{ seller.name }}</p>
+      <p><strong>Email :</strong> {{ seller.email }}</p>
+      <p><strong>Téléphone :</strong> {{ seller.phone }}</p>
+      <p><strong>Montant dû :</strong> {{ seller.amountOwed }}</p>
+
+      <button class="edit-button" (click)="editSeller()">Modifier</button>
+      <button class="delete-button" (click)="deleteSeller()">Supprimer</button>
+    </div>
+
+    <div *ngIf="isEditing">
+      <label>Nom</label>
+      <input [(ngModel)]="seller.name" />
+
+      <label>Email</label>
+      <input [(ngModel)]="seller.email" />
+
+      <label>Téléphone</label>
+      <input [(ngModel)]="seller.phone" />
+
+      <label>Montant dû</label>
+      <input [(ngModel)]="seller.amountOwed" type="number" />
+
+      <button class="save-button" (click)="saveChanges()">Enregistrer</button>
+      <button class="cancel-button" (click)="cancelEdit()">Annuler</button>
+    </div>
+  </div>
+
+  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+
+  <!-- Section Jeux déposés -->
+  <div class="games-container">
+    <h3>Jeux déposés</h3>
+
+    <!-- Filtres -->
+    <div class="filters-container">
+      <label for="sessionFilter">Filtrer par session :</label>
+      <select id="sessionFilter" [(ngModel)]="selectedSession" (change)="applyFilters()">
+        <option value="">Toutes les sessions</option>
+        <option *ngFor="let session of sessions" [value]="session._id">{{ session.name }}</option>
+      </select>
+    
+      <label for="gameNameFilter">Filtrer par nom du jeu :</label>
+      <input
+        id="gameNameFilter"
+        type="text"
+        placeholder="Nom du jeu"
+        [(ngModel)]="selectedGameName"
+        (input)="applyFilters()"
+      />
+    
+      <button (click)="resetFilters()">Réinitialiser</button>
+    </div>
+
+    <!-- Liste des jeux déposés -->
+    <div class="game-list">
+      <div *ngFor="let game of filteredGames" class="game-card">
+        <div class="game-info">
+          <p><strong>Nom du Jeu :</strong> {{ game.gameDescriptionId?.name }}</p>
+          <p><strong>Session :</strong> {{ game.sessionId?.name }}</p>
+          <p><strong>Prix :</strong> {{ game.salePrice | currency }}</p>
+          <p><strong>Vendu :</strong> {{ game.sold ? 'Oui' : 'Non' }}</p>
+        </div>
+
+        <!-- Bouton A vendre -->
+        <div
+          class="toggle-switch"
+          [class]="getAvailabilityClass(game)"
+          (click)="toggleAvailability(game)"
+        >
+          {{ getAvailabilityText(game) }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

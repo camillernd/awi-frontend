@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common'; // Ajout de CommonModule
 import { NavbarComponent } from '../navbar/navbar.component'; // Ajout de NavbarComponent
 import { ManagerService } from '../../services/manager.service';
+import { Router } from '@angular/router'; // Import de Router
 
 @Component({
   selector: 'app-managers',
@@ -24,7 +25,7 @@ export class ManagersComponent implements OnInit {
   };
   errorMessage: string | null = null;
 
-  constructor(private managerService: ManagerService) {}
+  constructor(private managerService: ManagerService, private router: Router) {}
 
   ngOnInit(): void {
     this.loadManagers();
@@ -33,13 +34,17 @@ export class ManagersComponent implements OnInit {
 
   loadManagers(): void {
     this.managerService.getAllManagers().subscribe({
-      next: (managers) => (this.managers = managers),
+      next: (managers) => {
+        console.log('Managers:', managers); // Vérifiez que chaque manager a un champ `_id`
+        this.managers = managers;
+      },
       error: (error) => {
         console.error('Erreur lors du chargement des managers', error);
         this.errorMessage = 'Impossible de charger les managers.';
       },
     });
   }
+  
 
   createManager(): void {
     this.managerService.createManager(this.newManager).subscribe({
@@ -54,4 +59,13 @@ export class ManagersComponent implements OnInit {
       },
     });
   }
+
+  viewManagerDetail(managerId: string): void {
+    if (!managerId) {
+      console.error('ID du manager manquant');
+      return;
+    }
+    this.router.navigate(['/managerDetail', managerId]); // Assurez-vous que l'ID est correct
+  }
+  
 }

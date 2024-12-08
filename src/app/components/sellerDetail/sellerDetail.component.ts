@@ -1,46 +1,69 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { SellerService } from '../../services/seller.service';
 import { DepositedGameService } from '../../services/depositedGame.service';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-deposited-games-admin',
-  templateUrl: './depositedGamesAdmin.component.html',
-  styleUrls: ['./depositedGamesAdmin.component.css'],
+  selector: 'app-seller-detail',
+  templateUrl: './sellerDetail.component.html',
+  styleUrls: ['./sellerDetail.component.css'],
   standalone: true,
-  imports: [CommonModule, NavbarComponent, FormsModule],
+  imports: [NavbarComponent, CommonModule, FormsModule],
 })
-export class DepositedGamesAdminComponent implements OnInit {
+export class SellerDetailComponent implements OnInit {
+  seller: any = null;
   depositedGames: any[] = [];
   filteredGames: any[] = [];
   sessions: any[] = [];
-  sellers: any[] = [];
   selectedSession: string = '';
-  selectedSeller: string = '';
+  selectedGameName: string = '';
+  isEditing = false;
+  errorMessage: string | null = null;
 
-  constructor(private depositedGameService: DepositedGameService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private sellerService: SellerService,
+    private depositedGameService: DepositedGameService, // Ajout du service DepositedGame
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     document.body.style.overflow = 'visible';
-    this.loadDepositedGames();
-    this.loadFiltersData();
+    const sellerId = this.route.snapshot.paramMap.get('id');
+    if (sellerId) {
+      this.loadSellerData(sellerId);
+      this.loadDepositedGames(sellerId);
+      this.loadSessions();
+    }
   }
 
-  // Charger les jeux déposés
-  loadDepositedGames(): void {
+  loadSellerData(sellerId: string): void {
+    this.sellerService.getSellerById(sellerId).subscribe({
+      next: (seller) => (this.seller = seller),
+      error: (err) => {
+        console.error('Erreur lors du chargement du vendeur', err);
+        this.errorMessage = 'Impossible de charger les informations du vendeur.';
+      },
+    });
+  }
+
+  loadDepositedGames(sellerId: string): void {
     this.depositedGameService.getAllDepositedGamesWithSessions().subscribe({
       next: (games) => {
-        console.log('Jeux déposés récupérés :', games); // Log ajouté
-        this.depositedGames = games;
-        this.filteredGames = games; // Initialement, afficher tous les jeux
+        console.log('Jeux déposés avec sessions chargées :', games);
+        this.depositedGames = games.filter((game) => game.sellerId?._id === sellerId);
+        this.filteredGames = [...this.depositedGames];
       },
       error: (err) => console.error('Erreur lors du chargement des jeux déposés', err),
     });
   }
+  
+  
 
-  // Charger les données pour les filtres
-  loadFiltersData(): void {
+  loadSessions(): void {
     this.depositedGameService.getSessions().subscribe({
       next: (sessions) => {
         console.log('Sessions chargées :', sessions); // Log ajouté
@@ -48,30 +71,63 @@ export class DepositedGamesAdminComponent implements OnInit {
       },
       error: (err) => console.error('Erreur lors du chargement des sessions', err),
     });
-
-    this.depositedGameService.getSellers().subscribe({
-      next: (sellers) => {
-        console.log('Vendeurs chargés :', sellers); // Log ajouté
-        this.sellers = sellers;
-      },
-      error: (err) => console.error('Erreur lors du chargement des vendeurs', err),
-    });
   }
+  
 
-  // Appliquer les filtres
   applyFilters(): void {
     this.filteredGames = this.depositedGames.filter((game) => {
       const matchesSession = this.selectedSession ? game.sessionId?._id === this.selectedSession : true;
-      const matchesSeller = this.selectedSeller ? game.sellerId?._id === this.selectedSeller : true;
-      return matchesSession && matchesSeller;
+      const matchesGameName = this.selectedGameName
+        ? game.gameDescriptionId?.name.toLowerCase().includes(this.selectedGameName.toLowerCase())
+        : true;
+      return matchesSession && matchesGameName;
     });
   }
 
-  // Réinitialiser les filtres
   resetFilters(): void {
     this.selectedSession = '';
-    this.selectedSeller = '';
+    this.selectedGameName = '';
     this.filteredGames = [...this.depositedGames];
+  }
+
+  editSeller(): void {
+    this.isEditing = true;
+  }
+
+  cancelEdit(): void {
+    this.isEditing = false;
+    this.errorMessage = null;
+  }
+
+  saveChanges(): void {
+    if (!this.seller) return;
+
+    this.sellerService.updateSeller(this.seller._id, this.seller).subscribe({
+      next: (updatedSeller) => {
+        this.seller = updatedSeller;
+        this.isEditing = false;
+        this.errorMessage = null;
+      },
+      error: (err) => {
+        console.error('Erreur lors de la mise à jour du vendeur', err);
+        this.errorMessage = 'Erreur lors de la mise à jour.';
+      },
+    });
+  }
+
+  deleteSeller(): void {
+    if (confirm('Êtes-vous sûr de vouloir supprimer ce vendeur ?')) {
+      this.sellerService.deleteSeller(this.seller._id).subscribe({
+        next: () => {
+          alert('Vendeur supprimé avec succès.');
+          this.router.navigate(['/sellers']);
+        },
+        error: (err) => {
+          console.error('Erreur lors de la suppression du vendeur', err);
+          this.errorMessage = 'Erreur lors de la suppression.';
+        },
+      });
+    }
   }
 
   // Déterminer le statut de la session
@@ -80,15 +136,16 @@ export class DepositedGamesAdminComponent implements OnInit {
       console.error('Session inexistante ou invalide:', session); // Log ajouté
       return 'unknown'; // Gérer les cas où la session est inexistante
     }
-
+  
     const now = new Date().getTime();
     const startDate = new Date(session.startDate).getTime();
     const endDate = new Date(session.endDate).getTime();
-
+  
     if (now < startDate) return 'upcoming'; // Session à venir (bleu)
     if (now > endDate) return 'closed'; // Session clôturée (noir)
     return 'open'; // Session en cours (vert ou rouge)
   }
+  
 
   // Déterminer la classe CSS du bouton
   getAvailabilityClass(game: any): string {
@@ -140,7 +197,7 @@ export class DepositedGamesAdminComponent implements OnInit {
     return result;
   }
 
-  // Basculer la disponibilité
+  // Basculer la disponibilité du jeu
   toggleAvailability(game: any): void {
     const sessionStatus = this.getSessionStatus(game.sessionId);
     if (game.sold || sessionStatus === 'upcoming' || sessionStatus === 'closed') {

@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common'; // Ajout de CommonModule
 import { NavbarComponent } from '../navbar/navbar.component'; // Ajout de NavbarComponent
 import { ClientService } from '../../services/client.service'; // Service pour gérer les clients
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-clients',
@@ -21,7 +22,7 @@ export class ClientsComponent implements OnInit {
   };
   errorMessage: string | null = null;
 
-  constructor(private clientService: ClientService) {}
+  constructor(private clientService: ClientService, private router: Router) {}
 
   ngOnInit(): void {
     this.loadClients();
@@ -51,4 +52,9 @@ export class ClientsComponent implements OnInit {
       },
     });
   }
+
+  viewClientDetail(clientId: string): void {
+    this.router.navigate(['/clientDetail', clientId]);
+  }
+
 }

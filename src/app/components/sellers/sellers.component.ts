@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common'; // Ajout de CommonModule
-import { NavbarComponent } from '../navbar/navbar.component'; // Ajout de NavbarComponent
+import { CommonModule } from '@angular/common';
+import { NavbarComponent } from '../navbar/navbar.component';
 import { SellerService } from '../../services/seller.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sellers',
   templateUrl: './sellers.component.html',
   styleUrls: ['./sellers.component.css'],
   standalone: true,
-  imports: [FormsModule, CommonModule, NavbarComponent], // Ajout de CommonModule et NavbarComponent
+  imports: [FormsModule, CommonModule, NavbarComponent],
 })
 export class SellersComponent implements OnInit {
   sellers: any[] = [];
@@ -17,11 +18,11 @@ export class SellersComponent implements OnInit {
     name: '',
     email: '',
     phone: '',
-    amountOwed: 0, // Valeur par défaut
+    amountOwed: 0,
   };
   errorMessage: string | null = null;
 
-  constructor(private sellerService: SellerService) {}
+  constructor(private sellerService: SellerService, private router: Router) {}
 
   ngOnInit(): void {
     this.loadSellers();
@@ -50,5 +51,9 @@ export class SellersComponent implements OnInit {
         this.errorMessage = error?.error?.message || 'Erreur inconnue.';
       },
     });
+  }
+
+  viewSellerDetail(sellerId: string): void {
+    this.router.navigate(['/sellerDetail', sellerId]);
   }
 }

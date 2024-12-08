@@ -3,38 +3,41 @@ import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { CommonModule } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-transactions',
   templateUrl: './transactions.component.html',
   styleUrls: ['./transactions.component.css'],
   standalone: true,
-  imports: [CommonModule, FormsModule, NavbarComponent]
+  imports: [CommonModule, FormsModule, NavbarComponent],
 })
 export class TransactionsComponent implements OnInit {
   transactions: any[] = [];
+  filteredTransactions: any[] = [];
+  sessions: any[] = [];
   clients: any[] = [];
   sellers: any[] = [];
-  managers: any[] = [];
-  sessions: any[] = [];
-  depositedGames: any[] = [];
+  selectedSession: string = '';
+  selectedClient: string = '';
+  selectedSeller: string = '';
   errorMessage: string | null = null;
 
-  // Transaction à créer
-  newTransaction = {
-    clientId: '',
-    sellerId: '',
-    managerId: '',
-    labelId: '',
-    sessionId: '',
-  };
-
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     document.body.style.overflow = 'visible';
+
+    // Vérifie les paramètres de la requête
+    this.route.queryParams.subscribe((params) => {
+      if (params['sellerId']) {
+        this.selectedSeller = params['sellerId'];
+        this.applyFilters(); // Applique les filtres dès qu'un sellerId est détecté
+      }
+    });
+
     this.loadTransactions();
-    this.loadDropdownData();
+    this.loadFiltersData();
   }
 
   // Charger toutes les transactions
@@ -45,13 +48,15 @@ export class TransactionsComponent implements OnInit {
       return;
     }
 
+    const headers = { Authorization: `Bearer ${token}` };
+
     this.http
-      .get<any[]>('http://localhost:8000/transaction', {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      .get<any[]>('http://localhost:8000/transaction', { headers })
       .subscribe({
         next: (data) => {
           this.transactions = data;
+          this.filteredTransactions = data; // Initialement, toutes les transactions
+          this.applyFilters(); // Applique les filtres après le chargement des transactions
         },
         error: (err) => {
           console.error('Erreur lors du chargement des transactions', err);
@@ -60,8 +65,8 @@ export class TransactionsComponent implements OnInit {
       });
   }
 
-  // Charger les données pour les listes déroulantes
-  loadDropdownData(): void {
+  // Charger les données pour les filtres
+  loadFiltersData(): void {
     const token = localStorage.getItem('authToken');
     if (!token) {
       this.errorMessage = 'Vous devez être connecté pour accéder aux données.';
@@ -69,6 +74,12 @@ export class TransactionsComponent implements OnInit {
     }
 
     const headers = { Authorization: `Bearer ${token}` };
+
+    // Charger les sessions
+    this.http.get<any[]>('http://localhost:8000/session', { headers }).subscribe({
+      next: (data) => (this.sessions = data),
+      error: (err) => console.error('Erreur lors du chargement des sessions', err),
+    });
 
     // Charger les clients
     this.http.get<any[]>('http://localhost:8000/client', { headers }).subscribe({
@@ -81,57 +92,33 @@ export class TransactionsComponent implements OnInit {
       next: (data) => (this.sellers = data),
       error: (err) => console.error('Erreur lors du chargement des vendeurs', err),
     });
+  }
 
-    // Charger les managers
-    this.http.get<any[]>('http://localhost:8000/manager', { headers }).subscribe({
-      next: (data) => (this.managers = data),
-      error: (err) => console.error('Erreur lors du chargement des managers', err),
-    });
+  // Appliquer les filtres
+  applyFilters(): void {
+    this.filteredTransactions = this.transactions.filter((transaction) => {
+      const matchesSession = this.selectedSession
+        ? transaction.sessionId?._id === this.selectedSession
+        : true;
+      const matchesClient = this.selectedClient
+        ? transaction.clientId?._id === this.selectedClient
+        : true;
+      const matchesSeller = this.selectedSeller
+        ? transaction.sellerId?._id === this.selectedSeller
+        : true;
 
-    // Charger les sessions
-    this.http.get<any[]>('http://localhost:8000/session', { headers }).subscribe({
-      next: (data) => (this.sessions = data),
-      error: (err) => console.error('Erreur lors du chargement des sessions', err),
-    });
-
-    // Charger les jeux déposés
-    this.http.get<any[]>('http://localhost:8000/depositedGame', { headers }).subscribe({
-      next: (data) => (this.depositedGames = data),
-      error: (err) => console.error('Erreur lors du chargement des jeux déposés', err),
+      return matchesSession && matchesClient && matchesSeller;
     });
   }
 
-  // Méthode pour créer une transaction
-  createTransaction(): void {
-    const token = localStorage.getItem('authToken');
-    if (!token) {
-      this.errorMessage = 'Vous devez être connecté pour créer une transaction.';
-      return;
-    }
+  // Réinitialiser les filtres
+  resetFilters(): void {
+    this.selectedSession = '';
+    this.selectedClient = '';
+    this.selectedSeller = '';
+    this.filteredTransactions = [...this.transactions];
 
-    const headers = { Authorization: `Bearer ${token}` };
-
-    this.http.post('http://localhost:8000/transaction', this.newTransaction, { headers }).subscribe({
-      next: () => {
-        alert('Transaction créée avec succès.');
-        this.loadTransactions(); // Recharger les transactions
-        this.resetNewTransaction(); // Réinitialiser le formulaire
-      },
-      error: (err) => {
-        console.error('Erreur lors de la création de la transaction', err);
-        alert('Erreur lors de la création de la transaction.');
-      },
-    });
-  }
-
-  // Réinitialiser le formulaire
-  resetNewTransaction(): void {
-    this.newTransaction = {
-      clientId: '',
-      sellerId: '',
-      managerId: '',
-      labelId: '',
-      sessionId: '',
-    };
+    // Réinitialise l'URL en supprimant les queryParams
+    window.history.replaceState({}, '', '/transactions');
   }
 }

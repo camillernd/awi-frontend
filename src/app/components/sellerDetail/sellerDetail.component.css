@@ -1,0 +1,173 @@
+/* Conteneur global */
+.seller-detail-container {
+    max-width: 1200px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fdf3e7;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Titre principal */
+  .seller-detail-container h2 {
+    text-align: center;
+    font-size: 32px;
+    font-weight: 600;
+    margin-bottom: 30px;
+  }
+  
+  /* Section des informations du vendeur */
+  .seller-info-container {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .seller-info-container p {
+    font-size: 18px;
+    margin: 10px 0;
+  }
+  
+  .seller-info-container button {
+    margin-top: 15px;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .seller-info-container .edit-button {
+    background-color: #4caf50;
+    color: white;
+  }
+  
+  .seller-info-container .delete-button {
+    background-color: #f44336;
+    color: white;
+  }
+  
+  .seller-info-container .save-button {
+    background-color: #2196f3;
+    color: white;
+  }
+  
+  .seller-info-container .cancel-button {
+    background-color: #757575;
+    color: white;
+  }
+  
+  /* Liste des jeux déposés */
+  .games-container {
+    margin-top: 30px;
+  }
+  
+  .games-container h3 {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  /* Carte d'un jeu déposé */
+  .game-card {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .game-card p {
+    font-size: 18px;
+    margin: 5px 0;
+  }
+  
+  .game-card strong {
+    font-weight: 600;
+  }
+  
+  .game-card .toggle-switch {
+    width: 150px;
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
+    font-size: 18px;
+    font-weight: 500;
+    color: white;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  /* Styles des statuts des jeux */
+  .toggle-switch.available {
+    background-color: rgba(13, 156, 11, 0.7); /* Vert */
+  }
+  
+  .toggle-switch.not-available {
+    background-color: rgba(255, 49, 38, 0.8); /* Rouge */
+  }
+  
+  .toggle-switch.sold {
+    background-color: #b0b0b0; /* Gris */
+    cursor: not-allowed;
+  }
+  
+  .toggle-switch.upcoming {
+    background-color: rgba(0, 123, 255, 0.7); /* Bleu */
+    cursor: not-allowed;
+  }
+  
+  .toggle-switch.closed {
+    background-color: rgba(0, 0, 0, 0.8); /* Noir */
+    cursor: not-allowed;
+  }
+  
+  /* Disponibilité */
+  .availability {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 0.5;
+  }
+  
+  .availability h3 {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 15px;
+  }
+  
+  /* Filtres */
+  .filters-container {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px;
+  }
+  
+  .filters-container label,
+  .filters-container select {
+    font-family: 'Poppins', sans-serif;
+    margin: 0 10px;
+  }
+  
+  .filters-container button {
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .filters-container button:hover {
+    background-color: #0056b3;
+  }
+  

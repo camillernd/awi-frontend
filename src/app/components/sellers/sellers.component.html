@@ -1,11 +1,9 @@
 <app-navbar></app-navbar>
 
 <div class="page-container">
-  <!-- Section gauche -->
   <div class="left-container">
     <div class="create-seller-container">
       <h3>Créer un nouveau vendeur</h3>
-
       <form (ngSubmit)="createSeller()">
         <label for="name">Nom</label>
         <input
@@ -49,11 +47,13 @@
     </div>
   </div>
 
-  <!-- Section droite -->
   <div class="right-container">
     <h3>Liste des vendeurs</h3>
-
-    <div *ngFor="let seller of sellers" class="seller-card">
+    <div
+      *ngFor="let seller of sellers"
+      class="seller-card"
+      (click)="viewSellerDetail(seller._id)"
+    >
       <h4>{{ seller.name }}</h4>
       <p><strong>Email:</strong> {{ seller.email }}</p>
       <p><strong>Téléphone:</strong> {{ seller.phone }}</p>

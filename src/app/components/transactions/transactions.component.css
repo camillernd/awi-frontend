@@ -1,35 +1,95 @@
 .page-container {
-    max-width: 1200px;
-    margin: 50px auto;
-    padding: 20px;
-    font-family: Arial, sans-serif;
-  }
-  
-  h2 {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .transaction-card {
-    margin-bottom: 20px;
-    padding: 15px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-    background: #fff;
-  }
-  
-  .transaction-card h4 {
-    margin: 0 0 10px;
-  }
-  
-  .error-message {
-    color: red;
-    text-align: center;
-  }
-  
-  .no-data {
-    text-align: center;
-    color: gray;
-  }
-  
+  max-width: 1200px;
+  margin: 50px auto;
+  padding: 20px;
+  font-family: 'Poppins', sans-serif;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 2rem;
+  color: #333;
+}
+
+.filters-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 15px;
+}
+
+.filters-container label {
+  font-weight: 600;
+  color: #555;
+}
+
+.filters-container select {
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 200px;
+}
+
+.filters-container button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 15px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.filters-container button:hover {
+  background-color: #0056b3;
+}
+
+.transaction-card {
+  margin-bottom: 20px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+  background: #f9f9f9;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.transaction-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.transaction-card h4 {
+  margin: 0 0 10px;
+  color: #333;
+}
+
+.transaction-card p {
+  margin: 5px 0;
+  color: #555;
+  font-size: 0.95rem;
+}
+
+.error-message {
+  color: red;
+  text-align: center;
+  margin: 20px 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.no-data {
+  text-align: center;
+  color: gray;
+  font-size: 1.2rem;
+  font-style: italic;
+}
+
+.transactions-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
