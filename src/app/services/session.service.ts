@@ -37,5 +37,6 @@ export class SessionService {
     return this.http.get<any[]>(`${this.apiUrl}/active`, { headers });
   }
   
+  
 
 }

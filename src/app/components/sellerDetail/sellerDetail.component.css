@@ -170,4 +170,73 @@
   .filters-container button:hover {
     background-color: #0056b3;
   }
+
+  .refund-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    background-color: #f44336;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .refund-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  .refund-button:hover:not(:disabled) {
+    background-color: #d32f2f;
+  }
+  
+  .refund-message {
+    margin-top: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #4caf50;
+  }
+
+  .action-buttons-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin: 20px 0;
+  }
+  
+  .action-buttons-container button {
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    transition: background-color 0.3s;
+  }
+  
+  .action-buttons-container button:hover {
+    background-color: #0056b3;
+  }
+  
+  .action-buttons-container button.active {
+    background-color: #0056b3;
+  }
+  
+  .category-container {
+    margin-top: 20px;
+  }
+  
+  .item-container {
+    padding: 15px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+  
+  
   

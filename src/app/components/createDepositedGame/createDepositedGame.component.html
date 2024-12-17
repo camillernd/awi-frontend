@@ -22,15 +22,24 @@
       <input id="sellerPhone" type="text" [value]="selectedSeller?.phone || ''" disabled />
     </div>
 
-    <!-- Section Session -->
-    <div class="session-container">
-      <h3>Session</h3>
-      <label for="sessionId">Sélectionner une session</label>
-      <select id="sessionId" (change)="onSessionSelect($event)" required>
-        <option value="" disabled selected>Choisissez une session</option>
-        <option *ngFor="let session of sessions" [value]="session._id">{{ session.name }}</option>
-      </select>
-    </div>
+      <!-- Section Session -->
+      <div class="session-container">
+        <h3>Session</h3>
+        <div *ngIf="selectedSession; else noSession">
+          <p><strong>Nom de la session :</strong> {{ selectedSession.name }}</p>
+          <p>
+            <strong>Date de début :</strong>
+            {{ selectedSession.startDate | date: 'short' }}
+          </p>
+          <p>
+            <strong>Date de fin :</strong>
+            {{ selectedSession.endDate | date: 'short' }}
+          </p>
+        </div>
+        <ng-template #noSession>
+          <p>Aucune session ouverte actuellement.</p>
+        </ng-template>
+      </div>
 
     <!-- Section Totaux -->
     <div class="totals-container">

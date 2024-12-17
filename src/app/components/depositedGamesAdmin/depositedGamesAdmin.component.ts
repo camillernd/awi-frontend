@@ -85,7 +85,6 @@ export class DepositedGamesAdminComponent implements OnInit {
     const startDate = new Date(session.startDate).getTime();
     const endDate = new Date(session.endDate).getTime();
 
-    if (now < startDate) return 'upcoming'; // Session à venir (bleu)
     if (now > endDate) return 'closed'; // Session clôturée (noir)
     return 'open'; // Session en cours (vert ou rouge)
   }
@@ -98,8 +97,6 @@ export class DepositedGamesAdminComponent implements OnInit {
       ? 'sold'
       : sessionStatus === 'closed'
       ? 'closed'
-      : sessionStatus === 'upcoming'
-      ? 'upcoming'
       : game.forSale
       ? 'available'
       : 'not-available';
@@ -123,8 +120,6 @@ export class DepositedGamesAdminComponent implements OnInit {
       ? 'Vendu'
       : sessionStatus === 'closed'
       ? 'Session clôturée'
-      : sessionStatus === 'upcoming'
-      ? 'Session à venir'
       : game.forSale
       ? 'Oui'
       : 'Non';
@@ -143,7 +138,7 @@ export class DepositedGamesAdminComponent implements OnInit {
   // Basculer la disponibilité
   toggleAvailability(game: any): void {
     const sessionStatus = this.getSessionStatus(game.sessionId);
-    if (game.sold || sessionStatus === 'upcoming' || sessionStatus === 'closed') {
+    if (game.sold || sessionStatus === 'closed') {
       console.warn('Modification non autorisée pour ce jeu.');
       return;
     }

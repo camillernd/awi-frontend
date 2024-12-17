@@ -1,14 +1,28 @@
 /* src/components/navbar/navbar.component.css */
 
+/* Normalisation globale pour les éléments */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  overflow-x: hidden; /* Empêche le débordement horizontal */
+}
+
 .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.5rem 1rem;
-    background-color: #FFF6EB;
-    border: 1.5px solid #000000;
-    border-radius: 13px;
-    font-family: Poppins, sans-serif;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 60px; /* Hauteur fixe */
+  padding: 0.5rem 1rem;
+  background-color: #FFF6EB;
+  border: 1.5px solid #000000;
+  border-radius: 13px;
+  font-family: Poppins, sans-serif;
 }
 
 .navbar-left .logo {
@@ -23,44 +37,64 @@
     justify-content: center;
 }
 
+/* Taille fixe pour les boutons */
 .session-button,
+.treasury-button,
 .create-session-button,
 .transactions-button,
 .sessions-button,
 .deposited-games-button,
 .deposited-games-admin-button,
-.checkout-button{
+.checkout-button, 
+.game-description-button,
+.dropdown-button {
     padding: 0.5rem 1rem;
     border: 1px solid black;
     border-radius: 13px;
     background-color: rgba(255, 255, 255, 0.5);
     font-weight: bold;
     cursor: pointer;
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     text-transform: uppercase;
-    margin: 0 0.5rem; /* Ajoute un espace entre les boutons */
+    margin: 0 0.3rem; /* Espacement entre les boutons */
+    white-space: nowrap; /* Empêche les retours à la ligne */
+    text-align: center;
 }
 
+/*
+    padding: 0.5rem 1rem;
+    border: 1px solid black;
+    border-radius: 13px;
+    background-color: rgba(255, 255, 255, 0.5);
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    margin: 0 0.3rem; /* Ajoute un espace entre les boutons */
+
 .session-button:hover,
+.treasury-button:hover,
 .create-session-button:hover,
 .transactions-button:hover,
 .sessions-button:hover,
 .deposited-games-button:hover,
 .deposited-games-admin-button:hover,
-.checkout-button:hover{
+.checkout-button:hover, 
+.game-description-button:hover{
     background-color: #f0e5d8;
 }
 
 .manager-link,
-.logout-link{
+.logout-link {
+    display: inline-block;
+    padding: 0.3rem 0.5rem; /* Taille contrôlée */
+    margin: 0;
     color: black;
     text-decoration: underline;
-    cursor: pointer;
     font-size: 1rem;
     font-weight: bold;
-    border: none;
-    background: none;
-    padding: 0;
+    white-space: nowrap;
+    cursor: pointer;
 }
 
 .manager-link:hover, 
@@ -75,14 +109,17 @@
     display: inline-block;
   }
   
+  .navbar-center button,
   .dropdown-button {
+    flex: 0 0 auto; /* Empêche l'étirement des boutons */
     padding: 0.5rem 1rem;
+    margin: 0 0.3rem;
     border: 1px solid black;
     border-radius: 13px;
     background-color: rgba(255, 255, 255, 0.5);
     font-weight: bold;
     cursor: pointer;
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     text-transform: uppercase;
     display: flex;
     align-items: center;
@@ -106,18 +143,20 @@
     min-width: 150px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
     z-index: 1000;
+
   }
   
   .dropdown-menu button {
     padding: 0.5rem 1rem;
     border: none;
     background: none;
-    font-size: 0.85rem;
+    font-weight: 200;
+    font-size: 0.7rem;
     text-align: left;
     cursor: pointer;
   }
   
   .dropdown-menu button:hover {
-    background-color: #f0e5d8;
+    background-color: #f5ede3;
   }
   

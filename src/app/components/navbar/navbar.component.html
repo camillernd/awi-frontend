@@ -13,8 +13,10 @@
     <ng-container *ngIf="managerConnected">
       <button class="deposited-games-admin-button" (click)="goToDepositedGamesAdmin()">Jeux déposés</button>
       <button class="deposited-games-button" (click)="goToCreateDepositedGame()">+ Dépôt</button>
+      <button class="game-description-button" (click)="goToCreateGameDescription()">+ Jeu</button>
       <button class="checkout-button" (click)="goToCheckout()">Encaissement</button>
       <button class="transactions-button" (click)="goToTransactions()">Transactions</button>
+      <button class="treasury-button" (click)="goToTreasury()">Trésorerie</button>
     </ng-container>
 
     <!-- User Management Dropdown -->

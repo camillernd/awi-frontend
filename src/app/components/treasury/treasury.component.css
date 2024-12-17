@@ -1,0 +1,137 @@
+/* Corps de la page */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #fdf3e7;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Conteneur principal */
+  .treasury-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  /* Titre principal */
+  .page-title {
+    text-align: center;
+    font-size: 32px;
+    font-weight: 600;
+    margin-bottom: 30px;
+    color: #333;
+  }
+  
+  /* Chiffre d'affaires */
+  .revenue-container {
+    text-align: center;
+    margin: 20px 0;
+  }
+  
+  .revenue-container h1 {
+    font-size: 3.5em;
+    color: #4caf50;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  
+  /* Filtre de session */
+  .session-filter {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .session-filter label {
+    font-size: 18px;
+    font-weight: 600;
+    margin-right: 10px;
+  }
+  
+  .session-filter select {
+    font-size: 16px;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+    transition: border-color 0.3s ease;
+  }
+  
+  .session-filter select:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+  
+  /* Conteneur pour chaque opération */
+  .operation-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.5);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 15px;
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .operation-container:hover {
+    transform: scale(1.03);
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Informations de l'opération */
+  .operation-info {
+    flex: 1;
+  }
+  
+  .operation-info h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin: 0 0 5px;
+  }
+  
+  .operation-info p {
+    font-size: 14px;
+    color: #555;
+    margin: 2px 0;
+  }
+  
+  /* Montant de l'opération */
+  .operation-amount {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-left: 20px;
+  }
+  
+  .operation-amount.credit {
+    color: #4caf50; /* Vert pour crédit */
+  }
+  
+  .operation-amount.debit {
+    color: #f44336; /* Rouge pour débit */
+  }
+  
+  /* Message en cas d'absence de données */
+  .no-data {
+    text-align: center;
+    color: #888;
+    font-size: 16px;
+    font-style: italic;
+    margin-top: 20px;
+  }
+  
+  /* Responsivité */
+  @media (max-width: 768px) {
+    .operation-container {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .operation-amount {
+      margin-left: 0;
+      margin-top: 10px;
+      align-self: flex-end;
+    }
+  }
+  

@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SellerService } from '../../services/seller.service';
+import { RefundService } from '../../services/refund.service';
+import { AuthService } from '../../services/auth.service';
+import { SessionService } from '../../services/session.service';
 import { DepositedGameService } from '../../services/depositedGame.service';
+import { TransactionService } from '../../services/transaction.service';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -15,19 +19,28 @@ import { FormsModule } from '@angular/forms';
 })
 export class SellerDetailComponent implements OnInit {
   seller: any = null;
+  currentSession: any = null; // Session active
+  refundMessage: string | null = null;
   depositedGames: any[] = [];
+  transactions: any[] = []; // Transactions
+  refunds: any[] = []; // Remboursements
   filteredGames: any[] = [];
   sessions: any[] = [];
   selectedSession: string = '';
   selectedGameName: string = '';
   isEditing = false;
   errorMessage: string | null = null;
+  selectedCategory: string = 'games'; // Catégorie sélectionnée par défaut
 
   constructor(
     private route: ActivatedRoute,
     private sellerService: SellerService,
+    private sessionService: SessionService, // Ajout du service SessionService
+    private refundService: RefundService, // Ajout du service RefundService
+    private authService: AuthService, // Pour récupérer le manager connecté
     private depositedGameService: DepositedGameService, // Ajout du service DepositedGame
-    private router: Router
+    private router: Router,
+    private transactionService: TransactionService, // Service Transactions
   ) {}
 
   ngOnInit(): void {
@@ -37,6 +50,7 @@ export class SellerDetailComponent implements OnInit {
       this.loadSellerData(sellerId);
       this.loadDepositedGames(sellerId);
       this.loadSessions();
+      this.loadCurrentSession();
     }
   }
 
@@ -72,6 +86,37 @@ export class SellerDetailComponent implements OnInit {
       error: (err) => console.error('Erreur lors du chargement des sessions', err),
     });
   }
+
+
+  loadTransactions(sellerId: string): void {
+    this.transactionService.getTransactionsBySellerId(sellerId).subscribe({
+      next: (transactions) => {
+        this.transactions = transactions;
+      },
+      error: (err) => console.error('Erreur lors du chargement des transactions', err),
+    });
+  }
+
+  loadRefunds(sellerId: string): void {
+    this.refundService.getRefundsBySellerId(sellerId).subscribe({
+      next: (refunds) => {
+        this.refunds = refunds;
+      },
+      error: (err) => console.error('Erreur lors du chargement des remboursements', err),
+    });
+  }
+
+  // Méthode pour afficher la catégorie sélectionnée
+  showCategory(category: string): void {
+    this.selectedCategory = category;
+    const sellerId = this.seller?._id;
+    if (category === 'transactions' && sellerId) {
+      this.loadTransactions(sellerId);
+    } else if (category === 'refunds' && sellerId) {
+      this.loadRefunds(sellerId);
+    }
+  }
+  
   
 
   applyFilters(): void {
@@ -141,7 +186,6 @@ export class SellerDetailComponent implements OnInit {
     const startDate = new Date(session.startDate).getTime();
     const endDate = new Date(session.endDate).getTime();
   
-    if (now < startDate) return 'upcoming'; // Session à venir (bleu)
     if (now > endDate) return 'closed'; // Session clôturée (noir)
     return 'open'; // Session en cours (vert ou rouge)
   }
@@ -155,8 +199,6 @@ export class SellerDetailComponent implements OnInit {
       ? 'sold'
       : sessionStatus === 'closed'
       ? 'closed'
-      : sessionStatus === 'upcoming'
-      ? 'upcoming'
       : game.forSale
       ? 'available'
       : 'not-available';
@@ -180,8 +222,6 @@ export class SellerDetailComponent implements OnInit {
       ? 'Vendu'
       : sessionStatus === 'closed'
       ? 'Session clôturée'
-      : sessionStatus === 'upcoming'
-      ? 'Session à venir'
       : game.forSale
       ? 'Oui'
       : 'Non';
@@ -200,7 +240,7 @@ export class SellerDetailComponent implements OnInit {
   // Basculer la disponibilité du jeu
   toggleAvailability(game: any): void {
     const sessionStatus = this.getSessionStatus(game.sessionId);
-    if (game.sold || sessionStatus === 'upcoming' || sessionStatus === 'closed') {
+    if (game.sold || sessionStatus === 'closed') {
       console.warn('Modification non autorisée pour ce jeu.');
       return;
     }
@@ -209,6 +249,52 @@ export class SellerDetailComponent implements OnInit {
     this.depositedGameService.updateDepositedGame(game._id, { forSale: game.forSale }).subscribe({
       next: () => console.log('Disponibilité mise à jour avec succès'),
       error: (err) => console.error('Erreur lors de la mise à jour', err),
+    });
+  }
+
+
+  private loadCurrentSession(): void {
+    this.sessionService.getActiveSessions().subscribe({
+      next: (sessions) => {
+        if (sessions.length === 1) {
+          this.currentSession = sessions[0];
+        }
+      },
+      error: (err) => console.error('Erreur lors du chargement de la session active:', err),
+    });
+  }
+
+  refundSeller(): void {
+    if (!this.seller || !this.currentSession) return;
+
+    const refundAmount = this.seller.amountOwed;
+    const managerId = localStorage.getItem('managerId'); // Récupération via localStorage
+
+    const refundData = {
+      sellerId: this.seller._id,
+      sessionId: this.currentSession._id,
+      managerId,
+      refundAmount,
+      refundDate: new Date(),
+    };
+
+    this.refundService.createRefund(refundData).subscribe({
+      next: () => {
+        this.sellerService.updateSeller(this.seller._id, { amountOwed: 0 }).subscribe({
+          next: () => {
+            this.refundMessage = 'Le vendeur a été remboursé avec succès.';
+            this.seller.amountOwed = 0;
+          },
+          error: (err) => {
+            console.error('Erreur lors de la mise à jour du vendeur:', err);
+            this.refundMessage = 'Une erreur est survenue lors de la mise à jour du vendeur.';
+          },
+        });
+      },
+      error: (err) => {
+        console.error('Erreur lors de la création du remboursement:', err);
+        this.refundMessage = 'Une erreur est survenue lors du remboursement.';
+      },
     });
   }
 }

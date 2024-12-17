@@ -75,13 +75,7 @@ export class ClientDetailComponent implements OnInit {
       });
     }
   }
-
-  goToTransactions(): void {
-    if (this.client && this.client._id) {
-      // Redirige vers la page des transactions avec l'ID du client dans les queryParams
-      this.router.navigate(['/transactions'], { queryParams: { clientId: this.client._id } });
-    }
-  }
   
+
   
 }

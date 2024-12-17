@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { DepositedGameService } from '../../services/depositedGame.service';
 import { SellerService } from '../../services/seller.service';
 import { SessionService } from '../../services/session.service';
+import { DepositFeePaymentService } from '../../services/depositFeePayment.service';
 import { GameDescriptionService } from '../../services/gameDescription.service';
 import { NavbarComponent } from '../navbar/navbar.component';
 
@@ -19,7 +20,6 @@ export class CreateDepositedGameComponent implements OnInit {
   selectedSeller: any = null;
   selectedSession: any = null;
   sellers: any[] = [];
-  sessions: any[] = [];
   gameDescriptions: any[] = [];
 
   // Liste dynamique des jeux
@@ -38,6 +38,7 @@ export class CreateDepositedGameComponent implements OnInit {
 
   constructor(
     private depositedGameService: DepositedGameService,
+    private depositFeePaymentService: DepositFeePaymentService,
     private sellerService: SellerService,
     private sessionService: SessionService,
     private gameDescriptionService: GameDescriptionService,
@@ -47,7 +48,7 @@ export class CreateDepositedGameComponent implements OnInit {
   ngOnInit(): void {
     document.body.style.overflow = 'visible';
     this.loadSellers();
-    this.loadSessions();
+    this.loadOpenSession();
     this.loadGameDescriptions();
   }
 
@@ -60,15 +61,20 @@ export class CreateDepositedGameComponent implements OnInit {
     });
   }
 
-  loadSessions(): void {
+  loadOpenSession(): void {
     this.sessionService.getActiveSessions().subscribe({
       next: (sessions) => {
-        this.sessions = sessions;
+        if (sessions.length === 1) {
+          this.selectedSession = sessions[0]; // La seule session ouverte
+          this.updateTotals();
+        } else {
+          console.warn('Aucune session ouverte trouvée ou plusieurs sessions ouvertes détectées.');
+        }
       },
-      error: (error) => console.error('Erreur lors du chargement des sessions actives', error),
+      error: (error) => console.error('Erreur lors du chargement de la session ouverte', error),
     });
   }
-  
+
   loadGameDescriptions(): void {
     this.gameDescriptionService.getAllGameDescriptions().subscribe({
       next: (gameDescriptions) => {
@@ -81,12 +87,6 @@ export class CreateDepositedGameComponent implements OnInit {
   onSellerSelect(event: any): void {
     const sellerId = event.target.value;
     this.selectedSeller = this.sellers.find((seller) => seller._id === sellerId);
-  }
-
-  onSessionSelect(event: any): void {
-    const sessionId = event.target.value;
-    this.selectedSession = this.sessions.find((session) => session._id === sessionId);
-    this.updateTotals();
   }
 
   addGame(): void {
@@ -130,36 +130,32 @@ export class CreateDepositedGameComponent implements OnInit {
       sessionId: this.selectedSession._id,
     }));
 
-    requests.forEach((gameData) => {
-      this.depositedGameService.createDepositedGame(gameData).subscribe({
-        next: () => {
-          console.log('Jeu déposé créé avec succès');
-        },
-        error: (error) => console.error('Erreur lors de la création du jeu déposé', error),
-      });
+    // Paiement des frais de dépôt
+    const paymentData = {
+      sellerId: this.selectedSeller._id,
+      sessionId: this.selectedSession._id,
+      depositFeePayed: this.totalAfterDiscount,
+      depositDate: new Date(),
+    };
+
+    this.depositFeePaymentService.createPayment(paymentData).subscribe({
+      next: () => {
+        console.log('Paiement des frais de dépôt enregistré avec succès.');
+        requests.forEach((gameData) => {
+          this.depositedGameService.createDepositedGame(gameData).subscribe({
+            next: () => {
+              console.log('Jeu déposé créé avec succès.');
+            },
+            error: (error) => console.error('Erreur lors de la création du jeu déposé', error),
+          });
+        });
+        alert('Jeux déposés et paiement enregistrés avec succès.');
+        this.router.navigate(['/depositedGames']);
+      },
+      error: (error) => {
+        console.error('Erreur lors de la création du paiement', error);
+        alert('Une erreur est survenue lors de la création du paiement.');
+      },
     });
-
-    this.router.navigate(['/depositedGames']);
   }
-
-  finalizeTotals(): void {
-    if (!this.selectedSession) {
-      alert('Veuillez sélectionner une session pour calculer les totaux.');
-      return;
-    }
-  
-    const { depositFee, depositFeeLimitBeforeDiscount, depositFeeDiscount } = this.selectedSession;
-  
-    // Calcul des totaux
-    this.totalDepositFee = this.depositedGames.length * depositFee;
-    const eligibleForDiscount = this.depositedGames.length >= depositFeeLimitBeforeDiscount;
-    this.totalDiscount = eligibleForDiscount
-      ? (this.totalDepositFee * depositFeeDiscount) / 100
-      : 0;
-    this.totalAfterDiscount = this.totalDepositFee - this.totalDiscount;
-
-    console.log('Totaux mis à jour après finalisation');
-  }
-
-
 }

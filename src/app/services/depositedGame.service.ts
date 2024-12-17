@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators'; // Import nécessaire pour `tap`
+import { map } from 'rxjs/operators';
+
 
 @Injectable({
   providedIn: 'root',
@@ -48,6 +50,27 @@ export class DepositedGameService {
   updateDepositedGame(id: string, updateData: any): Observable<any> {
     return this.http.put(`${this.apiUrl}/${id}`, updateData);
   }
+
+  createDepositedGameWithoutSession(data: {
+    sellerId: string;
+    gameDescriptionId: string;
+    salePrice: number;
+  }): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/createWithoutSession`, data);
+  }
+  
+  getOpenSession(): Observable<any> {
+    return this.http.get<any[]>('http://localhost:8000/session/active').pipe(
+      map((sessions: any[]) => {
+        const today = new Date();
+        return sessions.find(
+          (session: any) =>
+            new Date(session.startDate) <= today && new Date(session.endDate) >= today
+        );
+      })
+    );
+  }
+  
 
   // Récupérer tous les jeux déposés pour une session spécifique
   getDepositedGamesBySessionId(sessionId: string): Observable<any[]> {

@@ -90,6 +90,14 @@ export class NavbarComponent implements OnInit {
     this.router.navigate(['/transactions']);
   }
 
+  goToTreasury() {
+    this.router.navigate(['/treasury']);
+  }
+
+  goToCreateGameDescription(){
+    this.router.navigate(['/createGameDescription'])
+  }
+
   logout() {
     this.authService.logout();
     this.managerConnected = false;

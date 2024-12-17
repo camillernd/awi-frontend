@@ -18,4 +18,9 @@ export class TransactionService {
 
     return this.http.post<any[]>(`${this.apiUrl}/bulk`, transactions, { headers });
   }
+
+  getTransactionsBySellerId(sellerId: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/seller/${sellerId}`);
+  }
+  
 }

@@ -1,0 +1,48 @@
+<app-navbar></app-navbar>
+
+<div class="treasury-container">
+  <!-- Sélecteur de session -->
+  <div class="session-filter" style="text-align: center; margin: 20px 0;">
+    <label for="sessionSelect">Sélectionnez une session :</label>
+    <select id="sessionSelect" [(ngModel)]="selectedSession" (change)="applySessionFilter()">
+      <option value="">Toutes les sessions</option>
+      <option *ngFor="let session of sessions" [value]="session._id">
+        {{ session.name }} ({{ session.startDate | date: 'short' }})
+      </option>
+    </select>
+  </div>
+
+  <!-- Chiffre d'affaires -->
+  <div class="revenue-container" style="text-align: center; margin: 20px 0;">
+    <h1 style="font-size: 3em; color: green;">
+      Chiffre d'affaires : {{ totalRevenue | currency }}
+    </h1>
+  </div>
+
+  <!-- Liste des opérations -->
+  <div class="operations-list">
+    <div
+      *ngFor="let operation of allOperations"
+      class="operation-container"
+      style="border: 1px solid #ccc; margin: 10px; padding: 10px; border-radius: 5px;"
+    >
+      <p><strong>Type :</strong> {{ operation.type }}</p>
+      <p><strong>Date :</strong> {{ operation.date | date: 'short' }}</p>
+      <p><strong>Détails :</strong></p>
+      <ul>
+        <li *ngIf="operation.sellerId">Vendeur : {{ operation.sellerId.email }}</li>
+        <li *ngIf="operation.sessionId">Session : {{ operation.sessionId.name }}</li>
+        <li *ngIf="operation.labelId">Jeu : {{ operation.labelId.gameDescriptionId.name }}</li>
+      </ul>
+      <p
+        [ngStyle]="{
+          color: operation.type === 'refund' ? 'red' : 'green',
+          'font-weight': 'bold',
+          'text-align': 'right'
+        }"
+      >
+        {{ operation.type === 'refund' ? '-' : '+' }}{{ operation.amount | currency }}
+      </p>
+    </div>
+  </div>
+</div>
