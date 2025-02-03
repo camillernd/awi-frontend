@@ -26,6 +26,11 @@ export class DepositedGameService {
     return this.http.get<any>(`${this.apiUrl}/${depositedGameId}`);
   }
 
+  // Récupérer les détails d'un jeu par son ID
+  getGameDescriptionById(gameDescriptionId: string): Observable<any> {
+    return this.http.get<any>(`http://localhost:8000/gameDescription/${gameDescriptionId}`);
+  }
+
   // Créer un jeu déposé
   createDepositedGame(depositedGameData: any): Observable<any> {
     console.log('Envoi des données du depositedGame au backend:', depositedGameData); // Log pour confirmer l'envoi
@@ -101,4 +106,11 @@ export class DepositedGameService {
   getSellers(): Observable<any[]> {
     return this.http.get<any[]>(this.sellerUrl);
   }
+
+  getDepositedGamesBySellerId(sellerId: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/seller/${sellerId}`).pipe(
+      tap((games) => console.log(`🔄 Jeux récupérés pour le vendeur ${sellerId}:`, games))
+    );
+  }
+  
 }

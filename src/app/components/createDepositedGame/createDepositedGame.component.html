@@ -1,4 +1,5 @@
 <app-navbar></app-navbar>
+<h2 class="page-title">Déposer un jeu</h2>
 
 <div class="page-container">
   <!-- Section gauche -->
@@ -6,11 +7,21 @@
     <!-- Section Vendeur -->
     <div class="vendeur-container">
       <h3>Vendeur</h3>
+
       <label for="sellerEmail">Adresse email</label>
-      <select id="sellerEmail" (change)="onSellerSelect($event)" required>
-        <option value="" disabled selected>Choisissez un vendeur</option>
-        <option *ngFor="let seller of sellers" [value]="seller._id">{{ seller.email }}</option>
-      </select>
+      <input 
+        id="sellerEmail"
+        type="text"
+        [(ngModel)]="sellerInput"
+        (input)="filterSellerSuggestions()"
+        (change)="onSellerSelectByEmail()"
+        placeholder="Tapez l'email du vendeur..."
+        list="sellerOptions"
+        class="seller-input"
+      />
+      <datalist id="sellerOptions">
+        <option *ngFor="let seller of filteredSellers" [value]="seller.email"></option>
+      </datalist>
 
       <label for="sellerId">IdVendeur</label>
       <input id="sellerId" type="text" [value]="selectedSeller?._id || ''" disabled />
@@ -20,6 +31,9 @@
 
       <label for="sellerPhone">Num téléphone</label>
       <input id="sellerPhone" type="text" [value]="selectedSeller?.phone || ''" disabled />
+      <p class="link-text">
+        <a (click)="goToSellers()">Créer un nouveau vendeur ?</a>
+      </p>      
     </div>
 
       <!-- Section Session -->
@@ -29,11 +43,11 @@
           <p><strong>Nom de la session :</strong> {{ selectedSession.name }}</p>
           <p>
             <strong>Date de début :</strong>
-            {{ selectedSession.startDate | date: 'short' }}
+            {{ formatDate(selectedSession.startDate) }}
           </p>
           <p>
             <strong>Date de fin :</strong>
-            {{ selectedSession.endDate | date: 'short' }}
+            {{ formatDate(selectedSession.endDate) }}
           </p>
         </div>
         <ng-template #noSession>
@@ -57,13 +71,29 @@
 
   <!-- Section droite -->
   <div class="right-container">
-    <h3>Jeux</h3>
     <form>
       <div *ngFor="let game of depositedGames; let i = index" class="game-container">
-        <label for="gameDescriptionId-{{ i }}">Description du jeu</label>
-        <select id="gameDescriptionId-{{ i }}" [(ngModel)]="game.gameDescriptionId" name="gameDescriptionId-{{ i }}" required>
-          <option *ngFor="let desc of gameDescriptions" [value]="desc._id">{{ desc.name }}</option>
-        </select>
+        <h3>Jeu</h3>
+
+        <label for="gameName-{{ i }}">Nom du jeu</label>
+        <input
+          id="gameName-{{ i }}"
+          type="text"
+          [(ngModel)]="gameInput[i]"
+          name="gameName-{{ i }}" 
+          (input)="filterGameSuggestions(i)"
+          (change)="onGameSelectByName(i)"
+          placeholder="Tapez le nom du jeu..."
+          [attr.list]="'gameOptions-' + i"
+          class="game-input"
+        />
+        <datalist [id]="'gameOptions-' + i">
+          <option *ngFor="let game of filteredGameDescriptions[i]" [value]="game.name"></option>
+        </datalist>
+
+        <p class="link-text">
+          <a (click)="goToCreateGameDescription()">Créer une nouvelle description de jeu ?</a>
+        </p>
 
         <label for="salePrice-{{ i }}">Prix de vente</label>
         <input

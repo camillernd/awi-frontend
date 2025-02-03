@@ -1,8 +1,12 @@
 <app-navbar></app-navbar>
 
+<!-- Notification de succès -->
+<div *ngIf="successMessage" class="success-message">
+  {{ successMessage }} Redirection vers l'accueil...
+</div>
+
 <div class="page-title-container">
-  <h1 class="page-title">CRÉER UNE DESCRIPTION DE JEU</h1>
-  <p class="user-info">Connecté en tant que : {{ firstName }} {{ lastName }}</p>
+  <h1 class="page-title">Créer une description de jeu</h1>
 </div>
 
 <div class="page-container">
@@ -19,6 +23,11 @@
     </div>
 
     <div class="form-group">
+      <label for="photoURL">URL de la photo</label>
+      <input id="photoURL" type="url" [(ngModel)]="gameDescriptionData.photoURL" name="photoURL" required />
+    </div>
+
+    <div class="form-group">
       <label for="description">Description</label>
       <textarea
         id="description"
@@ -27,11 +36,6 @@
         maxlength="250"
       ></textarea>
       <p class="max-words-info">Max 250 mots</p>
-    </div>
-
-    <div class="form-group">
-      <label for="photoURL">URL de la photo</label>
-      <input id="photoURL" type="url" [(ngModel)]="gameDescriptionData.photoURL" name="photoURL" required />
     </div>
   </div>
 
@@ -50,18 +54,18 @@
     <div class="form-group">
       <label for="ageRange">Tranche d'âge</label>
       <select id="ageRange" [(ngModel)]="gameDescriptionData.ageRange" name="ageRange">
-        <option value="VeryYoung">0-5</option>
-        <option value="Child">5-10</option>
-        <option value="Preteen">8-12</option>
-        <option value="Teen">12-18</option>
-        <option value="Adult">18+</option>
-      </select>
+        <option value="0-5">0-5</option>
+        <option value="5-10">5-10</option>
+        <option value="8-12">8-12</option>
+        <option value="12-18">12-18</option>
+        <option value="18+">18+</option>
+      </select>      
     </div>
   </div>
 </div>
 
 <div class="button-container">
   <button type="submit" class="submit-button" (click)="createGameDescription()">
-    CRÉER LA DESCRIPTION
+    CRÉER
   </button>
 </div>

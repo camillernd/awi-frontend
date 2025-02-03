@@ -1,55 +1,100 @@
 <app-navbar></app-navbar>
 
 <div class="page-container">
-  <h1 class="page-title">JEUX DEPOSES</h1>
+  <h2 class="page-title">Jeux déposés</h2> <!-- Utilisation de <h2> pour uniformiser -->
 
-  <!-- Filtres -->
-  <div class="filters-container">
-    <label for="sessionFilter">Filtrer par session :</label>
-    <select id="sessionFilter" [(ngModel)]="selectedSession" (change)="applyFilters()">
-      <option value="">Toutes les sessions</option>
-      <option *ngFor="let session of sessions" [value]="session._id">{{ session.name }}</option>
-    </select>
+  <!-- Barre de recherche -->
+  <div class="search-container">
+    <input
+      type="text"
+      placeholder="Rechercher un jeu..."
+      [(ngModel)]="searchQuery"
+      (input)="applyFilters()"
+      class="search-input"
+    />
+  </div>
 
-    <label for="sellerFilter">Filtrer par vendeur :</label>
-    <select id="sellerFilter" [(ngModel)]="selectedSeller" (change)="applyFilters()">
-      <option value="">Tous les vendeurs</option>
-      <option *ngFor="let seller of sellers" [value]="seller._id">{{ seller.name }}</option>
-    </select>
+  <!-- Conteneur des filtres -->
+  <div class="filters-wrapper">
+    <div class="filter-group">
+      <label for="sessionFilter"> </label>
+      <select id="sessionFilter" [(ngModel)]="selectedSession" (change)="applyFilters()" class="filter-dropdown">
+        <option value="all">Toutes les sessions</option>
+        <option 
+          *ngFor="let session of sessions" 
+          [value]="session._id"
+          [ngClass]="{
+            'session-ouverte': session.status === 'ouverte',
+            'session-aVenir': session.status === 'à venir',
+            'session-cloturee': session.status === 'clôturée'
+          }">
+          {{ session.name }} ({{ session.status }})
+        </option>
+      </select>
+    </div>
 
-    <button (click)="resetFilters()">Réinitialiser</button>
+    <div class="filter-group">
+      <label for="sellerFilter"> </label>
+      <input 
+        id="sellerFilter"
+        type="text"
+        [(ngModel)]="selectedSeller"
+        (input)="filterSellerSuggestions()"
+        (change)="applySellerFilter()"
+        placeholder="Rechercher un vendeur..."
+        list="sellerOptions"
+        class="filter-dropdown"
+      />
+      <datalist id="sellerOptions">
+        <option *ngFor="let seller of filteredSellers" [value]="seller.email"></option>
+      </datalist>
+    </div>
   </div>
 
   <!-- Liste des jeux filtrés -->
   <div class="game-list">
     <div *ngFor="let game of filteredGames" class="game-card">
-      <div class="game-info">
-        <div class="seller-info">
-          <h3>Infos Vendeur</h3>
-          <p><strong>Nom:</strong> {{ game.sellerId?.name }}</p>
-          <p><strong>Email:</strong> {{ game.sellerId?.email }}</p>
-          <h3>Infos Session</h3>
-          <p><strong>Nom:</strong> {{ game.sessionId?.name }}</p>
+      <div class="game-header">
+        <h2>{{ game.gameDescriptionId?.name }} | {{ game.salePrice | currency }}</h2>
+      </div>
+
+      <div class="game-body">
+        <!-- Infos du jeu et vendeur -->
+        <div class="game-info">
+          <h3>Vendeur</h3>
+          <p><strong>Nom :</strong> {{ game.sellerId?.name }}</p>
+          <p><strong>Email :</strong> {{ game.sellerId?.email }}</p>
+          
+          <!-- Infos Session -->
+          <h3>Session</h3>
+          <p><strong>Nom :</strong> {{ game.sessionId?.name }}</p>
+          <p>
+            <strong>Statut :</strong>
+            <span [class]="getSessionClass(game.sessionId)">
+              {{ getSessionStatus(game.sessionId) }}
+            </span>
+          </p>
+          
+          <!-- Étiquette -->
+          <h3>Étiquette</h3>
+          <p>{{ game._id }}</p>
         </div>
 
-        <div class="deposit-info">
-          <h3>Infos Dépôt</h3>
-          <p><strong>Id Jeu:</strong> {{ game._id }}</p>
-          <p><strong>Nom Jeu:</strong> {{ game.gameDescriptionId?.name }}</p>
-          <p><strong>Prix:</strong> {{ game.salePrice | currency }}</p>
-          <p><strong>Vendu :</strong> {{ game.sold ? 'Oui' : 'Non' }}</p> <!-- Nouveau champ -->
-        </div>
-
-        <div class="availability">
-          <h3>A vendre ?</h3>
-          <div
-            class="toggle-switch"
-            [class]="getAvailabilityClass(game)"
-            (click)="toggleAvailability(game)"
-          >
-            {{ getAvailabilityText(game) }}
+        <!-- Image + Disponibilité -->
+        <div class="game-image">
+          <div class="image-container">
+            <img [src]="game.gameDescriptionId?.photoURL || 'default-image.png'" alt="Image du jeu">
           </div>
-        </div>                
+
+          <div class="availability">
+            <h3 *ngIf="getSessionStatus(game.sessionId) !== 'clôturée'">A vendre ?</h3>
+            <h3 *ngIf="getSessionStatus(game.sessionId) === 'clôturée'">Vendu ?</h3>
+            
+            <div class="toggle-switch" [class]="getObjectStatusClass(game)" (click)="toggleAvailability(game)">
+              {{ getObjectStatusText(game) }}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

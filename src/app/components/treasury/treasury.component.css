@@ -1,116 +1,164 @@
 /* Corps de la page */
 body {
-    font-family: 'Poppins', sans-serif;
-    background-color: #fdf3e7;
-    margin: 0;
-    padding: 0;
-  }
+  font-family: 'Poppins', sans-serif;
+  background-color: #fdf3e7;
+  margin: 0;
+  padding: 0;
+}
+
+/* Titre de la page */
+.page-title-container {
+  text-align: center;
+  margin-top: 20px;
+}
+  
+.page-title {
+  font-size: 30px;
+  font-weight: bold;
+  color: #000000;
+  margin-bottom: 0px;
+  margin-top: 30px;
+  font-family: 'Poppins', sans-serif;
+}
+
+
+
+
   
   /* Conteneur principal */
   .treasury-container {
     padding: 20px;
-    max-width: 1200px;
+    max-width: 900px;
     margin: 0 auto;
   }
-  
-  /* Titre principal */
-  .page-title {
-    text-align: center;
-    font-size: 32px;
-    font-weight: 600;
-    margin-bottom: 30px;
-    color: #333;
-  }
-  
-  /* Chiffre d'affaires */
-  .revenue-container {
-    text-align: center;
-    margin: 20px 0;
-  }
-  
-  .revenue-container h1 {
-    font-size: 3.5em;
-    color: #4caf50;
-    font-weight: 700;
-    margin-bottom: 10px;
-  }
-  
-  /* Filtre de session */
+
+
+  /* Alignement du filtre à gauche */
   .session-filter {
-    text-align: center;
+    text-align: left;
     margin-bottom: 30px;
   }
   
   .session-filter label {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
     margin-right: 10px;
   }
   
   .session-filter select {
-    font-size: 16px;
-    padding: 8px 12px;
-    border: 1px solid #ccc;
+    font-size: 15px;
+    padding: 6px;
+    border: 1px solid #000000;
     border-radius: 8px;
-    background-color: #fff;
-    transition: border-color 0.3s ease;
+    background: rgba(255, 255, 255, 0.5);
   }
   
   .session-filter select:focus {
-    border-color: #007bff;
+    border-color: #000000;
     outline: none;
   }
+
+
+
+
   
-  /* Conteneur pour chaque opération */
+/* Conteneur de base des opérations */
+.operation-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 15px;
+  padding: 20px;
+  padding-top: 5px;
+  margin-bottom: 20px;
+  transition: transform 0.2s ease-in-out;
+}
+
+/* 🟢 Ventes (Transactions) */
+.operation-container.credit {
+  border-left: 8px solid #0D9C0B;
+}
+
+/* 🔵 Frais de dépôt */
+.operation-container.deposit {
+  border-left: 8px solid #2196F3;
+}
+
+/* 🔴 Remboursements */
+.operation-container.debit {
+  border-left: 8px solid #f44336;
+}
+
+/* Effet au survol */
+.operation-container:hover {
+  transform: scale(1.02);
+}
+
+/* Informations de l'opération */
+.operation-info {
+  flex: 1;
+  font-size: 16px;
+  color: #000000;
+}
+
+.operation-info h3 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.operation-info ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 5px 0;
+}
+
+.operation-info li {
+  font-size: 14px;
+  margin-bottom: 2px;
+  color: #555;
+}
+
+/* Montant de l'opération */
+.operation-amount {
+  font-size: 1.4em;
+  font-weight: bold;
+  min-width: 120px;
+  text-align: right;
+}
+
+/* 🟢 Montant des ventes (Transaction) */
+.operation-amount.credit {
+  color: #0D9C0B;
+}
+
+/* 🔵 Montant des frais de dépôt */
+.operation-amount.deposit {
+  color: #2196F3;
+}
+
+/* 🔴 Montant des remboursements */
+.operation-amount.debit {
+  color: #f44336;
+}
+
+/* Responsivité */
+@media (max-width: 768px) {
   .operation-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: rgba(255, 255, 255, 0.5);
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-    border-radius: 15px;
-    padding: 15px 20px;
-    margin-bottom: 20px;
-    transition: transform 0.3s ease-in-out;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 15px;
   }
-  
-  .operation-container:hover {
-    transform: scale(1.03);
-    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-  }
-  
-  /* Informations de l'opération */
-  .operation-info {
-    flex: 1;
-  }
-  
-  .operation-info h3 {
-    font-size: 18px;
-    font-weight: 600;
-    color: #333;
-    margin: 0 0 5px;
-  }
-  
-  .operation-info p {
-    font-size: 14px;
-    color: #555;
-    margin: 2px 0;
-  }
-  
-  /* Montant de l'opération */
+
   .operation-amount {
-    font-size: 1.2em;
-    font-weight: bold;
-    margin-left: 20px;
+    margin-top: 10px;
+    align-self: flex-end;
   }
-  
-  .operation-amount.credit {
-    color: #4caf50; /* Vert pour crédit */
-  }
-  
-  .operation-amount.debit {
-    color: #f44336; /* Rouge pour débit */
-  }
+}
+
+
   
   /* Message en cas d'absence de données */
   .no-data {
@@ -120,18 +168,37 @@ body {
     font-style: italic;
     margin-top: 20px;
   }
+
   
-  /* Responsivité */
-  @media (max-width: 768px) {
-    .operation-container {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-  
-    .operation-amount {
-      margin-left: 0;
-      margin-top: 10px;
-      align-self: flex-end;
-    }
-  }
-  
+  /* Organisation des filtres */
+.filters-container {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+  align-items: center;
+  max-width: 500px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.session-filter, .operation-filter {
+  flex: 1;
+  font-family: 'Poppins', sans-serif;
+}
+
+.session-filter label, .operation-filter label {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 5px;
+  display: block;
+  font-family: 'Poppins', sans-serif;
+}
+
+.session-filter select, .operation-filter select {
+  font-size: 15px;
+  padding: 6px;
+  width: 100%;
+  border: 1px solid #000000;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.5);
+  font-family: 'Poppins', sans-serif;
+}

@@ -3,91 +3,123 @@ body {
   overflow: visible;
 }
 
-/* Style global */
+body {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* Rapproche les session-cards du titre */
 h2 {
+  margin-top: 30px;
+  margin-bottom: 10px;  /* Réduit l’espace sous le titre */
   text-align: center;
-  margin-top: 20px;
-  font-family: 'Poppins', sans-serif;
+  font-size: 30px;
 }
 
-/* Bouton pour créer une session */
-.create-session-button {
-  display: block;
-  margin: 0 auto 20px;
-  padding: 10px 20px;
-  font-family: 'Poppins', sans-serif;
-  font-weight: 600;
-  font-size: 18px;
-  background-color: rgba(255, 255, 255, 0.5);
-  border: 1px solid #000000;
-  border-radius: 20px;
-  cursor: pointer;
-}
-
-.create-session-button:hover {
-  background-color: #f0e5d8;
-}
-
-/* Conteneur général */
+/* Conteneur principal des sessions */
 .sessions-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 20px;
-  padding: 20px;
+  grid-template-columns: repeat(3, 1fr); /* Forcer 3 colonnes */
+  gap: 30px; /* Espacement plus équilibré */
+  padding: 0 100px;
+  justify-content: center; /* Centre les cartes si elles sont en sous-nombre */
+  margin-top: 30px;
+  margin-bottom: 100px;
 }
 
-/* Carte pour chaque session */
+/* Effet au survol de la session */
 .session-card {
   background: rgba(255, 255, 255, 0.5);
-  border: 2px solid #000000;
+  border: 1px solid #000000;
   border-radius: 20px;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   padding: 20px;
   text-align: left;
   font-family: 'Poppins', sans-serif;
+  transition: transform 0.2s ease-in-out;
+  cursor: pointer;
 }
 
-/* Sessions ouvertes */
-.session-ouverte {
-  border-color: green;
+.session-card:hover {
+  transform: scale(1.02);
 }
 
-/* Sessions à venir */
-.session-aVenir {
-  border-color: blue;
+/* Alignement des boutons */
+.session-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  
 }
 
-/* Sessions clôturées */
-.session-cloturee {
-  border-color: red;
-}
-
-/* Autres styles */
+/* Titres en noir */
 .session-title {
   font-weight: 600;
   font-size: 20px;
   margin-bottom: 10px;
+  color: black;
 }
 
-.session-actions {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 15px;
+/* Styles pour afficher "Status :" en noir et le mot de statut en couleur */
+.session-status {
+  font-weight: 600;
+  font-size: 16px;
+  margin-top: 5px;
+  color: black; /* "Status :" reste noir */
 }
 
-.session-button {
-  width: 100px;
+.session-status span {
+  font-weight: 300;
+}
+
+.session-ouverte .session-status span {
+  color: #0D9C0B; /* Le mot "En cours" en vert */
+}
+
+.session-aVenir .session-status span {
+  color: #238FF2; /* Le mot "À venir" en bleu */
+}
+
+.session-cloturee .session-status span {
+  color: #FF6E8E; /* Le mot "Clôturée" en rouge */
+}
+
+/* Boutons */
+.catalogue-button {
+  width: 120px;
   padding: 10px;
   font-size: 18px;
   font-weight: 600;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
   color: #000000;
-  background: #FFFFFF;
+  background: #ffffff;
   border: 1px solid #000000;
   border-radius: 20px;
   cursor: pointer;
+  transition: transform 0.2s ease-in-out; /* Animation de transformation */
 }
 
-.session-button:hover {
-  background-color: #f0e5d8;
+.catalogue-button:hover {
+  transform: scale(1.05); /* Augmente légèrement la taille */
 }
+
+.delete-link {
+    display: inline-block;
+    padding: 0.3rem 0.5rem; /* Taille contrôlée */
+    margin: 0;
+    color: #FF3126;
+    text-decoration: underline;
+    font-size: 1.2rem;
+    font-weight: bold;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out; /* Animation de transformation */
+}
+
+.delete-link:hover{
+    transform: scale(1.05); /* Augmente légèrement la taille */
+}
+
+

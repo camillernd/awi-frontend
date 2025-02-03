@@ -1,92 +1,107 @@
 <app-navbar></app-navbar>
 
 <div class="seller-detail-container">
-  <h2>Détails du Vendeur</h2>
+  <div class="title-container">
+    <button class="back-button" (click)="goBack()">&larr;</button>
+    <h2 class="page-title">Détails du Vendeur</h2>
+  </div>
 
-  <!-- Section Informations Vendeur -->
   <div *ngIf="seller" class="seller-info-container">
-    <p><strong>Nom :</strong> {{ seller.name }}</p>
-    <p><strong>Email :</strong> {{ seller.email }}</p>
-    <p><strong>Téléphone :</strong> {{ seller.phone }}</p>
-    <p><strong>Montant dû :</strong> {{ seller.amountOwed | currency }}</p>
+    <div *ngIf="!isEditing">
+      <p><strong>Nom :</strong> {{ seller.name }}</p>
+      <p><strong>Email :</strong> {{ seller.email }}</p>
+      <p><strong>Téléphone :</strong> {{ seller.phone }}</p>
+      <p><strong>Montant dû :</strong> {{ seller.amountOwed | currency }}</p>
 
-    <button
-      class="refund-button"
-      (click)="refundSeller()"
-      [disabled]="seller.amountOwed === 0 || !currentSession"
-    >
-      Rembourser
-    </button>
+      <div class="button-container">
+        <button class="edit-button" (click)="editSeller()">Modifier</button>
+        <button class="delete-button" (click)="confirmDelete()">Supprimer</button>
+        <button class="refund-button" (click)="refundSeller()" [disabled]="seller.amountOwed === 0">Rembourser</button>
+      </div>
+    </div>
 
-    <button class="edit-button" (click)="editSeller()">Modifier</button>
-    <button class="delete-button" (click)="deleteSeller()">Supprimer</button>
-  </div>
+    <div *ngIf="isEditing" class="edit-form">
+      <label>Nom</label>
+      <input [(ngModel)]="seller.name" />
 
-  <!-- Mode édition -->
-  <div *ngIf="isEditing" class="editing-section">
-    <label>Nom</label>
-    <input [(ngModel)]="seller.name" />
+      <label>Email</label>
+      <input [(ngModel)]="seller.email" />
 
-    <label>Email</label>
-    <input [(ngModel)]="seller.email" />
+      <label>Téléphone</label>
+      <input [(ngModel)]="seller.phone" />
 
-    <label>Téléphone</label>
-    <input [(ngModel)]="seller.phone" />
+      <label>Montant dû</label>
+      <input [(ngModel)]="seller.amountOwed" type="number" />
 
-    <label>Montant dû</label>
-    <input [(ngModel)]="seller.amountOwed" type="number" />
-
-    <button class="save-button" (click)="saveChanges()">Enregistrer</button>
-    <button class="cancel-button" (click)="cancelEdit()">Annuler</button>
-  </div>
-
-  <!-- Message de confirmation ou d'erreur -->
-  <div *ngIf="refundMessage" class="refund-message">
-    {{ refundMessage }}
-  </div>
-  <div *ngIf="errorMessage" class="error-message">
-    {{ errorMessage }}
-  </div>
-
-  <!-- Section Boutons -->
-  <div class="action-buttons-container">
-    <button (click)="showCategory('games')" [class.active]="selectedCategory === 'games'">
-      Jeux déposés
-    </button>
-    <button (click)="showCategory('transactions')" [class.active]="selectedCategory === 'transactions'">
-      Transactions (ventes)
-    </button>
-    <button (click)="showCategory('refunds')" [class.active]="selectedCategory === 'refunds'">
-      Remboursements
-    </button>
-  </div>
-
-  <!-- Contenu Dynamique -->
-  <div *ngIf="selectedCategory === 'games'" class="category-container">
-    <h3>Jeux déposés</h3>
-    <div *ngFor="let game of depositedGames" class="item-container">
-      <p><strong>Nom :</strong> {{ game.gameDescriptionId?.name }}</p>
-      <p><strong>Prix :</strong> {{ game.salePrice | currency }}</p>
-      <p><strong>Session :</strong> {{ game.sessionId?.name }}</p>
+      <div class="button-container-modif">
+        <button class="save-button" (click)="saveChanges()">Enregistrer</button>
+        <button class="cancel-button" (click)="cancelEdit()">Annuler</button>
+      </div>
     </div>
   </div>
+
+  <div class="action-buttons-container">
+    <button (click)="showCategory('games')" [class.active]="selectedCategory === 'games'">Jeux déposés</button>
+    <button (click)="showCategory('transactions')" [class.active]="selectedCategory === 'transactions'">Transactions</button>
+    <button (click)="showCategory('refunds')" [class.active]="selectedCategory === 'refunds'">Remboursements</button>
+    <!-- Message d'erreur si aucune session active -->
+    <p *ngIf="!currentSession" class="error-message">
+      Impossible de rembourser : aucune session active en cours.
+    </p>
+  </div>
+
+  <div *ngIf="selectedCategory === 'games'" class="category-container">
+    <h3>Jeux déposés</h3>
+    <div *ngIf="depositedGames.length > 0; else noGames">
+      <div *ngFor="let game of depositedGames" class="item-container">
+        <p><strong>Nom :</strong> {{ game.gameDescriptionId?.name || 'Nom inconnu' }}</p>
+        <p><strong>Prix :</strong> {{ game.salePrice | currency }}</p>
+        <p><strong>Session :</strong> {{ game.sessionId?.name || 'Session inconnue' }}</p>
+      </div>
+    </div>
+    <ng-template #noGames>
+      <p>Aucun jeu déposé pour ce vendeur.</p>
+    </ng-template>
+  </div>
+
+
 
   <div *ngIf="selectedCategory === 'transactions'" class="category-container">
     <h3>Transactions</h3>
     <div *ngFor="let transaction of transactions" class="item-container">
-      <p><strong>Nom du Jeu :</strong> {{ transaction.labelId?.gameDescriptionId?.name }}</p>
-      <p><strong>Prix de Vente :</strong> {{ transaction.labelId?.salePrice | currency }}</p>
+      <p><strong>Jeu :</strong> {{ transaction.labelId?.gameDescriptionId?.name }}</p>
+      <p><strong>Prix de vente :</strong> {{ transaction.labelId?.salePrice | currency }}</p>
       <p><strong>Client :</strong> {{ transaction.clientId?.name }}</p>
-      <p><strong>Date de la Transaction :</strong> {{ transaction.transactionDate | date }}</p>
     </div>
   </div>
+
 
   <div *ngIf="selectedCategory === 'refunds'" class="category-container">
     <h3>Remboursements</h3>
     <div *ngFor="let refund of refunds" class="item-container">
-      <p><strong>Montant :</strong> {{ refund.refundAmount | currency }}</p>
-      <p><strong>Session :</strong> {{ refund.sessionId?.name }}</p>
-      <p><strong>Date :</strong> {{ refund.refundDate | date }}</p>
+        <p><strong>Montant :</strong> {{ refund.refundAmount | currency }}</p>
+        <p><strong>Session :</strong> {{ refund.sessionId?.name }}</p>
+        <p><strong>Date :</strong> {{ refund.refundDate | date }}</p>
+    </div>
+    <ng-template #noRefunds>
+      <p>Aucun remboursement enregistré pour ce vendeur.</p>
+    </ng-template>
+  </div>
+</div>
+
+<!-- Modale de confirmation -->
+<div *ngIf="showDeleteConfirmation" class="modal-overlay">
+  <div class="modal">
+    <h3>Confirmer la suppression</h3>
+    <p>Êtes-vous sûr de vouloir supprimer <strong>{{ seller.name }}</strong> ?</p>
+
+    <div class="modal-buttons">
+      <button class="confirm-button" (click)="confirmDeleteSeller()">Oui, supprimer</button>
+      <button class="cancel-delete-button" (click)="showDeleteConfirmation = false">Annuler</button>
     </div>
   </div>
+</div>
+
+<div *ngIf="refundMessage" class="refund-message">
+  {{ refundMessage }}
 </div>

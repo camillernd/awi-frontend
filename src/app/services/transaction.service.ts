@@ -22,5 +22,10 @@ export class TransactionService {
   getTransactionsBySellerId(sellerId: string): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/seller/${sellerId}`);
   }
+
+  getTransactionsByClientId(clientId: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/client/${clientId}`);
+  }
+  
   
 }

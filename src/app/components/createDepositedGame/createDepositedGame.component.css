@@ -1,34 +1,56 @@
+/* -------------------------------------------------------------------
+   🌟 Styles globaux
+------------------------------------------------------------------- */
 body {
   overflow: visible;
   font-family: 'Poppins', sans-serif;
   background-color: #fdf3e7;
 }
 
-/* Structure principale */
+/* -------------------------------------------------------------------
+   📌 Conteneur principal
+------------------------------------------------------------------- */
 .page-container {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin: 50px auto;
-  padding: 20px;
-  max-width: 1200px;
+  margin: 0px auto;
+  padding: 40px;
+  max-width: 1000px;
   background: transparent;
 }
 
-/* Conteneur gauche */
-.left-container {
-  flex: 1;
-  margin-right: 50px;
+/* -------------------------------------------------------------------
+   🏷️ TITRE PRINCIPAL : "Déposer un jeu"
+------------------------------------------------------------------- */
+.page-title {
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+  font-size: 30px;
+  font-weight: bold;
+  margin-top: 30px; /* 🔺 Ramène le titre plus haut */
 }
 
-/* Section Vendeur */
+/* -------------------------------------------------------------------
+   📌 Conteneur GAUCHE : Informations sur le vendeur, la session et les totaux
+------------------------------------------------------------------- */
+.left-container {
+  flex: 1;
+  margin-right: 30px;
+}
+
+/* ✅ Section Vendeur */
 .vendeur-container {
   margin-bottom: 20px;
   padding: 20px;
   background: rgba(255, 255, 255, 0.5);
   border: 1px solid #000000;
   border-radius: 20px;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  transition: transform 0.2s ease-in-out;
+}
+
+.vendeur-container:hover {
+  transform: scale(1.02);
 }
 
 .vendeur-container h3 {
@@ -37,6 +59,223 @@ body {
   font-weight: bold;
   color: #000000;
   margin-bottom: 20px;
+}
+
+
+
+
+/* ✅ Section Session */
+.session-container {
+  margin-bottom: 20px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid #000000;
+  border-radius: 20px;
+  transition: transform 0.2s ease-in-out;
+}
+
+.session-container:hover {
+  transform: scale(1.02);
+}
+
+.session-container h3 {
+  text-align: center;
+  font-size: 27px;
+  font-weight: bold;
+  color: #000000;
+  margin-bottom: 20px;
+  margin-top: 5px;
+}
+
+/* ✅ Section Totaux */
+.totals-container {
+  margin-bottom: 20px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid #000000;
+  border-radius: 20px;
+  transition: transform 0.2s ease-in-out;
+}
+
+.totals-container:hover {
+  transform: scale(1.02);
+}
+
+
+.totals-container h3 {
+  text-align: center;
+  font-size: 27px;
+  font-weight: bold;
+  color: #000000;
+  margin-bottom: 15px;
+  margin-top: 5px;
+}
+
+/* ✅ Bouton Valider */
+.submit-button-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.submit-button {
+  width: 150px;
+  padding: 10px;
+  background: #0D9C0B;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 500;
+  border: 1px solid #0D9C0B;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  transition: transform 0.2s ease-in-out;
+}
+
+.submit-button:hover {
+  background: #0D9C0B;
+  color: #ffffff;
+  transform: scale(1.05);
+}
+
+/* -------------------------------------------------------------------
+   📌 Conteneur DROIT : Liste des jeux + Formulaire de saisie
+------------------------------------------------------------------- */
+.right-container {
+  flex: 2;
+  padding: 0px;
+  background: rgba(255, 255, 255, 0);
+  border: 0px solid #000000;
+  border-radius: 20px;
+  max-width: 600px;
+}
+
+
+.right-container h3 {
+  text-align: center;
+  font-size: 27px;
+  font-weight: bold;
+  color: #000000;
+  margin-bottom: 30px;
+  margin-top: -30px;
+}
+
+/* 🎯 🔺 Centrer le bouton "Supprimer" */
+.remove-button {
+  display: block; /* Permet de le centrer */
+  margin: 400px; /* 🔺 Centrage horizontal */
+  background: #FF3126;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 15px;
+  border: 1px solid #FF3126;
+  border-radius: 20px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  transition: transform 0.2s ease-in-out; /* Animation de transformation */
+  margin-top: 30px;
+  margin-bottom: -30px;
+
+}
+
+.remove-button:hover {
+  background: #FF3126;
+  color: #fff;
+  border: 1px solid #ffffff;
+  transform: scale(1.05); /* Augmente légèrement la taille */
+}
+
+
+
+
+
+
+/* ✅ Style de chaque conteneur de jeu */
+.right-container .game-container {
+  margin-bottom: 40px;
+  padding: 50px;
+  border: 1px solid #000000;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.5);
+  transition: transform 0.2s ease-in-out;
+  width: 500px;
+}
+
+.right-container .game-container:hover {
+  transform: scale(1.02);
+}
+
+/* ✅ Inputs et sélecteurs */
+.right-container select {
+  width: 60%; /* Ajustement de la largeur */
+  height: 30px; 
+  margin-bottom: 15px;
+  padding: 5px;
+  border: 1px solid #000000;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.5);
+  font-size: 15px;
+  color: #000000;
+}
+
+.right-container input[type="number"] {
+  width: 20%; /* Ajustement de la largeur */
+  height: 18px; 
+  margin-bottom: 15px;
+  padding: 5px;
+  border: 1px solid #000000;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.5);
+  font-size: 15px;
+  color: #000000;
+}
+
+.right-container label {
+  display: block;
+  font-size: 17px;
+  margin-bottom: 3px;
+  color: #000000;
+}
+
+/* 🎯 🔺 Centrer le bouton "+ Ajouter un jeu" */
+.add-button {
+  display: block; /* Permet de le centrer */
+  margin: 20px auto; /* 🔺 Centrage horizontal */
+  background: rgba(255, 255, 255, 0.5);
+  color: #000000;
+  font-size: 15px;
+  border: 1px solid #000000;
+  border-radius: 20px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-weight: 500;
+  font-family: 'Poppins', sans-serif;
+  transition: transform 0.2s ease-in-out;
+}
+
+.add-button:hover {
+  transform: scale(1.05);
+}
+
+
+
+/* Section Vendeur */
+.vendeur-container {
+  margin-bottom: 20px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid #000000;
+  border-radius: 20px;
+}
+
+.vendeur-container h3 {
+  text-align: center;
+  font-size: 27px;
+  font-weight: bold;
+  color: #000000;
+  margin-bottom: 20px;
+  margin-top: 5px;
 }
 
 .vendeur-container select,
@@ -54,166 +293,79 @@ body {
   display: block;
 }
 
-/* Section Session */
-.session-container {
-  margin-bottom: 20px;
-  padding: 20px;
-  background: rgba(255, 255, 255, 0.5);
-  border: 1px solid #000000;
-  border-radius: 20px;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-}
-
-.session-container h3 {
-  text-align: center;
-  font-size: 27px;
-  font-weight: bold;
-  color: #000000;
-  margin-bottom: 20px;
-}
-
-.session-container select {
-  width: 80%;
-  height: 40px;
-  margin-bottom: 20px;
-  padding: 10px;
-  border: 1px solid #000000;
-  border-radius: 4px;
-  background: rgba(255, 255, 255, 0.5);
-  font-size: 17px;
-  font-style: italic;
-  color: #000000;
-}
-
-/* Section Totaux */
-.totals-container {
-  margin-bottom: 20px;
-  padding: 20px;
-  background: rgba(255, 255, 255, 0.5);
-  border: 1px solid #000000;
-  border-radius: 20px;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-}
-
-.totals-container h3 {
-  text-align: center;
-  font-size: 27px;
-  font-weight: bold;
-  color: #000000;
-  margin-bottom: 15px;
-}
-
-.totals-container p {
-  font-size: 20px;
-  font-weight: 300;
-  margin: 5px 0;
-  color: #000000;
-}
-
-/* Bouton Valider */
-.submit-button-container {
-  text-align: center;
-  margin-top: 20px;
-}
-
-.submit-button {
-  width: 150px;
-  padding: 10px;
-  background: rgba(255, 151, 170, 0.61);
-  color: #000000;
-  font-size: 20px;
-  font-weight: 500;
-  border: 1px solid #000000;
-  border-radius: 20px;
+/* 🌟 Personnalisation de la case à cocher "Disponible à la vente" */
+input[type="checkbox"] {
+  width: 20px; /* ✅ Augmente la taille */
+  height: 20px; /* ✅ Augmente la taille */
+  accent-color: #238FF2; /* 🎨 Change la couleur de la case (bleu ici) */
   cursor: pointer;
-  transition: 0.3s;
+  transform: translateY(3px); /* 🔻 Abaisse légèrement la case */
+  transition: transform 0.2s ease-in-out;
 }
 
-.submit-button:hover {
-  background: rgba(255, 49, 38, 0.8);
-  color: #ffffff;
+/* Effet au survol */
+input[type="checkbox"]:hover {
+  transform: scale(1.1) translateY(3px); /* 🌀 Effet zoom léger au survol */
 }
 
-/* Conteneur droit */
-.right-container {
-  flex: 2;
-  padding: 20px;
-  background: rgba(255, 255, 255, 0.5);
-  border: 1px solid #000000;
-  border-radius: 20px;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-}
-
-.right-container h3 {
-  text-align: center;
-  font-size: 27px;
-  font-weight: bold;
-  color: #000000;
-  margin-bottom: 30px;
-}
-
-.right-container .game-container {
-  margin-bottom: 40px;
-  padding: 50px;
-  border: 1px solid #000000;
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.5);
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-}
-
-.right-container select,
-.right-container input[type="number"] {
-  width: 80%; /* Réduction drastique de la largeur */
-  height: 30px; /* Réduction drastique de la hauteur */
-  margin-bottom: 15px;
-  padding: 5px;
-  border: 1px solid #000000;
-  border-radius: 4px;
-  background: rgba(255, 255, 255, 0.5);
-  font-size: 15px;
-  font-style: italic;
-  color: #000000;
-}
-
-.right-container label {
+/* 🌟 Changer la couleur du cochage de noir à blanc */
+input[type="checkbox"]::before {
+  content: "";
   display: block;
-  font-size: 17px;
-  font-style: italic;
-  margin-bottom: 10px;
-  color: #000000;
+  width: 16px;
+  height: 16px;
+  color: white; /* ✅ Change la couleur du cochage en blanc */
+  border-radius: 3px;
+  visibility: hidden;
 }
 
-/* Boutons */
-.add-button {
-  background: rgba(255, 151, 170, 0.61);
-  color: #000000;
-  font-size: 20px;
-  border: 1px solid #000000;
-  border-radius: 10px;
-  padding: 10px 20px;
-  cursor: pointer;
-  transition: 0.3s;
+/* Appliquer le blanc uniquement quand la case est cochée */
+input[type="checkbox"]:checked {
+  background-color: #238FF2; /* ✅ Garde la case en bleu */
 }
 
-.add-button:hover {
-  background: rgba(255, 49, 38, 0.8);
-  color: #ffffff;
+input[type="checkbox"]:checked::before {
+  visibility: visible;
 }
 
-.remove-button {
-  background: rgba(255, 151, 170, 0.61);
-  color: #000000;
-  font-size: 20px;
-  border: 1px solid #000000;
-  border-radius: 10px;
-  padding: 10px 20px;
-  cursor: pointer;
+
+/* 🌟 Style des liens sous les containers */
+.link-text {
   margin-top: 10px;
-  transition: 0.3s;
+  font-weight: 500;
+  margin-top: 5px;
 }
 
-.remove-button:hover {
-  background: rgba(255, 49, 38, 0.8);
-  color: #ffffff;
+.link-text a {
+  font-size: 14px;
+  font-style: italic;
+  text-decoration: underline;
+  color: #000000;
+  cursor: pointer;
+  transition: color 0.3s ease-in-out;
+}
+
+.link-text a:hover {
+  color: #3e3e3e;
+}
+
+.seller-input {
+  width: 80%;
+  padding: 8px;
+  font-size: 15px;
+  border-radius: 5px;
+  border: 1px solid #000;
+  outline: none;
+}
+
+.game-input {
+  width: 80%;
+  padding: 8px;
+  font-size: 15px;
+  border-radius: 5px;
+  border: 1px solid #000;
+  outline: none;
+  background: rgba(255, 255, 255, 0.5);
+  font-style: italic;
 }
 

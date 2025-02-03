@@ -20,11 +20,12 @@ export class CreateGameDescriptionComponent implements OnInit {
     photoURL: '',
     minPlayers: 1,
     maxPlayers: 1,
-    ageRange: 'Child',
+    ageRange: '5-10', //val par def
   };
 
   firstName: string | null = null;
   lastName: string | null = null;
+  successMessage: string | null = null; // 🔹 Message de succès
 
   constructor(
     private gameDescriptionService: GameDescriptionService,
@@ -50,7 +51,14 @@ export class CreateGameDescriptionComponent implements OnInit {
       .subscribe({
         next: () => {
           console.log('Description du jeu créée avec succès.');
-          this.router.navigate(['/gameDescriptions']);
+          
+          // 🔹 Afficher un message de succès
+          this.successMessage = "La description du jeu a été créée avec succès !";
+          
+          // 🔹 Redirection après 3 secondes
+          setTimeout(() => {
+            this.router.navigate(['/home']);
+          }, 3000);
         },
         error: (error) => {
           console.error('Erreur lors de la création de la description du jeu', error);

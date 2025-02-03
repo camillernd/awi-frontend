@@ -1,156 +1,333 @@
 body {
-    font-family: 'Poppins', sans-serif;
-    background-color: #fdf3e7;
-    margin: 0;
-    padding: 0;
-  }
-  
-  /* Page principale */
-  .page-container {
-    padding: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-  
-  .page-title {
-    text-align: center;
-    font-size: 32px;
-    font-weight: 600;
-    margin-bottom: 30px;
-  }
+  font-family: 'Poppins', sans-serif;
+  background-color: #fdf3e7;
+  margin: 0;
+  padding: 0;
+}
 
-  .filters-container {
-    display: flex;
-    justify-content: space-around;
-    margin: 20px;
-  }
-  
-  .filters-container label,
-  .filters-container select {
-    font-family: 'Poppins', sans-serif;
-    margin: 0 10px;
-  }
-  
-  .filters-container button {
-    padding: 5px 10px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .filters-container button:hover {
-    background-color: #0056b3;
-  }
-  
-  
-  /* Liste des jeux déposés */
-  .game-list {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-  
-  /* Carte d'un jeu */
-  .game-card {
-    display: flex;
-    justify-content: space-between;
-    padding: 20px;
-    background: rgba(255, 255, 255, 0.5);
-    border: 1px solid #000000;
-    border-radius: 20px;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  }
-  
-  /* Section des infos */
-  .game-info {
-    display: flex;
-    justify-content: space-between;
-    flex: 1;
-  }
-  
-  .seller-info,
-  .deposit-info {
-    flex: 1;
-  }
-  
-  .seller-info h3,
-  .deposit-info h3 {
-    font-size: 22px;
-    font-weight: 600;
-    margin-bottom: 10px;
-  }
-  
-  .seller-info p,
-  .deposit-info p {
-    font-size: 18px;
-    margin: 5px 0;
-  }
-  
-  /* Disponibilité */
-  .availability {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    flex: 0.5;
-  }
-  
-  .availability h3 {
-    font-size: 22px;
-    font-weight: 600;
-    margin-bottom: 15px;
-  }
-  
-  .toggle-switch {
-    width: 180px;
-    height: 40px;
-    text-align: center;
-    line-height: 40px;
-    font-size: 18px;
-    font-weight: 500;
-    color: white;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .toggle-switch.available {
-    background-color: rgba(13, 156, 11, 0.7);
-  }
-  
-  .toggle-switch.not-available {
-    background-color: rgba(255, 49, 38, 0.8);
-  }
-  
-  .deposit-info p strong {
-    color: rgba(0, 0, 0, 0.8);
-  }
-  
-  .deposit-info p strong.sold {
-    color: red; /* Exemple pour indiquer le statut vendu en rouge */
-  }
+/* Page principale */
+.page-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
 
-  .toggle-switch.sold {
-    background-color: #b0b0b0; /* Fond gris */
-    color: white;
-    cursor: not-allowed; /* Curseur non interactif */
-    border: 1px solid #808080;
-  }
-  
-  /* Session clôturée (noir) */
-.toggle-switch.closed {
-  background-color: rgba(0, 0, 0, 0.8); /* Fond noir */
-  color: white; /* Texte blanc */
-  cursor: not-allowed; /* Curseur non interactif */
-  border: 1px solid #333333; /* Bordure gris foncé */
+/* Conteneur principal */
+/* Forcer la même position du titre */
+.page-title {
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+  font-size: 30px;
+  font-weight: bold;
+  margin-top: 10px; /* Assure la même marge */
+  margin-bottom: 25px; /* Même espace avant le champ de recherche */
+}
+
+.filters-container {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.filters-container label {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* Liste des jeux déposés */
+.game-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 colonnes */
+  gap: 40px;
+  justify-content: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Conteneur principal de chaque jeu */
+.game-card {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid #000000;
+  border-radius: 20px;
+  min-height: 400px; /* Hauteur minimale pour uniformiser */
+  align-items: stretch; /* Tous les éléments remplissent le conteneur */
+  transition: transform 0.2s ease-in-out;
+}
+
+.game-card:hover {
+  transform: scale(1.02);
+}
+
+/* Titre du jeu et prix */
+.game-header {
+  font-size: 22px;
+  font-weight: 700;
+  text-align: center;
+  padding-bottom: 10px;
+  height: 60px; /* Hauteur fixe pour éviter les différences de taille */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Conteneur aligné pour le contenu du jeu */
+.game-body {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+
+/* Infos du jeu */
+.game-info {
+  flex: 1;
+}
+
+.game-info h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.game-info p {
+  font-size: 16px;
+  margin: 3px 0;
+}
+
+
+
+
+
+
+/* Image + Disponibilité */
+.game-image {
+  flex: 0.5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* Conteneur blanc pour l'image */
+.image-container {
+  background-color: #ffffff;
+  border-radius: 15px;
+  width: 150px;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+  transition: transform 0.2s ease-in-out;
+}
+
+.image-container:hover {
+  transform: scale(1.05);
+}
+
+.image-container img {
+  width: 80%;
+  height: auto;
+  object-fit: contain;
+}
+
+
+
+
+
+
+/* Disponibilité sous l'image */
+.availability {
+  margin-top: 5px;
+}
+
+.availability h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+
+
+
+
+
+
+
+
+.game-image img {
+  width: 120px; /* Taille contrôlée */
+  height: auto;
+  max-height: 120px; /* Empêcher que ça devienne trop grand */
+  border-radius: 10px;
+  object-fit: contain;
+}
+
+
+/* Boutons toggle-switch */
+.toggle-switch {
+  width: 120px;
+  height: 35px;
+  text-align: center;
+  line-height: 35px;
+  font-size: 16px;
+  font-weight: 500;
+  color: white;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  transition: transform 0.2s ease-in-out;
+}
+
+
+
+.toggle-switch:hover {
+  transform: scale(1.05);
+}
+
+
+/* Session ouverte (vert) */
+.session-open {
+  color: #0D9C0B;
 }
 
 /* Session à venir (bleu) */
-.toggle-switch.upcoming {
-  background-color: rgba(0, 123, 255, 0.7); /* Fond bleu */
-  color: white; /* Texte blanc */
-  cursor: not-allowed; /* Curseur non interactif */
-  border: 1px solid #0056b3; /* Bordure bleu foncé */
+.session-upcoming {
+  color: #0056b3;
+}
+
+/* Session clôturée (rose) */
+.session-closed {
+  color: #FF6E8E;
+}
+
+/* A vendre ? Oui (vert) */
+.available {
+  background-color: rgba(13, 156, 11, 0.7);
+  color: white;
+}
+
+/* A vendre ? Non (rouge) */
+.not-available {
+  background-color: rgba(255, 49, 38, 0.8);
+  color: white;
+}
+
+/* Vendu ? Oui (gris) */
+.sold {
+  background-color: #b0b0b0;
+  color: white;
+  cursor: not-allowed;
+}
+
+/* Vendu ? Non (noir) */
+.not-sold {
+  background-color: black;
+  color: white;
+  cursor: not-allowed;
+}
+
+/* Espacement entre les sections */
+.seller-info, .session-info, .deposit-info {
+  margin-bottom: 15px;
+}
+
+/* Barre de recherche */
+.search-container {
+  display: flex;
+  justify-content: center; /* Centre l'input */
+  margin: 20px 0;
+}
+
+/* Uniformiser l'input de recherche */
+.search-input {
+  width: 31%; /* Même largeur */
+  padding: 10px;
+  font-family: "Poppins", sans-serif;
+  font-size: 13px; /* Même taille de texte */
+  font-weight: 200;
+  border-radius: 20px;
+  border: 1px solid #000;
+  outline: none;
+  background: rgba(255, 255, 255, 0.5);
+  box-shadow: 0px 3px 1px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+}
+
+.search-input::placeholder {
+  font-style: italic;
+  color: #888;
+}
+
+/* Conteneur des filtres */
+.filters-container {
+  display: flex;
+  justify-content: space-around;
+  gap: 15px;
+  margin: 20px 0;
+  align-items: center;
+}
+
+.filter-session:focus, .filter-session:hover {
+  background: rgba(255, 255, 255, 0); /* Effet similaire lors du survol */
+  border-color: #000;
+}
+
+/* Ajustement pour que l'alignement visuel soit parfait */
+.filters-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  align-items: center;
+}
+
+
+/* Conteneur des filtres */
+.filters-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin: 20px 0;
+  justify-content: flex-start; /* Aligné à gauche */
+}
+
+/* Conteneur de chaque filtre */
+.filter-group {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Labels harmonisés */
+.filter-group label {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 5px;
+  font-family: "Poppins", sans-serif;
+}
+
+/* Styles harmonisés pour les filtres */
+.filter-dropdown {
+  width: 250px;
+  padding: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 10px;
+  border: 1px solid #000;
+  background: rgba(255, 255, 255, 0.7);
+  font-family: "Poppins", sans-serif;
+  box-shadow: 0px 3px 1px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  outline: none;
+}
+
+/* Effet au survol et focus */
+.filter-dropdown:focus, .filter-dropdown:hover {
+  background: rgba(255, 255, 255, 1);
+  border-color: #000;
 }

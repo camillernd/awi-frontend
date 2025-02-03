@@ -18,7 +18,6 @@ import { ClientDetailComponent } from './components/clientDetail/clientDetail.co
 import { ManagersComponent } from './components/managers/managers.component';
 import { AdminsComponent } from './components/admins/admins.component';
 import { TransactionsComponent } from './components/transactions/transactions.component';
-import { SessionReportComponent } from './components/sessionReport/sessionReport.component';
 import { TreasuryComponent } from './components/treasury/treasury.component';
 import { CreateGameDescriptionComponent } from './components/createGameDescription/createGameDescription.component';
 
@@ -33,7 +32,6 @@ export const routes: Routes = [
   { path: 'depositedGames/:sessionId', component: DepositedGameComponent },
   { path: 'createDepositedGame', component: CreateDepositedGameComponent },
   { path: 'depositedGameDetail/:id', component: DepositedGameDetailComponent },
-  { path: 'session/:sessionId/report', component: SessionReportComponent },
   { path: 'depositedGamesAdmin', component: DepositedGamesAdminComponent},
   { path: 'checkout', component: CheckoutComponent},
   { path: 'sellers', component: SellersComponent},

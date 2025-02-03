@@ -1,31 +1,181 @@
 body {
   font-family: 'Poppins', sans-serif;
   background-color: #fdf3e7;
-  margin: 0;
-  padding: 0;
 }
 
 .page-container {
-  max-width: 1200px;
-  margin: 30px auto;
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
+  margin: 0px auto;
+  padding: 40px;
+  max-width: 1000px;
+  background: transparent;
 }
 
-.left-container,
-.right-container {
-  width: 48%;
+/* Titre de la page */
+.page-title-container {
+text-align: center;
+margin-top: 20px;
+}
+
+.page-title {
+font-size: 30px;
+font-weight: bold;
+color: #000000;
+margin-bottom: 0px;
+margin-top: 30px;
+font-family: 'Poppins', sans-serif;
+}
+
+
+
+
+
+.left-container {
+  flex: 1;
+  margin-right: 30px;
+}
+
+/* ✅ Section Vendeur */
+.client-container {
+  margin-bottom: 20px;
   padding: 20px;
-  background-color: rgba(255, 255, 255, 0.5);
-  border: 1px solid #000;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid #000000;
   border-radius: 20px;
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  transition: transform 0.2s ease-in-out;
 }
 
-h3 {
+.client-container:hover {
+  transform: scale(1.02);
+}
+
+.client-container h3 {
+  text-align: center;
   font-size: 20px;
   font-weight: bold;
-  margin-bottom: 10px;
+  color: #000000;
+  margin-bottom: 20px;
+}
+
+
+.client-container select,
+.client-container input[type="text"] {
+  width: 70%; /* Réduction drastique de la largeur */
+  height: 20px; /* Réduction drastique de la hauteur */
+  margin: 10px auto;
+  padding: 5px;
+  border: 1px solid #000000;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.5);
+  font-size: 15px;
+  font-style: italic;
+  color: #000000;
+  display: block;
+}
+
+
+
+
+/* 🌟 Style des liens sous les containers */
+.link-text {
+  margin-top: 10px;
+  font-weight: 500;
+  margin-top: 5px;
+}
+
+.link-text a {
+  font-size: 14px;
+  font-style: italic;
+  text-decoration: underline;
+  color: #000000;
+  cursor: pointer;
+  transition: color 0.3s ease-in-out;
+}
+
+.link-text a:hover {
+  color: #3e3e3e;
+}
+
+
+
+
+/* ✅ Section Total */
+.total-section {
+  margin-bottom: 20px;
+  padding: 0px;
+  background: rgba(255, 255, 255, 0);
+  border: 0px solid #000000;
+  border-radius: 20px;
+  text-align: center;
+  transition: transform 0.2s ease-in-out;
+  font-size: 27px;
+  font-weight: bold;
+}
+
+.total-section:hover {
+  transform: scale(1.02);
+}
+
+
+.total-section h3 {
+  text-align: center;
+  font-size: 27px;
+  font-weight: bold;
+  color: #000000;
+  margin-bottom: -30px;
+  margin-top: 0px;
+}
+
+
+
+
+
+
+
+
+
+
+
+/* ✅ Bouton Valider */
+.encaisser-section {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.finalize-button {
+  width: 150px;
+  padding: 10px;
+  background: #0D9C0B;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 500;
+  border: 1px solid #0D9C0B;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  transition: transform 0.2s ease-in-out;
+}
+
+.finalize-button:hover {
+  background: #0D9C0B;
+  color: #ffffff;
+  transform: scale(1.02);
+}
+
+
+
+
+
+
+
+
+.right-container {
+  width: 60%;
+  padding: 0px;
+  border-radius: 20px;
 }
 
 label {
@@ -34,132 +184,224 @@ label {
   margin-bottom: 5px;
 }
 
-input,
-select {
-  width: 100%;
-  padding: 5px;
-  margin-bottom: 10px;
-  border: 1px solid #000;
-  border-radius: 4px;
+
+.scan-section h3 {
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  color: #000000;
+  margin-bottom: 20px;
 }
 
 .scan-section {
   display: flex;
-  align-items: center;
-  margin-bottom: 20px;
+  flex-direction: column; /* Empile les éléments verticalement */
+  align-items: center; /* Centre le contenu horizontalement */
+  justify-content: space-between; /* Espacement uniforme */
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.5);
+  border: 1px solid #000;
+  border-radius: 20px;
+  width: 100%;
+  height: 150px; /* Ajuste la hauteur si nécessaire */
+  transition: transform 0.2s ease-in-out;
 }
 
+.scan-section:hover {
+  transform: scale(1.02);
+}
+
+
+/* Descendre l'input sous le titre */
 .scan-section input {
-  flex: 1;
-  padding: 5px;
-  margin-right: 10px;
+  width: 80%; /* Ajuste la largeur de l'input */
+  margin-top: 0px; /* Espace sous le titre */
+  padding: 8px;
   border: 1px solid #000;
   border-radius: 4px;
+  font-size: 16px;
+  font-style: italic;
 }
 
+/* Centrer le bouton en bas */
 .scan-section button {
-  padding: 5px 10px;
-  font-size: 14px;
-  font-weight: bold;
-  color: #fff;
-  background-color: rgba(13, 156, 11, 0.7);
-  border: none;
-  border-radius: 4px;
+  width: 100px;
+  padding: 7px;
+  background: #238FF2;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 500;
+  border: 1px solid #238FF2;
+  border-radius: 20px;
   cursor: pointer;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  transition: transform 0.2s ease-in-out;
+  margin-top: 13px;
+  margin-bottom: 10px;
 }
 
 .scan-section button:hover {
-  background-color: rgba(13, 156, 11, 1);
+  background: #238FF2;
+  color: #ffffff;
+  transform: scale(1.02);
 }
 
-/* Message d'erreur */
-.error-message {
-  color: #d9534f;
-  font-size: 14px;
-  margin-top: 10px;
+
+
+
+
+
+/* 📌 Style de la section Panier */
+.cart-section {
+  display: flex;
+  flex-direction: column; /* Empile les éléments verticalement */
+  align-items: center; /* Centre le contenu horizontalement */
+  padding: 20px;
+  border-radius: 20px;
+  width: 100%;
 }
 
-/* Détails des articles dans le panier */
+/* Abaisse les articles sous le titre */
+.cart-section h3 {
+  text-align: center;
+  margin-bottom: 15px;
+  font-size: 20px;
+}
+
+
+
+
+/* 📌 Style des articles dans le panier */
 .cart-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px;
-  border: 1px solid #000;
-  border-radius: 10px;
+  padding: 15px;
+  border-radius: 20px;
   background: rgba(255, 255, 255, 0.5);
-  margin-bottom: 10px;
+  border: 1px solid #000;
+  margin-bottom: 15px;
+  width: 90%;
+  position: relative;
+  box-sizing: border-box; /* ✅ Assure que le conteneur prend bien toute la largeur sans débordement */
+  transition: transform 0.2s ease-in-out;
 }
 
+.cart-item:hover{
+  transform: scale(1.02); /* ✅ Assure que le conteneur prend bien toute la largeur sans débordement */
+}
+
+/* 📌 Contenu du jeu (nom + infos + bouton) */
 .cart-item-details {
   display: flex;
-  gap: 20px;
+  flex-direction: column; /* Organisation en colonne */
+  justify-content: space-between;
+  width: 70%; /* Prend 70% de l’espace, laisse 30% pour l’image */
+  position: relative;
 }
 
+/* 📌 Nom du jeu : grand et en haut */
+.cart-item-details h4 {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+/* 📌 Infos du jeu en plus petit */
+.cart-item-details p {
+  font-size: 14px;
+  margin: 2px 0;
+}
+
+/* 📌 Conteneur pour bien aligner l’image */
+.cart-item-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+/* 📌 Image du jeu : tout à droite et centrée verticalement */
 .cart-item-image {
-  width: 80px;
-  height: 80px;
+  width: 190px;
+  height: 190px;
   object-fit: cover;
   border-radius: 10px;
+  margin-left: 15px; /* ✅ Espace entre l’image et le texte */
+  background-color: white; /* ✅ Ajoute un background blanc derrière l'image */
+  padding: 10px; /* ✅ Ajoute un peu d’espace autour de l’image */
 }
 
-
+/* 📌 Bouton "Supprimer" en bas à gauche, avec largeur réduite */
 .remove-item-button {
-  padding: 5px 10px;
-  font-size: 14px;
-  font-weight: bold;
-  color: #fff;
-  background-color: rgba(255, 49, 38, 0.8);
-  border: none;
-  border-radius: 5px;
+  width: 100px;
+  padding: 7px;
+  background: #FF3126;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 500;
+  border: 1px solid #FF3126;
+  border-radius: 20px;
   cursor: pointer;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  transition: transform 0.2s ease-in-out;
+  margin-top: 50px;
+  margin-bottom: 0px;
 }
 
 .remove-item-button:hover {
-  background-color: rgba(255, 49, 38, 1);
+  background-color: #FF3126;
+  transform: scale(1.02);
 }
 
 
-.add-item-button {
-  width: 100%;
-  padding: 10px;
-  font-size: 16px;
-  font-weight: bold;
-  color: #000;
-  background-color: rgba(35, 143, 242, 0.7);
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.add-item-button:hover {
-  background-color: rgba(35, 143, 242, 1);
-  color: #fff;
-}
 
 
-.item-input {
-  display: flex;
-  align-items: center;
-}
 
-.item-input input {
-  margin-right: 10px;
-}
 
-.add-item {
-  margin-top: 10px;
+
+
+
+.empty-cart-message {
   text-align: center;
-}
-
-.finalize-button {
-  width: 150px;
-  padding: 10px;
   font-size: 16px;
   font-weight: bold;
-  color: #fff;
-  background-color: rgba(13, 156, 11, 0.7);
-  border: none;
+  color: #FF6E8E;
+  margin-top: 10px;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 10px;
   border-radius: 10px;
-  cursor: pointer;
+  border: 1px solid #FF6E8E;
+  transition: transform 0.2s ease-in-out;
+}
+
+.empty-cart-message:hover {
+  transform: scale(1.02);
+}
+
+
+.success-message {
+  background-color: #d4edda;
+  color: #155724;
+  padding: 15px;
+  border-radius: 5px;
+  margin: 20px auto;
+  width: 80%;
+  text-align: center;
+  font-weight: bold;
+  border: 1px solid #c3e6cb;
+}
+
+.error-message {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 15px;
+  border-radius: 5px;
+  margin: 20px auto;
+  width: 80%;
+  text-align: center;
+  font-weight: bold;
+  border: 1px solid #f5c6cb;
 }

@@ -12,16 +12,11 @@ body {
 }
 
 .page-title {
-  font-size: 27px;
+  font-size: 30px;
   font-weight: bold;
   color: #000000;
-}
-
-.user-info {
-  font-size: 17px;
-  font-style: italic;
-  color: #000000;
-  margin-top: 5px;
+  margin-bottom: 0px;
+  margin-top: 30px;
 }
 
 /* Structure principale */
@@ -105,18 +100,23 @@ textarea {
 }
 
 .submit-button {
-  width: 200px;
+  width: 150px;
   padding: 15px;
   font-size: 20px;
   font-weight: bold;
+  background: #0D9C0B;
   color: #fff;
-  background: rgba(255, 151, 170, 0.61);
-  border: none;
+  border: 1px solid #ffffff;
   border-radius: 20px;
   cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  transition: transform 0.2s ease-in-out; /* Animation de transformation */
 }
 
 .submit-button:hover {
-  background: rgba(255, 49, 38, 0.8);
+  background: #0D9C0B;
   color: #fff;
+  border: 1px solid #ffffff;
+  transform: scale(1.05); /* Augmente légèrement la taille */
 }
+

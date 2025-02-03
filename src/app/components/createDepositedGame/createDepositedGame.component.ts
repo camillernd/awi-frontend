@@ -21,6 +21,11 @@ export class CreateDepositedGameComponent implements OnInit {
   selectedSession: any = null;
   sellers: any[] = [];
   gameDescriptions: any[] = [];
+  sellerInput: string = ''; // Valeur tapée par l'utilisateur
+  filteredSellers: any[] = []; // Liste des vendeurs filtrés
+  gameInput: string[] = [];
+  filteredGameDescriptions: any[][] = [];
+
 
   // Liste dynamique des jeux
   depositedGames: any[] = [
@@ -56,11 +61,25 @@ export class CreateDepositedGameComponent implements OnInit {
     this.sellerService.getAllSellers().subscribe({
       next: (sellers) => {
         this.sellers = sellers;
+        this.filteredSellers = sellers; // On initialise avec tous les vendeurs
       },
       error: (error) => console.error('Erreur lors du chargement des vendeurs', error),
     });
   }
 
+  filterSellerSuggestions(): void {
+    this.filteredSellers = this.sellers.filter(seller =>
+      seller.email.toLowerCase().includes(this.sellerInput.toLowerCase())
+    );
+  }
+
+  onSellerSelectByEmail(): void {
+    const foundSeller = this.sellers.find(seller => seller.email === this.sellerInput);
+    if (foundSeller) {
+      this.selectedSeller = foundSeller;
+    }
+  }
+  
   loadOpenSession(): void {
     this.sessionService.getActiveSessions().subscribe({
       next: (sessions) => {
@@ -79,10 +98,29 @@ export class CreateDepositedGameComponent implements OnInit {
     this.gameDescriptionService.getAllGameDescriptions().subscribe({
       next: (gameDescriptions) => {
         this.gameDescriptions = gameDescriptions;
+        this.filteredGameDescriptions = this.depositedGames.map(() => gameDescriptions);
       },
       error: (error) => console.error('Erreur lors du chargement des descriptions de jeu', error),
     });
   }
+
+
+  filterGameSuggestions(index: number): void {
+    this.filteredGameDescriptions[index] = this.gameDescriptions.filter(game =>
+      game.name.toLowerCase().includes(this.gameInput[index]?.toLowerCase() || '')
+    );
+  }
+
+  onGameSelectByName(index: number): void {
+    const foundGame = this.gameDescriptions.find(game => game.name === this.gameInput[index]);
+    if (foundGame) {
+      this.depositedGames[index].gameDescriptionId = foundGame._id;
+    } else {
+      this.depositedGames[index].gameDescriptionId = ''; // Réinitialisation en cas d'erreur
+      alert("Le jeu sélectionné n'existe pas dans la base. Veuillez en choisir un dans la liste ou en créer un nouveau.");
+    }
+  }
+  
 
   onSellerSelect(event: any): void {
     const sellerId = event.target.value;
@@ -95,8 +133,11 @@ export class CreateDepositedGameComponent implements OnInit {
       salePrice: 0,
       forSale: false,
     });
+    this.gameInput.push('');
+    this.filteredGameDescriptions.push(this.gameDescriptions);
     this.updateTotals();
-  }
+  }  
+  
 
   removeGame(index: number): void {
     if (this.depositedGames.length > 1) {
@@ -123,13 +164,23 @@ export class CreateDepositedGameComponent implements OnInit {
       alert('Veuillez sélectionner un vendeur et une session.');
       return;
     }
-
+  
+    // Vérification des jeux avant l'envoi
+    for (let game of this.depositedGames) {
+      if (!game.gameDescriptionId) {
+        alert("Un ou plusieurs jeux n'ont pas été correctement sélectionnés.");
+        return;
+      }
+    }
+  
     const requests = this.depositedGames.map((game) => ({
       ...game,
       sellerId: this.selectedSeller._id,
       sessionId: this.selectedSession._id,
     }));
-
+  
+    console.log("Envoi des données du depositedGame au backend:", requests);
+  
     // Paiement des frais de dépôt
     const paymentData = {
       sellerId: this.selectedSeller._id,
@@ -137,7 +188,7 @@ export class CreateDepositedGameComponent implements OnInit {
       depositFeePayed: this.totalAfterDiscount,
       depositDate: new Date(),
     };
-
+  
     this.depositFeePaymentService.createPayment(paymentData).subscribe({
       next: () => {
         console.log('Paiement des frais de dépôt enregistré avec succès.');
@@ -158,4 +209,29 @@ export class CreateDepositedGameComponent implements OnInit {
       },
     });
   }
+  
+
+  goToSellers(): void {
+    this.router.navigate(['/sellers']);
+  }
+  
+  goToCreateGameDescription(): void {
+    this.router.navigate(['/createGameDescription']);
+  }
+
+  formatDate(dateString: string): string {
+    if (!dateString) return '';
+  
+    const date = new Date(dateString);
+    return date.toLocaleString('fr-FR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    }).replace(',', '');
+  }
+  
+  
 }

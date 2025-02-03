@@ -1,69 +1,104 @@
 <app-navbar></app-navbar>
 
-<div class="page-container">
-  <!-- Infos Client -->
-  <div class="left-container">
-    <div class="client-info-container">
-      <h3>Infos Client</h3>
-      <label for="clientEmail">Adresse email</label>
-      <select id="clientEmail" (change)="onClientSelect($event)">
-        <option value="" disabled selected>Choisissez un client</option>
-        <option *ngFor="let client of clients" [value]="client._id">
-          {{ client.email }}
-        </option>
-      </select>
-
-      <label for="clientId">IdClient</label>
-      <input id="clientId" type="text" [value]="selectedClient?._id || ''" disabled />
-
-      <label for="clientName">Nom Prénom</label>
-      <input id="clientName" type="text" [value]="selectedClient?.name || ''" disabled />
-
-      <label for="clientPhone">Num téléphone</label>
-      <input id="clientPhone" type="text" [value]="selectedClient?.phone || ''" disabled />
-    </div>
-
-    <!-- Total -->
-    <div class="total-section">
-      <h3>TOTAL</h3>
-      <p>{{ totalCost }} $</p>
-      <button class="finalize-button" (click)="finalizeCheckout()">FINALISER</button>
-    </div>
+  <!-- Message de succès -->
+  <div *ngIf="successMessage" class="success-message">
+    {{ successMessage }}
   </div>
 
-  <!-- Scan et Panier -->
-  <div class="right-container">
-    <!-- Section Scan -->
-    <div class="scan-section">
-      <h3>Scanner un article</h3>
-      <input
-        type="text"
-        [(ngModel)]="scannedGameId"
-        placeholder="ID du jeu"
-      />
-      <button (click)="addScannedGame()">Ajouter</button>
-      <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
-    </div>
+  <!-- Message d'erreur -->
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
 
-    <!-- Section Panier -->
-    <h3>Panier</h3>
-    <div *ngFor="let item of cartItems; let i = index" class="cart-item">
-      <div class="cart-item-details">
-        <img
-          [src]="item.gameData?.gameDescriptionId?.photoURL"
-          alt="{{ item.gameData?.gameDescriptionId?.name }}"
-          class="cart-item-image"
+  <div class="page-title-container">
+    <h1 class="page-title">Encaisser un client</h1>
+  </div>
+
+  <div class="page-container">
+    <!-- Section gauche -->
+    <div class="left-container">
+      <!-- Section Client -->
+      <div class="client-container">
+        <h3>Client</h3>
+
+        <label for="clientEmail">Adresse email</label>
+        <input 
+          id="clientEmail"
+          type="text"
+          [(ngModel)]="clientInput"
+          (input)="filterClientSuggestions()"
+          (change)="onClientSelectByEmail()"
+          placeholder="Tapez l'email du client..."
+          list="clientOptions"
+          class="client-input"
         />
-        <div>
-          <h4>{{ item.gameData?.gameDescriptionId?.name }}</h4>
-          <p>{{ item.gameData?.gameDescriptionId?.description }}</p>
-          <p><strong>Éditeur :</strong> {{ item.gameData?.gameDescriptionId?.publisher }}</p>
-          <p><strong>Prix :</strong> {{ item.gameData?.salePrice }} $</p>
-        </div>
+        <datalist id="clientOptions">
+          <option *ngFor="let client of filteredClients" [value]="client.email"></option>
+        </datalist>
+
+        <label for="clientId">IdClient</label>
+        <input id="clientId" type="text" [value]="selectedClient?._id || ''" disabled />
+
+        <label for="clientName">Nom Prénom</label>
+        <input id="clientName" type="text" [value]="selectedClient?.name || ''" disabled />
+
+        <label for="clientPhone">Num téléphone</label>
+        <input id="clientPhone" type="text" [value]="selectedClient?.phone || ''" disabled />
+        <p class="link-text">
+          <a (click)="goToClients()">Créer un nouveau client ?</a>
+        </p>      
       </div>
-      <button class="remove-item-button" (click)="removeCartItem(i)">
-        Supprimer
-      </button>
+
+      <!-- Total -->
+      <div class="total-section">
+        <h3>TOTAL</h3>
+        <p>{{ totalCost }} €</p>
+      </div>
+
+      <!-- Encaisser bouton -->
+      <div class="encaisser-section">
+        <button class="finalize-button" (click)="finalizeCheckout()">FINALISER</button>
+      </div>
+
+    </div>
+
+    <!-- Scan et Panier -->
+    <div class="right-container">
+      <!-- Section Scan -->
+      <div class="scan-section">
+        <h3>Scanner un article</h3>
+        <input
+          type="text"
+          [(ngModel)]="scannedGameId"
+          placeholder="ID du jeu"
+        />
+        <button (click)="addScannedGame()">Ajouter</button>
+      </div>
+
+      <!-- Section Scan -->
+      <div class="cart-section">
+        <!-- Section Panier -->
+        <h3>Panier</h3>
+          <p *ngIf="cartItems.length === 0" class="empty-cart-message">Le panier est vide.</p>
+          <div *ngFor="let item of cartItems; let i = index" class="cart-item">
+              
+              <div class="cart-item-content">
+                <div class="cart-item-details">
+                  <h4>{{ item.gameData?.gameDescriptionId?.name }}</h4>
+                  <p><strong>Éditeur :</strong> {{ item.gameData?.gameDescriptionId?.publisher }}</p>
+                  <p><strong>Prix :</strong> {{ item.gameData?.salePrice }} €</p>
+                  <button class="remove-item-button" (click)="removeCartItem(i)">
+                    Supprimer
+                  </button>
+                </div>
+                <img
+                  [src]="item.gameData?.gameDescriptionId?.photoURL"
+                  alt="{{ item.gameData?.gameDescriptionId?.name }}"
+                  class="cart-item-image"
+                />
+              </div>
+          </div>
+      </div>
+
     </div>
   </div>
-</div>

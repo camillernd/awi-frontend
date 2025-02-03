@@ -1,10 +1,60 @@
-<!-- src/app/components/depositedGames/depositedGames.component.html -->
 <app-navbar></app-navbar>
-<h2 class="page-title">Liste des jeux déposés</h2>
+<h2 class="page-title">Catalogue des jeux déposés</h2>
 
+<!-- Barre de recherche -->
+<div class="search-container">
+  <input
+    type="text"
+    placeholder="Rechercher un jeu..."
+    [(ngModel)]="searchQuery"
+    (input)="applyFilters()"
+    class="search-input"
+  />
+</div>
+
+<!-- Conteneur principal des filtres -->
+<div class="filters-container">
+  <!-- Conteneur du tri par prix -->
+  <div class="filter-group">
+    <label for="sort-dropdown" class="filter-label"></label>
+    <select id="sort-dropdown" [(ngModel)]="selectedSort" (change)="applyFilters()" class="filter-dropdown filter-price">
+      <option value="recent">Le plus récent</option>
+      <option value="priceAsc">Prix croissant</option>
+      <option value="priceDesc">Prix décroissant</option>
+    </select> 
+  </div>
+
+  <!-- Conteneur du tri par session -->
+  <div class="filter-group">
+    <label for="session-dropdown" class="filter-label"></label>
+    <select
+      id="session-dropdown"
+      *ngIf="!isFromSessionPage"
+      [(ngModel)]="selectedSession"
+      (change)="applyFilters()"
+      class="filter-dropdown filter-session"
+    >
+      <option value="all">Toutes les sessions</option>
+      <option
+        *ngFor="let session of sessions"
+        [value]="session._id"
+        [ngClass]="{
+          'session-ouverte': session.status === 'En cours',
+          'session-aVenir': session.status === 'À venir',
+          'session-cloturee': session.status === 'Clôturée'
+        }"
+      >
+        {{ session.name }} ({{ session.status }})
+      </option>
+    </select>
+  </div>
+</div>
+
+
+<!-- Liste des jeux filtrés -->
 <div class="games-container">
   <div
-    *ngFor="let game of depositedGames"
+    *ngFor="let game of filteredGames"
     class="game-card"
     (click)="goToDepositedGameDetail(game._id)"
   >
@@ -12,11 +62,7 @@
     <div class="game-details">
       <h3 class="game-name">{{ game.gameDescriptionId.name }}</h3>
       <p class="game-publisher">Éditeur : {{ game.gameDescriptionId.publisher }}</p>
-      <p class="game-price">{{ game.salePrice }}$</p>
+      <p class="game-price">{{ game.salePrice }}€</p>
     </div>
   </div>
 </div>
-
-<ng-template #noGames>
-  <p class="no-games-message">Aucun jeu déposé trouvé.</p>
-</ng-template>

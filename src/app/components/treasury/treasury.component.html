@@ -1,48 +1,73 @@
 <app-navbar></app-navbar>
 
-<div class="treasury-container">
-  <!-- Sélecteur de session -->
-  <div class="session-filter" style="text-align: center; margin: 20px 0;">
-    <label for="sessionSelect">Sélectionnez une session :</label>
-    <select id="sessionSelect" [(ngModel)]="selectedSession" (change)="applySessionFilter()">
-      <option value="">Toutes les sessions</option>
-      <option *ngFor="let session of sessions" [value]="session._id">
-        {{ session.name }} ({{ session.startDate | date: 'short' }})
-      </option>
-    </select>
-  </div>
+<div class="page-title-container">
+  <h1 class="page-title">Trésorerie globale</h1>
+</div>
 
+<div class="treasury-container">
   <!-- Chiffre d'affaires -->
-  <div class="revenue-container" style="text-align: center; margin: 20px 0;">
-    <h1 style="font-size: 3em; color: green;">
-      Chiffre d'affaires : {{ totalRevenue | currency }}
+  <div class="revenue-container" style="text-align: center; margin: 20px 0; margin-bottom: 50px;">
+    <h1 style="font-size: 2em; color: #0D9C0B;">
+      Chiffre d'affaires : {{ totalRevenue | currency:'EUR':'symbol':'1.2-2' }}
     </h1>
   </div>
+
+  <!-- Filtres -->
+  <div class="filters-container">
+    <!-- Sélecteur de session -->
+    <div class="session-filter" style="text-align: left; margin: 20px 0;">
+      <label for="sessionSelect"></label>
+      <select id="sessionSelect" [(ngModel)]="selectedSession" (change)="applySessionFilter()">
+        <option value="">Toutes les sessions</option>
+        <option *ngFor="let session of sessions" [value]="session._id">
+          {{ session.name }} ({{ formatDateForSessions(session.startDate) }})
+        </option>
+      </select>
+    </div>
+    <!-- Filtre par type d’opération -->
+    <div class="operation-filter">
+      <label for="operationTypeSelect"></label>
+      <select id="operationTypeSelect" [(ngModel)]="selectedOperationType" (change)="applyOperationFilter()">
+        <option value="all">Toutes les opérations</option>
+        <option value="transaction">Ventes</option>
+        <option value="deposit">Frais de dépôt</option>
+        <option value="refund">Remboursements</option>
+      </select>
+    </div>
+  </div>
+    
 
   <!-- Liste des opérations -->
   <div class="operations-list">
     <div
-      *ngFor="let operation of allOperations"
+      *ngFor="let operation of filteredOperations" 
       class="operation-container"
-      style="border: 1px solid #ccc; margin: 10px; padding: 10px; border-radius: 5px;"
+      [ngClass]="{
+        'credit': operation.type === 'transaction', 
+        'deposit': operation.type === 'deposit',
+        'debit': operation.type === 'refund'
+      }"
     >
-      <p><strong>Type :</strong> {{ operation.type }}</p>
-      <p><strong>Date :</strong> {{ operation.date | date: 'short' }}</p>
-      <p><strong>Détails :</strong></p>
-      <ul>
-        <li *ngIf="operation.sellerId">Vendeur : {{ operation.sellerId.email }}</li>
-        <li *ngIf="operation.sessionId">Session : {{ operation.sessionId.name }}</li>
-        <li *ngIf="operation.labelId">Jeu : {{ operation.labelId.gameDescriptionId.name }}</li>
-      </ul>
-      <p
-        [ngStyle]="{
-          color: operation.type === 'refund' ? 'red' : 'green',
-          'font-weight': 'bold',
-          'text-align': 'right'
-        }"
-      >
-        {{ operation.type === 'refund' ? '-' : '+' }}{{ operation.amount | currency }}
-      </p>
+      <div class="operation-info">
+        <h3>
+          {{ 
+            operation.type === 'transaction' ? 'Vente de jeu' : 
+            operation.type === 'deposit' ? 'Frais de dépôt' : 
+            'Remboursement'
+          }}
+        </h3>
+        <p><strong>Date :</strong> {{ formatDate(operation.date) }}</p>
+        <ul>
+          <li *ngIf="operation.sellerId"><strong>Vendeur :</strong> {{ operation.sellerId.email }}</li>
+          <li *ngIf="operation.sessionId"><strong>Session :</strong> {{ operation.sessionId.name }}</li>
+          <li *ngIf="operation.labelId"><strong>Jeu :</strong> {{ operation.labelId.gameDescriptionId.name }}</li>
+        </ul>
+      </div>
+      <div class="operation-amount" [ngClass]="{'credit': operation.amount > 0, 'debit': operation.amount < 0 }">
+        {{ operation.amount | currency:'EUR':'symbol':'1.2-2' }}
+      </div>      
     </div>
   </div>
+  
+  
 </div>

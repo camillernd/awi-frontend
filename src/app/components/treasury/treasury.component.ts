@@ -19,9 +19,13 @@ export class TreasuryComponent implements OnInit {
   refunds: any[] = [];
   sessions: any[] = [];
   allOperations: any[] = []; // Toutes les opérations filtrées
+  filteredOperations: any[] = []; // Opérations après filtrage par catégorie
+  selectedOperationType: string = 'all'; // "all" par défaut
   selectedSession: string = '';
   totalRevenue: number = 0;
   errorMessage: string | null = null;
+  depositedGames: any[] = [];
+
 
   // Tableaux pour stocker les données originales
   originalDepositFeePayments: any[] = [];
@@ -40,35 +44,49 @@ export class TreasuryComponent implements OnInit {
     document.body.style.overflow = 'visible';
   }
 
+  applyFilters(): void {
+    this.applySessionFilter();
+    this.applyOperationFilter();
+  }
+
   applySessionFilter(): void {
-    // Réinitialisez les tableaux en fonction des données originales
     this.depositFeePayments = [...this.originalDepositFeePayments];
     this.transactions = [...this.originalTransactions];
     this.refunds = [...this.originalRefunds];
-
-    // Si aucune session n'est sélectionnée, fusionnez toutes les données
+  
     if (!this.selectedSession) {
       this.mergeAllOperations();
       this.calculateRevenue();
+      this.applyOperationFilter(); // 🔹 Ajout de l’appel
       return;
     }
-
-    // Filtrer par session
+  
     this.depositFeePayments = this.depositFeePayments.filter(
       (payment) => payment.sessionId?._id === this.selectedSession
     );
-
+  
     this.transactions = this.transactions.filter(
       (transaction) => transaction.sessionId?._id === this.selectedSession
     );
-
+  
     this.refunds = this.refunds.filter(
       (refund) => refund.sessionId?._id === this.selectedSession
     );
-
-    // Fusionner et recalculer
+  
     this.mergeAllOperations();
     this.calculateRevenue();
+    this.applyOperationFilter(); // 🔹 Ajout ici aussi
+  }
+  
+
+  applyOperationFilter(): void {
+    if (this.selectedOperationType === 'all') {
+      this.filteredOperations = [...this.allOperations];
+    } else {
+      this.filteredOperations = this.allOperations.filter(
+        (operation) => operation.type === this.selectedOperationType
+      );
+    }
   }
   
 
@@ -98,17 +116,36 @@ export class TreasuryComponent implements OnInit {
     this.loadDepositFeePayments(() => {
       this.loadTransactions(() => {
         this.loadRefunds(() => {
+          this.loadDepositedGames(() => {
           // Sauvegardez les données originales
           this.originalDepositFeePayments = [...this.depositFeePayments];
           this.originalTransactions = [...this.transactions];
           this.originalRefunds = [...this.refunds];
-
+          this.applySessionFilter();
           this.mergeAllOperations();
           this.calculateRevenue();
+          });
         });
       });
     });
   }
+
+
+  loadDepositedGames(callback?: () => void): void {
+    const token = localStorage.getItem('authToken');
+    if (!token) return;
+
+    const headers = { Authorization: `Bearer ${token}` };
+
+    this.http.get<any[]>('http://localhost:8000/depositedGame', { headers }).subscribe({
+      next: (games) => {
+        this.depositedGames = games;
+        if (callback) callback();
+      },
+      error: (err) => console.error('Erreur lors du chargement des jeux déposés', err),
+    });
+  }
+
 
   loadDepositFeePayments(callback?: () => void): void {
     this.depositFeePaymentService.getAllDepositFeePayments().subscribe({
@@ -151,7 +188,7 @@ export class TreasuryComponent implements OnInit {
         this.refunds = refunds.map((refund) => ({
           ...refund,
           type: 'refund',
-          amount: refund.refundAmount,
+          amount: -Math.abs(refund.refundAmount),  // Ajoute un signe négatif
           date: new Date(refund.refundDate),
         }));
         if (callback) callback();
@@ -162,11 +199,15 @@ export class TreasuryComponent implements OnInit {
 
   mergeAllOperations(): void {
     this.allOperations = [
-      ...this.depositFeePayments,
-      ...this.transactions,
-      ...this.refunds,
+      ...this.depositFeePayments.map(op => ({ ...op, type: 'deposit' })),
+      ...this.transactions.map(op => ({ ...op, type: 'transaction' })),
+      ...this.refunds.map(op => ({ ...op, type: 'refund' }))
     ].sort((a, b) => b.date.getTime() - a.date.getTime());
+  
+    this.applyOperationFilter(); // 🔹 Ajout de l’appel pour mettre à jour l'affichage
   }
+  
+  
 
   calculateRevenue(): void {
     const totalDepositFee = this.depositFeePayments.reduce(
@@ -184,4 +225,30 @@ export class TreasuryComponent implements OnInit {
 
     this.totalRevenue = totalDepositFee + totalTransactionRevenue - totalRefunds;
   }
+
+
+  formatDateForSessions(dateString: string): string {
+    const date = new Date(dateString);
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+
+    return `${day}/${month}/${year}`;
+  }
+
+
+
+  formatDate(dateString: string): string {
+    const date = new Date(dateString);
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+
+    return `${day}/${month}/${year} ${hours}:${minutes}`;
+  }
+  
 }

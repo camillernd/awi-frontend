@@ -14,18 +14,19 @@ import { NavbarComponent } from '../navbar/navbar.component';
 })
 export class SessionsComponent implements OnInit {
   sessions: any[] = [];
+  admin: boolean = false; // À remplacer par la vraie vérification d'admin
 
   constructor(private sessionService: SessionService, private router: Router) {}
 
   ngOnInit(): void {
     document.body.style.overflow = 'visible';
     this.loadSessions();
+    this.checkAdminStatus();
   }
 
   loadSessions(): void {
     this.sessionService.getAllSessions().subscribe({
       next: (sessions) => {
-        // Ajouter le tri des sessions par date décroissante
         this.sessions = sessions
           .map((session) => ({
             ...session,
@@ -40,7 +41,11 @@ export class SessionsComponent implements OnInit {
       error: (err) => console.error('Erreur lors du chargement des sessions', err),
     });
   }
-  
+
+  checkAdminStatus(): void {
+    // Exemple : récupère l'état admin depuis un service d'authentification
+    this.admin = localStorage.getItem('isAdmin') === 'true'; // Assurez-vous que ça renvoie bien 'true' ou 'false'
+  }
 
   formatDate(dateString: string): string {
     const date = new Date(dateString);
@@ -65,11 +70,11 @@ export class SessionsComponent implements OnInit {
     const endDate = new Date(session.endDate);
 
     if (now >= startDate && now <= endDate) {
-      return 'ouverte'; // Session en cours
+      return 'ouverte';
     } else if (now < startDate) {
-      return 'aVenir'; // Session à venir
+      return 'aVenir';
     } else {
-      return 'cloturee'; // Session clôturée
+      return 'cloturee';
     }
   }
 
@@ -78,10 +83,33 @@ export class SessionsComponent implements OnInit {
   }
 
   goToDepositedGames(sessionId: string): void {
-    this.router.navigate([`/depositedGames/${sessionId}`]); // Navigue avec l'identifiant
+    this.router.navigate([`/depositedGames/${sessionId}`]);
   }
 
-  goToSessionReport(sessionId: string): void {
-    this.router.navigate([`/session/${sessionId}/report`]);
+  deleteSession(sessionId: string, status: string): void {
+    if (status !== 'aVenir') {
+      alert("❌ Impossible de supprimer une session déjà commencée ou clôturée.");
+      return;
+    }
+
+    this.sessionService.hasDepositedGames(sessionId).subscribe({
+      next: (hasGames) => {
+        if (hasGames) {
+          alert("❌ Impossible de supprimer cette session car des jeux y sont déposés.");
+        } else {
+          if (confirm("Êtes-vous sûr de vouloir supprimer cette session ?")) {
+            this.sessionService.deleteSession(sessionId).subscribe({
+              next: () => {
+                alert("✅ Session supprimée avec succès.");
+                this.loadSessions();
+              },
+              error: (err) => console.error("Erreur lors de la suppression", err),
+            });
+          }
+        }
+      },
+      error: (err) => console.error("Erreur lors de la vérification des jeux déposés", err),
+    });
   }
+  
 }

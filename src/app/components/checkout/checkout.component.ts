@@ -6,27 +6,32 @@ import { ClientService } from '../../services/client.service';
 import { DepositedGameService } from '../../services/depositedGame.service';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { TransactionService } from '../../services/transaction.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-checkout',
   templateUrl: './checkout.component.html',
-  styleUrls: ['./checkout.component.css'],
+  styleUrls: ['./checkout.component.css'],  
   standalone: true,
   imports: [FormsModule, CommonModule, NavbarComponent],
 })
 export class CheckoutComponent implements OnInit {
   clients: any[] = [];
   selectedClient: any = null;
-
+  clientInput: string = ''; // Valeur tapée par l'utilisateur
+  filteredClients: any[] = []; // Liste des vendeurs filtrés
+  //------------------------
   scannedGameId: string = '';
   cartItems: { gameData: any | null }[] = [];
   totalCost: number = 0;
-  errorMessage: string = ''; // Message d'erreur pour les ajouts multiples
+  errorMessage: string = ''; 
+  successMessage: string | null = null; // Message de succès
 
   constructor(
     private clientService: ClientService,
     private depositedGameService: DepositedGameService,
     private transactionService: TransactionService, // Ajout du service des transactions
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -38,19 +43,35 @@ export class CheckoutComponent implements OnInit {
   loadClients(): void {
     this.clientService.getAllClients().subscribe({
       next: (clients) => {
-        console.log('Clients chargés :', clients); // Vérifiez si la structure contient des emails
         this.clients = clients;
+        this.filteredClients = clients; // On initialise avec tous les vendeurs
       },
-      error: (err) =>
-        console.error('Erreur lors du chargement des clients', err),
+      error: (error) => console.error('Erreur lors du chargement des clients', error),
     });
   }
+
   
+  filterClientSuggestions(): void {
+    this.filteredClients = this.clients.filter(client =>
+      client.email.toLowerCase().includes(this.clientInput.toLowerCase())
+    );
+  }
+
+  onClientSelectByEmail(): void {
+    const foundClient = this.clients.find(client => client.email === this.clientInput);
+    if (foundClient) {
+      this.selectedClient = foundClient;
+    }
+  }
 
   // Sélectionner un client
   onClientSelect(event: any): void {
     const clientId = event.target.value;
     this.selectedClient = this.clients.find((client) => client._id === clientId);
+  }
+
+  goToClients(): void {
+    this.router.navigate(['/clients']);
   }
 
   // Ajouter un article scanné
@@ -61,7 +82,6 @@ export class CheckoutComponent implements OnInit {
       return;
     }
 
-    // Vérifier si l'article est déjà dans le panier
     if (this.cartItems.some((item) => item.gameData?._id === gameId)) {
       this.errorMessage = `L'article avec l'ID ${gameId} est déjà dans le panier.`;
       return;
@@ -69,10 +89,23 @@ export class CheckoutComponent implements OnInit {
 
     this.depositedGameService.getDepositedGameById(gameId).subscribe({
       next: (game) => {
+        if (!game) {
+          this.errorMessage = "Jeu non reconnu.";
+          return;
+        }
+        if (game.sold) {
+          this.errorMessage = "Ce jeu a déjà été vendu.";
+          return;
+        }
+        if (!game.forSale) {
+          this.errorMessage = "Ce jeu n'est pas à vendre.";
+          return;
+        }
+
         this.cartItems.push({ gameData: game });
         this.updateTotalCost();
-        this.scannedGameId = ''; // Réinitialise la case de scan
-        this.errorMessage = ''; // Réinitialise le message d'erreur
+        this.scannedGameId = '';
+        this.errorMessage = ''; 
       },
       error: (err) => {
         this.errorMessage = `Erreur lors du scan du jeu avec ID: ${gameId}`;
@@ -96,8 +129,15 @@ export class CheckoutComponent implements OnInit {
 
   // Méthode pour finaliser le paiement et créer des transactions
   finalizeCheckout(): void {
+
+    // Vérifier si le panier est vide
+    if (this.cartItems.length === 0) {
+      this.errorMessage = "Votre panier est vide. Ajoutez au moins un article avant de finaliser.";
+      return;
+    }
+    
     if (!this.selectedClient) {
-      alert('Veuillez sélectionner un client avant de finaliser.');
+      this.errorMessage = "Veuillez sélectionner un client avant de finaliser.";
       return;
     }
 
@@ -108,18 +148,20 @@ export class CheckoutComponent implements OnInit {
       clientId: this.selectedClient._id,
     }));
 
-    console.log('Transactions à envoyer :', transactions);
-
     this.transactionService.createMultipleTransactions(transactions).subscribe({
-  next: (response: any) => { // Ajoutez un type explicite ici
-    alert(`Transaction réussie pour ${response.length} articles. Total : ${this.totalCost} $`);
-    this.cartItems = [];
-    this.totalCost = 0;
-  },
-  error: (error: any) => { // Ajoutez également un type ici
-    console.error('Erreur lors de la finalisation des transactions', error);
-    alert('Une erreur est survenue. Veuillez réessayer.');
-  },
-});
+      next: (response: any) => {
+        this.successMessage = `Transaction réussie pour ${response.length} articles. Total : ${this.totalCost} $. Redirection vers l'accueil...`;
+        this.cartItems = [];
+        this.totalCost = 0;
+
+        setTimeout(() => {
+          this.router.navigate(['/home']);
+        }, 3000);
+      },
+      error: (error: any) => {
+        console.error('Erreur lors de la finalisation des transactions', error);
+        this.errorMessage = 'Une erreur est survenue. Veuillez réessayer.';
+      },
+    });
   }
 }

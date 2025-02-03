@@ -20,7 +20,9 @@ export class SellersComponent implements OnInit {
     phone: '',
     amountOwed: 0,
   };
+
   errorMessage: string | null = null;
+  successMessage: string | null = null;
 
   constructor(private sellerService: SellerService, private router: Router) {}
 
@@ -39,16 +41,43 @@ export class SellersComponent implements OnInit {
     });
   }
 
+  validatePhoneNumber(phone: string): boolean {
+    return /^[0-9]{10}$/.test(phone);
+  }
+
   createSeller(): void {
+    this.errorMessage = null;
+    this.successMessage = null;
+
+    if (!this.newSeller.name || !this.newSeller.email || !this.newSeller.phone) {
+      this.errorMessage = "Tous les champs sont obligatoires.";
+      return;
+    }
+
+    if (!this.validatePhoneNumber(this.newSeller.phone)) {
+      this.errorMessage = "Le numéro de téléphone doit contenir exactement 10 chiffres.";
+      return;
+    }
+
+    const emailExists = this.sellers.some(seller => seller.email === this.newSeller.email);
+    if (emailExists) {
+      this.errorMessage = "Cet email est déjà utilisé.";
+      return;
+    }
+
     this.sellerService.createSeller(this.newSeller).subscribe({
       next: (createdSeller) => {
         this.sellers.push(createdSeller);
         this.newSeller = { name: '', email: '', phone: '', amountOwed: 0 };
-        this.errorMessage = null;
+        this.successMessage = "Vendeur créé avec succès.";
+
+        setTimeout(() => {
+          this.successMessage = null;
+        }, 3000);
       },
       error: (error) => {
         console.error('Erreur lors de la création du vendeur', error);
-        this.errorMessage = error?.error?.message || 'Erreur inconnue.';
+        this.errorMessage = error?.error?.message || 'Une erreur inconnue est survenue.';
       },
     });
   }
