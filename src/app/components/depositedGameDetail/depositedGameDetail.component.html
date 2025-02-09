@@ -18,8 +18,14 @@
       {{ depositedGame.gameDescriptionId.name }} :
       {{ depositedGame.gameDescriptionId.publisher }}
     </h1>
-    <p class="game-status" [class.in-stock]="!depositedGame.sold" [class.sold]="depositedGame.sold">
-      {{ depositedGame.sold ? 'Vendu' : 'En stock' }}
+    <p class="game-status">
+      <span class="status-text" [class.in-stock]="!depositedGame.sold" [class.sold]="depositedGame.sold">
+        {{ depositedGame.sold ? 'Vendu' : 'Pas vendu' }}
+      </span> 
+      <span class="black-symbol">&</span>  
+      <span class="status-text" [class.for-sale]="depositedGame.forSale" [class.not-for-sale]="!depositedGame.forSale">
+        {{ depositedGame.forSale ? 'À vendre' : 'Pas à vendre' }}
+      </span>
     </p>
     <p class="game-description">
       {{ depositedGame.gameDescriptionId.description }}

@@ -335,18 +335,20 @@ button:hover {
     color: #fff;
     background-color: #f44336;
     border: none;
-    border-radius: 5px;
+    border-radius: 15px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: transform 0.2s ease-in-out, background-color 0.3s ease;
   }
   
   .refund-button:disabled {
     background-color: #ccc;
+    border-color: #000;
     cursor: not-allowed;
   }
   
   .refund-button:hover:not(:disabled) {
     background-color: #d32f2f;
+    transform: scale(1.02);
   }
   
   .refund-message {
@@ -475,6 +477,7 @@ button:hover {
   border-radius: 12px;
   border: 1px solid #000;
   transition: transform 0.2s ease-in-out;
+  margin-bottom: 30px;
 }
 
 .item-container:hover {
@@ -514,11 +517,41 @@ button:hover {
 }
 
 .action-buttons-container button.active {
-  background-color: #238FF2;
+  background-color: #000000;
   color: white;
 }
 
 .action-buttons-container button:hover {
   transform: scale(1.05);
-  background-color: rgba(255, 255, 255, 0.9);
+}
+
+.picked-up-container {
+  display: flex;
+  justify-content: center; /* Centre horizontalement */
+  margin-top: 10px; /* Espacement avec le texte au-dessus */
+}
+
+.picked-up-button {
+  padding: 8px 12px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+  color: white;
+  background-color: #4caf50;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
+  max-width: 150px;
+}
+
+.picked-up-button:hover {
+  background-color: #45a049;
+  transform: scale(1.05);
+}
+
+.picked-up-button:disabled {
+  background-color: #ccc;
+  color: black;
+  cursor: not-allowed;
 }

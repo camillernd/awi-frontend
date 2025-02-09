@@ -11,7 +11,7 @@
       <p><strong>Nom :</strong> {{ seller.name }}</p>
       <p><strong>Email :</strong> {{ seller.email }}</p>
       <p><strong>Téléphone :</strong> {{ seller.phone }}</p>
-      <p><strong>Montant dû :</strong> {{ seller.amountOwed | currency }}</p>
+      <p><strong>Montant dû :</strong> {{ seller.amountOwed}}€</p>
 
       <div class="button-container">
         <button class="edit-button" (click)="editSeller()">Modifier</button>
@@ -21,17 +21,25 @@
     </div>
 
     <div *ngIf="isEditing" class="edit-form">
-      <label>Nom</label>
-      <input [(ngModel)]="seller.name" />
+      <div class="edit-field">
+        <label>Nom</label>
+        <input [(ngModel)]="seller.name" />
+      </div>
 
-      <label>Email</label>
-      <input [(ngModel)]="seller.email" />
+      <div class="edit-field">
+        <label>Email</label>
+        <input [(ngModel)]="seller.email" />
+      </div>
 
-      <label>Téléphone</label>
-      <input [(ngModel)]="seller.phone" />
+      <div class="edit-field">
+        <label>Téléphone</label>
+        <input [(ngModel)]="seller.phone" />
+      </div>
 
-      <label>Montant dû</label>
-      <input [(ngModel)]="seller.amountOwed" type="number" />
+      <div class="edit-field">
+        <label>Montant dû</label>
+        <input [(ngModel)]="seller.amountOwed" type="number" />
+      </div>
 
       <div class="button-container-modif">
         <button class="save-button" (click)="saveChanges()">Enregistrer</button>
@@ -55,8 +63,13 @@
     <div *ngIf="depositedGames.length > 0; else noGames">
       <div *ngFor="let game of depositedGames" class="item-container">
         <p><strong>Nom :</strong> {{ game.gameDescriptionId?.name || 'Nom inconnu' }}</p>
-        <p><strong>Prix :</strong> {{ game.salePrice | currency }}</p>
+        <p><strong>Prix :</strong> {{ game.salePrice}}€</p>
         <p><strong>Session :</strong> {{ game.sessionId?.name || 'Session inconnue' }}</p>
+        <div class="picked-up-container">
+          <button class="picked-up-button" (click)="openPickUpConfirmation(game)" [disabled]="game.pickedUp">
+            {{ game.pickedUp ? "Récupéré" : "Récupéré ?" }}
+          </button>
+        </div>            
       </div>
     </div>
     <ng-template #noGames>
@@ -68,25 +81,32 @@
 
   <div *ngIf="selectedCategory === 'transactions'" class="category-container">
     <h3>Transactions</h3>
-    <div *ngFor="let transaction of transactions" class="item-container">
-      <p><strong>Jeu :</strong> {{ transaction.labelId?.gameDescriptionId?.name }}</p>
-      <p><strong>Prix de vente :</strong> {{ transaction.labelId?.salePrice | currency }}</p>
-      <p><strong>Client :</strong> {{ transaction.clientId?.name }}</p>
+    <div *ngIf="transactions.length > 0; else noTransactions">
+      <div *ngFor="let transaction of transactions" class="item-container">
+        <p><strong>Jeu :</strong> {{ transaction.labelId?.gameDescriptionId?.name }}</p>
+        <p><strong>Prix de vente :</strong> {{ transaction.labelId?.salePrice}}€</p>
+        <p><strong>Client :</strong> {{ transaction.clientId?.name }}</p>
+      </div>
     </div>
+    <ng-template #noTransactions>
+      <p class="no-data-message">Aucune transaction enregistrée pour ce vendeur.</p>
+    </ng-template>
   </div>
 
 
   <div *ngIf="selectedCategory === 'refunds'" class="category-container">
     <h3>Remboursements</h3>
-    <div *ngFor="let refund of refunds" class="item-container">
-        <p><strong>Montant :</strong> {{ refund.refundAmount | currency }}</p>
+    <div *ngIf="refunds.length > 0; else noRefunds">
+      <div *ngFor="let refund of refunds" class="item-container">
+        <p><strong>Montant :</strong> {{ refund.refundAmount}}€</p>
         <p><strong>Session :</strong> {{ refund.sessionId?.name }}</p>
         <p><strong>Date :</strong> {{ refund.refundDate | date }}</p>
+      </div>
     </div>
     <ng-template #noRefunds>
-      <p>Aucun remboursement enregistré pour ce vendeur.</p>
+      <p class="no-data-message">Aucun remboursement enregistré pour ce vendeur.</p>
     </ng-template>
-  </div>
+  </div>  
 </div>
 
 <!-- Modale de confirmation -->
@@ -101,6 +121,21 @@
     </div>
   </div>
 </div>
+
+
+<!-- Modale de confirmation pour récupérer un jeu -->
+<div *ngIf="showPickUpConfirmation" class="modal-overlay">
+  <div class="modal">
+    <h3>Confirmer la récupération</h3>
+    <p>Le vendeur est-il sur de vouloir récupérer le jeu <strong>{{ selectedGame?.gameDescriptionId?.name }}</strong> ?</p>
+
+    <div class="modal-buttons">
+      <button class="confirm-button" (click)="confirmPickUp()">Oui, récupérer</button>
+      <button class="cancel-delete-button" (click)="showPickUpConfirmation = false">Annuler</button>
+    </div>
+  </div>
+</div>
+
 
 <div *ngIf="refundMessage" class="refund-message">
   {{ refundMessage }}

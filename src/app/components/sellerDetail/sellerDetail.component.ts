@@ -30,6 +30,8 @@ export class SellerDetailComponent implements OnInit {
   errorMessage: string | null = null;
   showDeleteConfirmation = false;
   selectedCategory: string = 'games';
+  selectedGame: any = null;
+  showPickUpConfirmation: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -220,5 +222,35 @@ refundSeller(): void {
       },
   });
 }
+
+openPickUpConfirmation(game: any): void {
+  this.selectedGame = game;
+  this.showPickUpConfirmation = true;
+}
+
+confirmPickUp(): void {
+  if (!this.selectedGame) return;
+
+  const updatedGame = {
+    sold: false,
+    forSale: false,
+    pickedUp: true,
+  };
+
+  this.depositedGameService.updateDepositedGame(this.selectedGame._id, updatedGame).subscribe({
+    next: () => {
+      this.selectedGame.sold = false;
+      this.selectedGame.forSale = false;
+      this.selectedGame.pickedUp = true;
+      console.log(`🎮 Jeu récupéré : ${this.selectedGame.gameDescriptionId?.name}`);
+      this.showPickUpConfirmation = false;
+    },
+    error: (err: any) => {
+      console.error("❌ Erreur lors de la mise à jour du jeu", err);
+      this.showPickUpConfirmation = false;
+    },
+  });
+}
+
 
 }
