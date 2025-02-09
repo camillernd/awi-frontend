@@ -1,10 +1,10 @@
 /* 📦 Conteneur principal */
 .client-detail-container {
-  max-width: 700px;
-  margin: 30px auto;
+  max-width: 600px;
+  margin: 50px auto;
   padding: 20px;
-  font-family: 'Poppins', sans-serif;
-  position: relative;
+  border-radius: 10px;
+  background:rgba(255, 255, 255, 0);
 }
 
 /* 🏷️ Conteneur du titre et du bouton de retour */

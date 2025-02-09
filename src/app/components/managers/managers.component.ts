@@ -23,7 +23,9 @@ export class ManagersComponent implements OnInit {
     password: '',
     admin: false, // Valeur par défaut
   };
+
   errorMessage: string | null = null;
+  successMessage: string | null = null;
 
   constructor(private managerService: ManagerService, private router: Router) {}
 
@@ -44,9 +46,31 @@ export class ManagersComponent implements OnInit {
       },
     });
   }
-  
+
+  validatePhoneNumber(phone: string): boolean {
+    return /^[0-9]{10}$/.test(phone);
+  }
 
   createManager(): void {
+    this.errorMessage = null;
+    this.successMessage = null;
+
+    if (!this.newManager.firstName || !this.newManager.lastName || !this.newManager.email || !this.newManager.phone) {
+      this.errorMessage = "Tous les champs sont obligatoires.";
+      return;
+    }
+
+    if (!this.validatePhoneNumber(this.newManager.phone)) {
+      this.errorMessage = "Le numéro de téléphone doit contenir exactement 10 chiffres.";
+      return;
+    }
+
+    const emailExists = this.managers.some(manager => manager.email === this.newManager.email);
+    if (emailExists) {
+      this.errorMessage = "Cet email est déjà utilisé.";
+      return;
+    }
+
     this.managerService.createManager(this.newManager).subscribe({
       next: (createdManager) => {
         this.managers.push(createdManager);

@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { ClientService } from '../../services/client.service';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service'; // Ajout de AuthService
 
 @Component({
   selector: 'app-clients',
@@ -24,7 +25,7 @@ export class ClientsComponent implements OnInit {
   errorMessage: string | null = null;
   successMessage: string | null = null;
 
-  constructor(private clientService: ClientService, private router: Router) {}
+  constructor(private clientService: ClientService, private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
     this.loadClients();
@@ -48,6 +49,14 @@ export class ClientsComponent implements OnInit {
   createClient(): void {
     this.errorMessage = null;
     this.successMessage = null;
+
+    // Vérifier si l'utilisateur est connecté avant d'ajouter un client
+    if (!this.authService.isManagerConnected()) {
+      this.errorMessage = "Vous devez être connecté pour créer un client.";
+      return;
+    }
+
+    console.log("📩 Données envoyées au backend:", this.newClient);
 
     // Vérifier si tous les champs sont remplis
     if (!this.newClient.name || !this.newClient.email || !this.newClient.phone || !this.newClient.address) {
@@ -86,6 +95,7 @@ export class ClientsComponent implements OnInit {
       },
     });
   }
+  
 
   viewClientDetail(clientId: string): void {
     this.router.navigate(['/clientDetail', clientId]);

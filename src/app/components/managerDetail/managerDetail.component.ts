@@ -18,6 +18,8 @@ export class ManagerDetailComponent implements OnInit {
   isEditing = false;
   isAdmin = false; // Variable pour vérifier si l'utilisateur est admin
   errorMessage: string | null = null;
+  showDeleteConfirmation = false; // Pour afficher ou masquer le modale
+
 
   constructor(
     private route: ActivatedRoute,
@@ -78,22 +80,43 @@ export class ManagerDetailComponent implements OnInit {
   
 
   deleteManager(): void {
-    if (!this.manager || !this.manager.id) {
-      console.error('ID du manager introuvable');
-      this.errorMessage = 'Impossible de supprimer le manager : ID manquant.';
-      return;
+    if (confirm('Êtes-vous sûr de vouloir supprimer ce manager ?')) {
+      this.managerService.deleteManager(this.manager._id).subscribe({
+        next: () => {
+          alert('Manager supprimé avec succès.');
+          this.router.navigate(['/managers']);
+        },
+        error: (err) => {
+          console.error('Erreur lors de la suppression du manager', err);
+          this.errorMessage = 'Erreur lors de la suppression.';
+        },
+      });
     }
-  
-    this.managerService.deleteManager(this.manager.id).subscribe({
-      next: () => {
-        alert('Manager supprimé avec succès.');
-        this.router.navigate(['/managers']);
-      },
-      error: (err) => {
-        console.error('Erreur lors de la suppression du manager', err);
-        this.errorMessage = 'Erreur lors de la suppression du manager.';
-      },
-    });
+  }
+
+  // Fonction pour afficher le modale de confirmation
+  confirmDelete(): void {
+    this.showDeleteConfirmation = true;
+  }
+
+  // Suppression définitive après confirmation
+  confirmDeleteManager(): void {
+    if (this.manager) {
+      this.managerService.deleteManager(this.manager._id).subscribe({
+        next: () => {
+          this.showDeleteConfirmation = false;
+          this.router.navigate(['/managers']); // Redirection après suppression
+        },
+        error: (err) => {
+          console.error('Erreur lors de la suppression du manager', err);
+          this.errorMessage = 'Erreur lors de la suppression.';
+        },
+      });
+    }
+  }
+
+  goBack(): void {
+    this.router.navigate(['/managers']);
   }
   
 }

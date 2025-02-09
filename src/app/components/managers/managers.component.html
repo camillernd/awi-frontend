@@ -1,78 +1,93 @@
 <app-navbar></app-navbar>
 
+<!-- Message de succès -->
+<div *ngIf="successMessage" class="success-message">
+  {{ successMessage }}
+</div>
+
+<!-- Message d'erreur -->
+<div *ngIf="errorMessage" class="error-message">
+  {{ errorMessage }}
+</div>
+
+<div class="page-title-container">
+  <h1 class="page-title">Managers</h1>
+</div>
+
 <div class="page-container">
   <!-- Section gauche -->
   <div class="left-container">
     <div class="create-manager-container">
       <h3>Créer un nouveau manager</h3>
 
-      <form (ngSubmit)="createManager()">
-        <label for="firstName">Prénom</label>
-        <input
-          id="firstName"
-          [(ngModel)]="newManager.firstName"
-          name="firstName"
-          required
-          placeholder="Entrez le prénom"
-        />
+      <div class="create-manager-input-container">
+        <form (ngSubmit)="createManager()">
 
-        <label for="lastName">Nom</label>
-        <input
-          id="lastName"
-          [(ngModel)]="newManager.lastName"
-          name="lastName"
-          required
-          placeholder="Entrez le nom"
-        />
+          <label for="lastName">Nom</label>
+          <input
+            id="lastName"
+            [(ngModel)]="newManager.lastName"
+            name="lastName"
+            required
+            placeholder="Entrez le nom"
+          />
 
-        <label for="email">Email</label>
-        <input
-          id="email"
-          [(ngModel)]="newManager.email"
-          name="email"
-          required
-          placeholder="Entrez l'email"
-        />
+          <label for="firstName">Prénom</label>
+          <input
+            id="firstName"
+            [(ngModel)]="newManager.firstName"
+            name="firstName"
+            required
+            placeholder="Entrez le prénom"
+          />
 
-        <label for="phone">Téléphone</label>
-        <input
-          id="phone"
-          [(ngModel)]="newManager.phone"
-          name="phone"
-          required
-          placeholder="Entrez le numéro de téléphone"
-        />
+          <label for="email">Email</label>
+          <input
+            id="email"
+            [(ngModel)]="newManager.email"
+            name="email"
+            required
+            placeholder="Entrez l'email"
+          />
 
-        <label for="address">Adresse</label>
-        <input
-          id="address"
-          [(ngModel)]="newManager.address"
-          name="address"
-          required
-          placeholder="Entrez l'adresse"
-        />
+          <label for="phone">Téléphone</label>
+          <input
+            id="phone"
+            [(ngModel)]="newManager.phone"
+            name="phone"
+            required
+            placeholder="Entrez le numéro de téléphone"
+          />
 
-        <label for="password">Mot de passe</label>
-        <input
-          id="password"
-          [(ngModel)]="newManager.password"
-          name="password"
-          required
-          placeholder="Entrez le mot de passe"
-          type="password"
-        />
+          <label for="address">Adresse</label>
+          <input
+            id="address"
+            [(ngModel)]="newManager.address"
+            name="address"
+            required
+            placeholder="Entrez l'adresse"
+          />
 
-        <label for="admin">Admin ?</label>
-        <input
-          id="admin"
-          type="checkbox"
-          [(ngModel)]="newManager.admin"
-          name="admin"
-        />
+          <label for="password">Mot de passe</label>
+          <input
+            id="password"
+            [(ngModel)]="newManager.password"
+            name="password"
+            required
+            placeholder="Entrez le mot de passe"
+            type="password"
+          />
 
-        <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
-        <button type="submit" class="submit-button">Créer</button>
-      </form>
+          <label for="admin">Admin ?</label>
+          <input
+            id="admin"
+            type="checkbox"
+            [(ngModel)]="newManager.admin"
+            name="admin"
+          />
+          <button type="submit" class="submit-button">Créer</button>
+        </form>
+      </div>
     </div>
   </div>
 

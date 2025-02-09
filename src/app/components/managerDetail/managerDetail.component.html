@@ -1,8 +1,20 @@
 <app-navbar></app-navbar>
 
 <div class="manager-detail-container">
-  <h2>Détails du Manager</h2>
-  <div *ngIf="manager">
+
+  <!-- Conteneur du titre et du bouton -->
+  <div class="title-container">
+    <!-- Bouton de retour -->
+    <button class="back-button" (click)="goBack()">
+      <span>&larr;</span> <!-- Flèche vers la gauche -->
+    </button>
+
+    <!-- Titre principal -->
+    <h2 class="page-title">Détails du Manager</h2>
+  </div>
+
+  <!-- Section Infos Manager -->
+  <div *ngIf="manager" class="manager-info-container">
     <!-- Section affichée lorsque l'utilisateur n'est pas en mode édition -->
     <div *ngIf="!isEditing">
       <p><strong>Prénom :</strong> {{ manager.firstName }}</p>
@@ -13,34 +25,65 @@
       <p><strong>Admin :</strong> {{ manager.admin ? 'Oui' : 'Non' }}</p>
 
       <!-- Boutons affichés uniquement si l'utilisateur est admin -->
-      <button *ngIf="isAdmin" class="edit-button" (click)="editManager()">Modifier</button>
-      <button *ngIf="isAdmin" class="delete-button" (click)="deleteManager()">Supprimer</button>
+      <div class="button-container">
+        <button *ngIf="isAdmin" class="edit-button" (click)="editManager()">Modifier</button>
+        <button *ngIf="isAdmin" class="delete-button" (click)="deleteManager()">Supprimer</button>
+      </div>
     </div>
 
     <!-- Section affichée lorsque l'utilisateur est en mode édition -->
-    <div *ngIf="isEditing">
-      <label>Prénom</label>
-      <input [(ngModel)]="manager.firstName" />
+    <div *ngIf="isEditing" class="edit-form">
+      <div class="edit-field">
+        <label>Prénom</label>
+        <input [(ngModel)]="manager.firstName" />
+      </div>
 
-      <label>Nom</label>
-      <input [(ngModel)]="manager.lastName" />
+      <div class="edit-field">
+        <label>Nom</label>
+        <input [(ngModel)]="manager.lastName" />
+      </div> 
 
-      <label>Email</label>
-      <input [(ngModel)]="manager.email" />
+      <div class="edit-field">
+        <label>Email</label>
+        <input [(ngModel)]="manager.email" />
+      </div>
 
-      <label>Téléphone</label>
-      <input [(ngModel)]="manager.phone" />
+      <div class="edit-field">
+        <label>Téléphone</label>
+        <input [(ngModel)]="manager.phone" />
+      </div>
 
-      <label>Adresse</label>
-      <input [(ngModel)]="manager.address" />
+      <div class="edit-field">
+        <label>Adresse</label>
+        <input [(ngModel)]="manager.address" />
+      </div>
 
-      <label>Admin</label>
-      <input type="checkbox" [(ngModel)]="manager.admin" />
+      <div class="edit-field">
+        <label>Admin</label>
+        <input type="checkbox" [(ngModel)]="manager.admin" />
+      </div>
 
-      <button class="save-button" (click)="saveChanges()">Enregistrer</button>
-      <button class="cancel-button" (click)="cancelEdit()">Annuler</button>
+      <!-- Boutons enregistrer et annuler côte à côte -->
+      <div class="button-container-modif">
+        <button class="save-button" (click)="saveChanges()">Enregistrer</button>
+        <button class="cancel-button" (click)="cancelEdit()">Annuler</button>
+      </div>
+
     </div>
   </div>
+</div>
 
   <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
-</div>
+
+  <!-- Modale de confirmation -->
+  <div *ngIf="showDeleteConfirmation" class="modal-overlay">
+    <div class="modal">
+      <h3>Confirmer la suppression</h3>
+      <p>Êtes-vous sûr de vouloir supprimer <strong>{{ manager.firstName }} {{ manager.lastName }}</strong> ?</p>
+  
+      <div class="modal-buttons">
+        <button class="confirm-button" (click)="confirmDeleteManager()">Oui, supprimer</button>
+        <button class="cancel-delete-button" (click)="showDeleteConfirmation = false">Annuler</button>
+      </div>
+    </div>
+  </div>

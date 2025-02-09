@@ -33,8 +33,11 @@ export class AuthService {
   }
 
   getToken(): string | null {
-    return this.token || localStorage.getItem('authToken');
+    const token = this.token || localStorage.getItem('authToken');
+    console.log('🔑 Token récupéré:', token); // Vérifie dans la console si le token est bien récupéré
+    return token;
   }
+  
 
   getManagerProfile(): Observable<any> {
     const url = `${this.apiUrl}/profile`;
