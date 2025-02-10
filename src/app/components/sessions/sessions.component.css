@@ -123,3 +123,103 @@ h2 {
 }
 
 
+
+
+
+
+/* Police pour tous les textes et boutons */
+body, button, input, select, textarea {
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Styles pour le modal */
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  width: 300px;
+  z-index: 10000;
+}
+
+/* Fond assombri derrière le modal */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+}
+
+/* Bouton de confirmation */
+.confirm-button {
+  background: #FF3126;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  transition: transform 0.2s ease-in-out, background 0.3s;
+}
+
+/* Hover pour le bouton de confirmation */
+.confirm-button:hover {
+  background: #D62620;
+  transform: scale(1.05);
+}
+
+/* Bouton d'annulation */
+.cancel-button {
+  background: #ccc;
+  color: black;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  transition: transform 0.2s ease-in-out, background 0.3s;
+}
+
+/* Hover pour le bouton d'annulation */
+.cancel-button:hover {
+  background: #bbb;
+  transform: scale(1.05);
+}
+
+/* Espacement entre les boutons */
+.modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+
+.success-message {
+  background-color: #d4edda;
+  color: #155724;
+  padding: 15px;
+  border-radius: 5px;
+  margin: 20px auto;
+  width: 80%;
+  text-align: center;
+  font-weight: bold;
+  border: 1px solid #c3e6cb;
+  animation: fadeOut 3s ease-in-out forwards;
+}
+
+@keyframes fadeOut {
+  0% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { opacity: 0; }
+}

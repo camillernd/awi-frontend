@@ -1,5 +1,16 @@
 <app-navbar></app-navbar>
 
+<!-- Message de succès -->
+<div *ngIf="successMessage" class="success-message">
+  {{ successMessage }}
+</div>
+
+<!-- Message d'erreur -->
+<div *ngIf="errorMessage" class="error-message">
+  {{ errorMessage }}
+</div>
+
+
 <div class="seller-detail-container">
   <div class="title-container">
     <button class="back-button" (click)="goBack()">&larr;</button>

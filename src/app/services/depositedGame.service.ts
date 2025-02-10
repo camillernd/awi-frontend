@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators'; // Import nécessaire pour `tap`
 import { map } from 'rxjs/operators';
+import { HttpHeaders } from '@angular/common/http';
 
 
 @Injectable({
@@ -52,9 +53,10 @@ export class DepositedGameService {
   }
 
   // Mettre à jour un jeu déposé
-  updateDepositedGame(id: string, updateData: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}`, updateData);
+  updateDepositedGame(gameId: string, gameData: any, headers?: HttpHeaders): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/${gameId}`, gameData, { headers });
   }
+  
 
   createDepositedGameWithoutSession(data: {
     sellerId: string;

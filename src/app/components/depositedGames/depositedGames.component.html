@@ -18,10 +18,11 @@
   <div class="filter-group">
     <label for="sort-dropdown" class="filter-label"></label>
     <select id="sort-dropdown" [(ngModel)]="selectedSort" (change)="applyFilters()" class="filter-dropdown filter-price">
-      <option value="recent">Le plus récent</option>
+      <option value="recent">Le plus ancien</option>
       <option value="priceAsc">Prix croissant</option>
       <option value="priceDesc">Prix décroissant</option>
-    </select> 
+    </select>
+    
   </div>
 
   <!-- Conteneur du tri par session -->

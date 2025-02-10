@@ -5,15 +5,17 @@
     text-align: center;
     padding: 2rem;
     width: 100vw;
+    z-index: 1;
 }
 
 .svg-container {
     position: absolute;
     transform-origin: center;
+    z-index: 1; /* Toujours en dessous du dropdown */
 }
 
 .blue-shape {
-    top: 120%;
+    top: 220%;
     right: 0%;
     transform: rotate(-7.973deg);
     width: 482.516px;
@@ -21,18 +23,18 @@
 }
 
 .yellow-shape {
-    top: 10%;
+    top: 20%;
     right: -7%;
     transform: rotate(-9.286deg);
     width: 600.55px;
-    height: 600.405px;
+    height: 400px;
 }
 
 .red-shape {
     bottom: -25%;
     right: -2%;
     width: 312px;
-    height: 220px;
+    height: 170px;
 }
 
 .pink-shape {
@@ -69,7 +71,7 @@
 
 .yellow-shape-left {
     left: -10%;
-    top: 85%;
+    top: 120%;
     transform: rotate(-1.056deg);
     width: 667.921px;
     height: 271.083px;
@@ -77,7 +79,7 @@
 
 .blue-shape-left {
     left: -15%;
-    top: 110%;
+    top: 150%;
     transform: rotate(-1.848deg);
     width: 580.03px;
     height: 382.346px;
@@ -116,4 +118,30 @@ h1 {
     position: relative;
     z-index: 1;
 }
+
+/* Conteneur fixe pour afficher la session sans bouger les formes */
+
+
+/* Ajustement du texte */
+.session-container h2 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 15px;
+    font-weight: 200;
+}
+
+.session-container h3 {
+    text-align: center;
+    font-size: 20px;
+    margin-bottom: 15px;
+    font-weight: 200;
+}
+
+.session-container p {
+    font-size: 16px;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+
 

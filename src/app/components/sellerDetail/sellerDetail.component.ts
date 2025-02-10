@@ -10,6 +10,7 @@ import { NavbarComponent } from '../navbar/navbar.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ChangeDetectorRef } from '@angular/core';
+import { HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-seller-detail',
@@ -27,11 +28,12 @@ export class SellerDetailComponent implements OnInit {
   refunds: any[] = [];
   sessions: any[] = [];
   isEditing = false;
-  errorMessage: string | null = null;
   showDeleteConfirmation = false;
   selectedCategory: string = 'games';
   selectedGame: any = null;
   showPickUpConfirmation: boolean = false;
+  successMessage: string | null = null; // Message de succès
+  errorMessage: string | null = null; // Message d'erreur
 
   constructor(
     private route: ActivatedRoute,
@@ -41,7 +43,8 @@ export class SellerDetailComponent implements OnInit {
     private depositedGameService: DepositedGameService,
     private sessionService: SessionService,
     private router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private authService: AuthService // Ajoute AuthService ici
   ) {}
 
   ngOnInit(): void {
@@ -107,15 +110,44 @@ export class SellerDetailComponent implements OnInit {
 
   saveChanges(): void {
     if (!this.seller) return;
-
+  
+    // Vérifications côté frontend
+    if (!this.seller.name.trim() || !this.seller.email.trim() || !this.seller.phone.trim()) {
+      this.errorMessage = "Tous les champs sont obligatoires.";
+      return;
+    }
+  
+    // Vérifier le format de l'email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(this.seller.email)) {
+      this.errorMessage = "Veuillez entrer une adresse email valide.";
+      return;
+    }
+  
     this.sellerService.updateSeller(this.seller._id, this.seller).subscribe({
       next: (updatedSeller) => {
         this.seller = updatedSeller;
         this.isEditing = false;
+        this.errorMessage = null;
+        this.successMessage = "Les informations du vendeur ont été mises à jour avec succès.";
+        
+        // Disparition du message après quelques secondes
+        setTimeout(() => {
+          this.successMessage = null;
+        }, 3000);
       },
-      error: (err: any) => (this.errorMessage = 'Erreur lors de la mise à jour.'),
+      error: (err) => {
+        console.error('Erreur lors de la mise à jour du vendeur', err);
+  
+        if (err.error?.message?.includes("email")) {
+          this.errorMessage = "Cet email est déjà utilisé par un autre vendeur.";
+        } else {
+          this.errorMessage = "Erreur lors de la mise à jour du vendeur.";
+        }
+      },
     });
   }
+  
 
   confirmDelete(): void {
     this.showDeleteConfirmation = true;
@@ -237,7 +269,24 @@ confirmPickUp(): void {
     pickedUp: true,
   };
 
-  this.depositedGameService.updateDepositedGame(this.selectedGame._id, updatedGame).subscribe({
+  // Récupère le token depuis AuthService
+  const token = this.authService.getToken();
+
+  // Vérifie si le token est bien présent
+  if (!token) {
+    console.error("❌ Aucun token d'authentification trouvé !");
+    return;
+  }
+
+  // Crée les headers avec le token
+  const headers = new HttpHeaders({
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}`
+  });
+
+  console.log("📡 Envoi de la requête avec headers :", headers);
+
+  this.depositedGameService.updateDepositedGame(this.selectedGame._id, updatedGame, headers).subscribe({
     next: () => {
       this.selectedGame.sold = false;
       this.selectedGame.forSale = false;

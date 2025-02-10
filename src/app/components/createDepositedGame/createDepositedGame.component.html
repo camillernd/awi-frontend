@@ -1,4 +1,17 @@
 <app-navbar></app-navbar>
+
+
+<!-- Message de succès -->
+<div *ngIf="successMessage" class="success-message">
+  {{ successMessage }}
+</div>
+
+<!-- Message d'erreur -->
+<div *ngIf="errorMessage" class="error-message">
+  {{ errorMessage }}
+</div>
+
+
 <h2 class="page-title">Déposer un jeu</h2>
 
 <div class="page-container">
@@ -58,9 +71,9 @@
     <!-- Section Totaux -->
     <div class="totals-container">
       <h3>Total</h3>
-      <p>Total frais de dépôt : {{ totalDepositFee | currency }}</p>
-      <p>Total réduction frais : {{ totalDiscount | currency }}</p>
-      <p>Total après réduction : {{ totalAfterDiscount | currency }}</p>
+      <p>Total frais de dépôt : {{ totalDepositFee}}€</p>
+      <p>Total réduction frais : {{ totalDiscount}}€</p>
+      <p>Total après réduction : {{ totalAfterDiscount}}€</p>
     </div>
 
     <!-- Bouton Valider -->
@@ -106,7 +119,7 @@
         />
 
         <label>
-          <input type="checkbox" [(ngModel)]="game.forSale" name="forSale-{{ i }}" />
+          <input type="checkbox" [(ngModel)]="game.forSale" [ngModelOptions]="{standalone: true}" />
           Disponible à la vente
         </label>
 

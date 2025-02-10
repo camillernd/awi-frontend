@@ -1,4 +1,11 @@
 <app-navbar></app-navbar>
+
+<!-- Message de succès -->
+<div *ngIf="successMessage" class="success-message">
+  {{ successMessage }}
+</div>
+
+
 <h2>Liste des sessions</h2>
 
 <div class="sessions-grid">
@@ -26,9 +33,9 @@
 
     <div class="session-actions">
       <a
-        *ngIf="admin === true && session.status === 'aVenir'" 
+        *ngIf="admin && session.status === 'aVenir'" 
         class="delete-link" 
-        (click)="deleteSession(session._id, session.status); $event.stopPropagation()"
+        (click)="openDeleteModal(session._id, session.status); $event.stopPropagation()"
       >
         Supprimer ?
       </a>
@@ -43,3 +50,17 @@
     </div>
   </div>
 </div>
+
+
+<!-- MODAL DE CONFIRMATION -->
+<!-- Modal de confirmation de suppression -->
+<div *ngIf="showModal" class="modal-backdrop"></div>
+<div *ngIf="showModal" class="modal">
+  <h3>Confirmer la suppression</h3>
+  <p>Êtes-vous sûr de vouloir supprimer cette session ?</p>
+  <div class="modal-buttons">
+    <button class="confirm-button" (click)="confirmDeleteSession()">Oui, supprimer</button>
+    <button class="cancel-button" (click)="closeModal()">Annuler</button>
+  </div>
+</div>
+

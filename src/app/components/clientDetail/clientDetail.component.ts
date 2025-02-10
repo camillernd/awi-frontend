@@ -17,7 +17,8 @@ export class ClientDetailComponent implements OnInit {
   client: any = null;
   transactions: any[] = []; // Liste des transactions liées au client
   isEditing = false;
-  errorMessage: string | null = null;
+  successMessage: string | null = null; // Message de succès
+  errorMessage: string | null = null; // Message d'erreur
   showDeleteConfirmation = false; // Pour afficher ou masquer le modale
 
   constructor(
@@ -85,19 +86,45 @@ export class ClientDetailComponent implements OnInit {
 
   saveChanges(): void {
     if (!this.client) return;
+  
+    // Vérifications côté frontend
+    if (!this.client.name.trim() || !this.client.email.trim() || !this.client.phone.trim() || !this.client.address.trim()) {
+      this.errorMessage = "Tous les champs sont obligatoires.";
+      return;
+    }
+  
+    // Vérifier le format de l'email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(this.client.email)) {
+      this.errorMessage = "Veuillez entrer une adresse email valide.";
+      return;
+    }
 
+  
     this.clientService.updateClient(this.client._id, this.client).subscribe({
       next: (updatedClient) => {
         this.client = updatedClient;
         this.isEditing = false;
         this.errorMessage = null;
+        this.successMessage = "Les informations du client ont été mises à jour avec succès.";
+        
+        // Disparition du message après quelques secondes
+        setTimeout(() => {
+          this.successMessage = null;
+        }, 3000);
       },
       error: (err) => {
         console.error('Erreur lors de la mise à jour du client', err);
-        this.errorMessage = 'Erreur lors de la mise à jour.';
+  
+        if (err.error?.message?.includes("email")) {
+          this.errorMessage = "Cet email est déjà utilisé par un autre client.";
+        } else {
+          this.errorMessage = "Erreur lors de la mise à jour du client.";
+        }
       },
     });
   }
+  
 
   deleteClient(): void {
     if (confirm('Êtes-vous sûr de vouloir supprimer ce client ?')) {

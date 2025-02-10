@@ -58,9 +58,10 @@
   </div>
   
   <!-- Cas : Session en cours -->
-  <div *ngIf="currentSession">
-    <h2>Session <strong>{{ currentSession.name }}</strong> en cours !</h2>
-    <p>A vos marques... Prêts... Partez...</p>
+  <div *ngIf="currentSession" class="session-container">
+    <h2><strong>{{ currentSession.name }}</strong> en cours !</h2>
+    <h3>Rendez vous <strong>{{ currentSession.location }}</strong></h3>
+    <p>A vos marques... Prêts... Partez !!</p>
   </div>
 
   <!-- Cas : Prochaine session avec compte à rebours -->

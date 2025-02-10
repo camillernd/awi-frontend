@@ -25,7 +25,8 @@ export class CreateGameDescriptionComponent implements OnInit {
 
   firstName: string | null = null;
   lastName: string | null = null;
-  successMessage: string | null = null; // 🔹 Message de succès
+  successMessage: string | null = null; // Message de succès
+  errorMessage: string | null = null; // Message d'erreur
 
   constructor(
     private gameDescriptionService: GameDescriptionService,
@@ -39,31 +40,64 @@ export class CreateGameDescriptionComponent implements OnInit {
   }
 
   createGameDescription(): void {
-    if (this.gameDescriptionData.minPlayers > this.gameDescriptionData.maxPlayers) {
-      alert('Le nombre minimum de joueurs ne peut pas dépasser le nombre maximum.');
+    this.errorMessage = null;
+    this.successMessage = null;
+
+    // 🛑 Vérifications avant soumission
+    if (!this.gameDescriptionData.name.trim()) {
+      this.errorMessage = "Le nom du jeu est obligatoire.";
       return;
     }
 
-    console.log('Données envoyées au backend:', this.gameDescriptionData);
+    if (!this.gameDescriptionData.publisher.trim()) {
+      this.errorMessage = "L'éditeur du jeu est obligatoire.";
+      return;
+    }
 
-    this.gameDescriptionService
-      .createGameDescription(this.gameDescriptionData)
-      .subscribe({
-        next: () => {
-          console.log('Description du jeu créée avec succès.');
-          
-          // 🔹 Afficher un message de succès
-          this.successMessage = "La description du jeu a été créée avec succès !";
-          
-          // 🔹 Redirection après 3 secondes
-          setTimeout(() => {
-            this.router.navigate(['/home']);
-          }, 3000);
-        },
-        error: (error) => {
-          console.error('Erreur lors de la création de la description du jeu', error);
-          alert('Erreur lors de la création.');
-        },
-      });
+    if (!this.gameDescriptionData.photoURL.trim()) {
+      this.errorMessage = "L'URL de la photo est obligatoire.";
+      return;
+    }
+
+    if (!this.gameDescriptionData.description.trim()) {
+      this.errorMessage = "La description du jeu est obligatoire.";
+      return;
+    }
+
+    if (this.gameDescriptionData.description.length > 250) {
+      this.errorMessage = "La description ne peut pas dépasser 250 caractères.";
+      return;
+    }    
+
+    if (this.gameDescriptionData.minPlayers < 1 || isNaN(this.gameDescriptionData.minPlayers)) {
+      this.errorMessage = "Le nombre minimum de joueurs doit être un nombre positif.";
+      return;
+    }
+
+    if (this.gameDescriptionData.maxPlayers < 1 || isNaN(this.gameDescriptionData.maxPlayers)) {
+      this.errorMessage = "Le nombre maximum de joueurs doit être un nombre positif.";
+      return;
+    }
+
+    if (this.gameDescriptionData.minPlayers > this.gameDescriptionData.maxPlayers) {
+      this.errorMessage = "Le nombre minimum de joueurs ne peut pas être supérieur au nombre maximum.";
+      return;
+    }
+
+    console.log("Données envoyées au backend:", this.gameDescriptionData);
+
+    this.gameDescriptionService.createGameDescription(this.gameDescriptionData).subscribe({
+      next: () => {
+        this.successMessage = "La description du jeu a été créée avec succès. Redirection...";
+        
+        setTimeout(() => {
+          this.router.navigate(['/home']);
+        }, 3000);
+      },
+      error: (error) => {
+        console.error("Erreur lors de la création de la description du jeu", error);
+        this.errorMessage = "Une erreur est survenue lors de la création.";
+      },
+    });
   }
 }

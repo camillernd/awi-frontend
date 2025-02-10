@@ -29,7 +29,7 @@
           <button (click)="goToClients()">Clients</button>
           <button (click)="goToSellers()">Vendeurs</button>
           <ng-container *ngIf="adminConnected">
-            <button (click)="goToManagers()">Managers</button>
+            <button (click)="goToManagers()">Gestionnaires</button>
           </ng-container>
         </div>
       </div>
@@ -37,6 +37,18 @@
   </div>
   <div class="navbar-right">
     <a *ngIf="!managerConnected" (click)="navigateToLogin()" class="manager-link">Manager ?</a>
-    <a *ngIf="managerConnected" (click)="logout()" class="logout-link">Déconnexion</a>
+    <a *ngIf="managerConnected" (click)="confirmLogout()" class="logout-link">Déconnexion</a>
   </div>
 </nav>
+
+
+<!-- Modal de confirmation de déconnexion -->
+<div *ngIf="showLogoutModal" class="modal-overlay">
+  <div class="modal">
+    <h3>Êtes-vous sûr(e) de vouloir vous déconnecter ?</h3>
+    <div class="modal-buttons">
+      <button class="confirm-button" (click)="logout()">Oui, déconnexion</button>
+      <button class="cancel-button" (click)="cancelLogout()">Annuler</button>
+    </div>
+  </div>
+</div>

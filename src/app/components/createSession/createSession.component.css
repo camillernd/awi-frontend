@@ -120,3 +120,26 @@ textarea {
   transform: scale(1.05); /* Augmente légèrement la taille */
 }
 
+.success-message {
+  background-color: #d4edda;
+  color: #155724;
+  padding: 15px;
+  border-radius: 5px;
+  margin: 20px auto;
+  width: 80%;
+  text-align: center;
+  font-weight: bold;
+  border: 1px solid #c3e6cb;
+}
+
+.error-message {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 15px;
+  border-radius: 5px;
+  margin: 20px auto;
+  width: 80%;
+  text-align: center;
+  font-weight: bold;
+  border: 1px solid #f5c6cb;
+}

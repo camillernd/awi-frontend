@@ -68,23 +68,31 @@
             placeholder="Entrez l'adresse"
           />
 
-          <label for="password">Mot de passe</label>
-          <input
-            id="password"
-            [(ngModel)]="newManager.password"
-            name="password"
-            required
-            placeholder="Entrez le mot de passe"
-            type="password"
-          />
+          <div class="form-group password-group">
+            <label for="password">Mot de passe</label>
+            <div class="password-wrapper">
+              <input
+                [type]="showPassword ? 'text' : 'password'" 
+                id="password"
+                [(ngModel)]="newManager.password"
+                name="password"
+                required
+                placeholder="Entrez le mot de passe"
+              />
+              <span class="eye-icon" (click)="togglePasswordVisibility()">
+                <img *ngIf="!showPassword" src="assets/icons/eye-open.svg" alt="Afficher">
+                <img *ngIf="showPassword" src="assets/icons/eye-closed.svg" alt="Masquer">
+              </span>
+            </div>
+          </div>
+          
 
           <label for="admin">Admin ?</label>
-          <input
-            id="admin"
-            type="checkbox"
-            [(ngModel)]="newManager.admin"
-            name="admin"
-          />
+          <label class="switch">
+            <input type="checkbox" id="admin" [(ngModel)]="newManager.admin" name="admin">
+            <span class="slider round"></span>
+          </label>
+    
           <button type="submit" class="submit-button">Créer</button>
         </form>
       </div>

@@ -25,6 +25,8 @@ export class CreateDepositedGameComponent implements OnInit {
   filteredSellers: any[] = []; // Liste des vendeurs filtrés
   gameInput: string[] = [];
   filteredGameDescriptions: any[][] = [];
+  errorMessage: string | null = null;  // Gestion des erreurs
+  successMessage: string | null = null;  // Gestion du succès
 
 
   // Liste dynamique des jeux
@@ -160,52 +162,72 @@ export class CreateDepositedGameComponent implements OnInit {
   }
 
   createDepositedGames(): void {
-    if (!this.selectedSeller || !this.selectedSession) {
-      alert('Veuillez sélectionner un vendeur et une session.');
+    this.errorMessage = null;
+    this.successMessage = null;
+
+    // 🛑 Vérifications avant soumission
+    if (!this.selectedSeller) {
+      this.errorMessage = "Veuillez sélectionner un vendeur.";
       return;
     }
-  
-    // Vérification des jeux avant l'envoi
+    
+    if (!this.selectedSession) {
+      this.errorMessage = "Aucune session ouverte trouvée.";
+      return;
+    }
+
+    if (this.depositedGames.length === 0) {
+      this.errorMessage = "Veuillez ajouter au moins un jeu.";
+      return;
+    }
+
     for (let game of this.depositedGames) {
       if (!game.gameDescriptionId) {
-        alert("Un ou plusieurs jeux n'ont pas été correctement sélectionnés.");
+        this.errorMessage = "Un ou plusieurs jeux n'ont pas été correctement sélectionnés.";
+        return;
+      }
+
+      if (game.salePrice < 0 || isNaN(game.salePrice)) {
+        this.errorMessage = "Le prix de vente doit être un nombre positif.";
         return;
       }
     }
-  
+
     const requests = this.depositedGames.map((game) => ({
       ...game,
       sellerId: this.selectedSeller._id,
       sessionId: this.selectedSession._id,
     }));
-  
-    console.log("Envoi des données du depositedGame au backend:", requests);
-  
-    // Paiement des frais de dépôt
+
     const paymentData = {
       sellerId: this.selectedSeller._id,
       sessionId: this.selectedSession._id,
       depositFeePayed: this.totalAfterDiscount,
       depositDate: new Date(),
     };
-  
+
+    // 🔄 Paiement des frais de dépôt
     this.depositFeePaymentService.createPayment(paymentData).subscribe({
       next: () => {
-        console.log('Paiement des frais de dépôt enregistré avec succès.');
         requests.forEach((gameData) => {
           this.depositedGameService.createDepositedGame(gameData).subscribe({
             next: () => {
-              console.log('Jeu déposé créé avec succès.');
+              this.successMessage = "Jeux déposés avec succès ! Redirection...";
+              
+              setTimeout(() => {
+                this.router.navigate(['/depositedGames']);
+              }, 3000); // ⏳ Redirection après 3s
             },
-            error: (error) => console.error('Erreur lors de la création du jeu déposé', error),
+            error: (error) => {
+              console.error("Erreur lors de la création du jeu déposé", error);
+              this.errorMessage = "Erreur lors de l'ajout d'un jeu déposé.";
+            },
           });
         });
-        alert('Jeux déposés et paiement enregistrés avec succès.');
-        this.router.navigate(['/depositedGames']);
       },
       error: (error) => {
-        console.error('Erreur lors de la création du paiement', error);
-        alert('Une erreur est survenue lors de la création du paiement.');
+        console.error("Erreur lors de la création de la transaction", error);
+        this.errorMessage = "Une erreur est survenue lors de la création de la transaction.";
       },
     });
   }

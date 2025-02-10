@@ -15,6 +15,9 @@ import { NavbarComponent } from '../navbar/navbar.component';
 export class SessionsComponent implements OnInit {
   sessions: any[] = [];
   admin: boolean = false; // À remplacer par la vraie vérification d'admin
+  sessionToDelete: { id: string, status: string } | null = null; // Stocke la session à supprimer
+  showModal: boolean = false; // Affichage du modal
+  successMessage: string | null = null; // Message de succès temporaire
 
   constructor(private sessionService: SessionService, private router: Router) {}
 
@@ -86,26 +89,42 @@ export class SessionsComponent implements OnInit {
     this.router.navigate([`/depositedGames/${sessionId}`]);
   }
 
-  deleteSession(sessionId: string, status: string): void {
+  openDeleteModal(sessionId: string, status: string): void {
     if (status !== 'aVenir') {
       alert("❌ Impossible de supprimer une session déjà commencée ou clôturée.");
       return;
     }
+    
+    this.sessionToDelete = { id: sessionId, status };
+    this.showModal = true; // Affiche le modal
+  }
 
-    this.sessionService.hasDepositedGames(sessionId).subscribe({
+  closeModal(): void {
+    this.showModal = false;
+    this.sessionToDelete = null;
+  }
+
+  confirmDeleteSession(): void {
+    if (!this.sessionToDelete) return;
+  
+    this.sessionService.hasDepositedGames(this.sessionToDelete.id).subscribe({
       next: (hasGames) => {
         if (hasGames) {
           alert("❌ Impossible de supprimer cette session car des jeux y sont déposés.");
         } else {
-          if (confirm("Êtes-vous sûr de vouloir supprimer cette session ?")) {
-            this.sessionService.deleteSession(sessionId).subscribe({
-              next: () => {
-                alert("✅ Session supprimée avec succès.");
-                this.loadSessions();
-              },
-              error: (err) => console.error("Erreur lors de la suppression", err),
-            });
-          }
+          this.sessionService.deleteSession(this.sessionToDelete!.id).subscribe({
+            next: () => {
+              this.successMessage = "Session supprimée avec succès.";
+              this.loadSessions();
+              this.closeModal();
+  
+              // Efface le message après 3 secondes
+              setTimeout(() => {
+                this.successMessage = null;
+              }, 3000);
+            },
+            error: (err) => console.error("Erreur lors de la suppression", err),
+          });
         }
       },
       error: (err) => console.error("Erreur lors de la vérification des jeux déposés", err),

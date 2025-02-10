@@ -15,6 +15,7 @@ import { NavbarComponent } from '../navbar/navbar.component';
 export class LoginComponent {
   loginForm: FormGroup;
   errorMessage: string | null = null;
+  showPassword: boolean = false;
 
   constructor(
     private fb: FormBuilder, 
@@ -25,6 +26,14 @@ export class LoginComponent {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
+  }
+
+  ngOnInit(): void {
+    document.body.style.overflow = 'hidden';
+  }
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
   }
 
   onSubmit() {

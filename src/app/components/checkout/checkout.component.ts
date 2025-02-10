@@ -24,8 +24,8 @@ export class CheckoutComponent implements OnInit {
   scannedGameId: string = '';
   cartItems: { gameData: any | null }[] = [];
   totalCost: number = 0;
-  errorMessage: string = ''; 
   successMessage: string | null = null; // Message de succès
+  errorMessage: string | null = null; // Message d'erreur
 
   constructor(
     private clientService: ClientService,
@@ -74,45 +74,46 @@ export class CheckoutComponent implements OnInit {
     this.router.navigate(['/clients']);
   }
 
-  // Ajouter un article scanné
-  addScannedGame(): void {
-    const gameId = this.scannedGameId.trim();
-    if (!gameId) {
-      this.errorMessage = 'Veuillez entrer un ID valide.';
-      return;
-    }
+// Ajouter un article scanné
+addScannedGame(): void {
+  this.errorMessage = null;
 
-    if (this.cartItems.some((item) => item.gameData?._id === gameId)) {
-      this.errorMessage = `L'article avec l'ID ${gameId} est déjà dans le panier.`;
-      return;
-    }
-
-    this.depositedGameService.getDepositedGameById(gameId).subscribe({
-      next: (game) => {
-        if (!game) {
-          this.errorMessage = "Jeu non reconnu.";
-          return;
-        }
-        if (game.sold) {
-          this.errorMessage = "Ce jeu a déjà été vendu.";
-          return;
-        }
-        if (!game.forSale) {
-          this.errorMessage = "Ce jeu n'est pas à vendre.";
-          return;
-        }
-
-        this.cartItems.push({ gameData: game });
-        this.updateTotalCost();
-        this.scannedGameId = '';
-        this.errorMessage = ''; 
-      },
-      error: (err) => {
-        this.errorMessage = `Erreur lors du scan du jeu avec ID: ${gameId}`;
-        console.error(err);
-      },
-    });
+  const gameId = this.scannedGameId.trim();
+  if (!gameId) {
+    this.errorMessage = "Veuillez entrer un ID valide.";
+    return;
   }
+
+  if (this.cartItems.some((item) => item.gameData?._id === gameId)) {
+    this.errorMessage = "Cet article est déjà dans le panier.";
+    return;
+  }
+
+  this.depositedGameService.getDepositedGameById(gameId).subscribe({
+    next: (game) => {
+      if (!game) {
+        this.errorMessage = "Jeu non reconnu.";
+        return;
+      }
+      if (game.sold) {
+        this.errorMessage = "Ce jeu a déjà été vendu.";
+        return;
+      }
+      if (!game.forSale) {
+        this.errorMessage = "Ce jeu n'est pas à vendre.";
+        return;
+      }
+
+      this.cartItems.push({ gameData: game });
+      this.updateTotalCost();
+      this.scannedGameId = '';
+    },
+    error: (err) => {
+      this.errorMessage = "Erreur lors du scan du jeu.";
+      console.error(err);
+    },
+  });
+}
 
   // Supprimer un article du panier
   removeCartItem(index: number): void {
@@ -127,17 +128,18 @@ export class CheckoutComponent implements OnInit {
     }, 0);
   }
 
-  // Méthode pour finaliser le paiement et créer des transactions
+  // Finaliser le paiement
   finalizeCheckout(): void {
+    this.errorMessage = null;
+    this.successMessage = null;
 
-    // Vérifier si le panier est vide
     if (this.cartItems.length === 0) {
-      this.errorMessage = "Votre panier est vide. Ajoutez au moins un article avant de finaliser.";
+      this.errorMessage = "Votre panier est vide.";
       return;
     }
-    
+
     if (!this.selectedClient) {
-      this.errorMessage = "Veuillez sélectionner un client avant de finaliser.";
+      this.errorMessage = "Veuillez sélectionner un client.";
       return;
     }
 
@@ -150,17 +152,17 @@ export class CheckoutComponent implements OnInit {
 
     this.transactionService.createMultipleTransactions(transactions).subscribe({
       next: (response: any) => {
-        this.successMessage = `Transaction réussie pour ${response.length} articles. Total : ${this.totalCost} $. Redirection vers l'accueil...`;
+        this.successMessage = `Transaction réussie pour ${response.length} articles. Redirection...`;
         this.cartItems = [];
         this.totalCost = 0;
 
         setTimeout(() => {
-          this.router.navigate(['/home']);
+          this.router.navigate(['/treasury']);
         }, 3000);
       },
       error: (error: any) => {
-        console.error('Erreur lors de la finalisation des transactions', error);
-        this.errorMessage = 'Une erreur est survenue. Veuillez réessayer.';
+        this.errorMessage = "Une erreur est survenue lors du paiement.";
+        console.error(error);
       },
     });
   }

@@ -222,7 +222,7 @@ button:hover {
 
 
 
-/* 🌑 Fond semi-transparent */
+/* 🌑 Fond semi-transparent pour la modale */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -236,7 +236,7 @@ button:hover {
   z-index: 999;
 }
 
-/* 🏠 Modale */
+/* 🏠 Style de la modale */
 .modal {
   background: white;
   padding: 20px;
@@ -245,30 +245,26 @@ button:hover {
   text-align: center;
   max-width: 400px;
   width: 90%;
+  animation: fadeIn 0.3s ease-in-out;
 }
 
-/* 📝 Titre */
-.modal h3 {
-  font-size: 20px;
-  margin-bottom: 10px;
+/* 📌 Texte d'avertissement */
+.warning-text {
+  color: #d9534f;
+  font-weight: bold;
+  margin-top: 10px;
 }
 
-/* 📌 Texte */
-.modal p {
-  font-size: 16px;
-  color: #333;
-  margin-bottom: 20px;
-}
-
-/* 🎨 Boutons */
+/* 🎨 Boutons de la modale */
 .modal-buttons {
   display: flex;
   justify-content: center;
   gap: 15px;
+  margin-top: 15px;
 }
 
 .confirm-button {
-  background: #ff4d4d;
+  background: #d9534f;
   color: white;
   padding: 10px 15px;
   border: none;
@@ -279,8 +275,8 @@ button:hover {
 }
 
 .confirm-button:hover {
-  background: #e60000;
-  transform: scale(1.02);
+  background: #c9302c;
+  transform: scale(1.05);
 }
 
 .cancel-delete-button {
@@ -296,5 +292,50 @@ button:hover {
 
 .cancel-delete-button:hover {
   background: #bbb;
-  transform: scale(1.02);
+  transform: scale(1.05);
+}
+
+/* Effet d'apparition */
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+
+
+
+
+
+
+
+
+.success-message {
+  background-color: #d4edda;
+  color: #155724;
+  padding: 15px;
+  border-radius: 5px;
+  margin: 20px auto;
+  width: 80%;
+  text-align: center;
+  font-weight: bold;
+  border: 1px solid #c3e6cb;
+  animation: fadeOut 3s ease-in-out forwards;
+}
+
+.error-message {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 15px;
+  border-radius: 5px;
+  margin: 20px auto;
+  width: 80%;
+  text-align: center;
+  font-weight: bold;
+  border: 1px solid #f5c6cb;
+}
+
+@keyframes fadeOut {
+  0% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { opacity: 0; }
 }

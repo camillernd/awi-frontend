@@ -1,5 +1,19 @@
 <app-navbar></app-navbar>
 
+
+<!-- Message de succès -->
+<div *ngIf="successMessage" class="success-message">
+  {{ successMessage }}
+</div>
+
+<!-- Message d'erreur -->
+<div *ngIf="errorMessage" class="error-message">
+  {{ errorMessage }}
+</div>
+
+
+
+
 <div class="manager-detail-container">
 
   <!-- Conteneur du titre et du bouton -->
@@ -25,10 +39,11 @@
       <p><strong>Admin :</strong> {{ manager.admin ? 'Oui' : 'Non' }}</p>
 
       <!-- Boutons affichés uniquement si l'utilisateur est admin -->
-      <div class="button-container">
-        <button *ngIf="isAdmin" class="edit-button" (click)="editManager()">Modifier</button>
-        <button *ngIf="isAdmin" class="delete-button" (click)="deleteManager()">Supprimer</button>
-      </div>
+    <!-- Boutons affichés uniquement si l'utilisateur est admin -->
+    <div class="button-container">
+      <button *ngIf="isAdmin" class="edit-button" (click)="editManager()">Modifier</button>
+      <button *ngIf="isAdmin" class="delete-button" (click)="confirmDelete()">Supprimer</button>
+    </div>
     </div>
 
     <!-- Section affichée lorsque l'utilisateur est en mode édition -->
@@ -75,15 +90,19 @@
 
   <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
 
-  <!-- Modale de confirmation -->
-  <div *ngIf="showDeleteConfirmation" class="modal-overlay">
-    <div class="modal">
-      <h3>Confirmer la suppression</h3>
-      <p>Êtes-vous sûr de vouloir supprimer <strong>{{ manager.firstName }} {{ manager.lastName }}</strong> ?</p>
+
   
-      <div class="modal-buttons">
-        <button class="confirm-button" (click)="confirmDeleteManager()">Oui, supprimer</button>
-        <button class="cancel-delete-button" (click)="showDeleteConfirmation = false">Annuler</button>
-      </div>
+<!-- Modale de confirmation de suppression -->
+<div *ngIf="showDeleteConfirmation" class="modal-overlay">
+  <div class="modal">
+    <h3>Confirmer la suppression</h3>
+    <p>Êtes-vous sûr de vouloir supprimer <strong>{{ manager.firstName }} {{ manager.lastName }}</strong> ?</p>
+    <p class="warning-text">Cette action est irréversible.</p>
+
+    <div class="modal-buttons">
+      <button class="confirm-button" (click)="confirmDeleteManager()">Oui, supprimer</button>
+      <button class="cancel-delete-button" (click)="cancelDelete()">Annuler</button>
     </div>
   </div>
+</div>
+

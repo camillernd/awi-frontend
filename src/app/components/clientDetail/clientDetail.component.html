@@ -1,5 +1,16 @@
 <app-navbar></app-navbar>
 
+<!-- Message de succès -->
+<div *ngIf="successMessage" class="success-message">
+  {{ successMessage }}
+</div>
+
+<!-- Message d'erreur -->
+<div *ngIf="errorMessage" class="error-message">
+  {{ errorMessage }}
+</div>
+
+
 <div class="client-detail-container">
 
   <!-- Conteneur du titre et du bouton -->
@@ -58,8 +69,6 @@
 
   </div>
 </div>
-
-  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
 
     <!-- Section Transactions -->
     <div class="transactions-container" *ngIf="transactions.length > 0">

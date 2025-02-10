@@ -1,5 +1,14 @@
 <app-navbar></app-navbar>
 
+<!-- Affichage des messages -->
+<div *ngIf="successMessage" class="success-message">
+  {{ successMessage }}
+</div>
+
+<div *ngIf="errorMessage" class="error-message">
+  {{ errorMessage }}
+</div>
+
 <div class="page-title-container">
   <h1 class="page-title">Créer une session</h1>
 </div>
