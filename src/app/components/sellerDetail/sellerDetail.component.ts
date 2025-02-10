@@ -302,4 +302,82 @@ confirmPickUp(): void {
 }
 
 
+  // Méthode pour formater les dates au format jj/mm/aaaa hh:mm
+  formatDate(dateString: string): string {
+    const date = new Date(dateString);
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+  
+    return `${day}/${month}/${year} ${hours}:${minutes}`;
+  }
+
+
+
+
+   // Déterminer le statut de la session
+   getSessionStatus(session: any): string {
+    if (!session) {
+      console.error('Session inexistante ou invalide:', session);
+      return 'unknown';
+    }
+
+    const now = new Date().getTime();
+    const startDate = new Date(session.startDate).getTime();
+    const endDate = new Date(session.endDate).getTime();
+
+    if (now < startDate) return 'à venir';
+    if (now > endDate) return 'clôturée';
+    return 'ouverte';
+  }
+
+  // Déterminer la classe CSS pour le statut de la session
+  getSessionClass(session: any): string {
+    const status = this.getSessionStatus(session);
+
+    switch (status) {
+      case 'ouverte': return 'session-open';
+      case 'clôturée': return 'session-closed';
+      case 'à venir': return 'session-upcoming';
+      default: return '';
+    }
+  }
+
+  // Déterminer le statut de l’objet
+  getObjectStatusClass(game: any): string {
+    const sessionStatus = this.getSessionStatus(game.sessionId);
+
+    if (sessionStatus === 'clôturée') {
+      return game.sold ? 'sold' : 'not-sold';
+    }
+    return game.forSale ? 'available' : 'not-available';
+  }
+
+  getObjectStatusText(game: any): string {
+    const sessionStatus = this.getSessionStatus(game.sessionId);
+
+    if (sessionStatus === 'clôturée') {
+      return game.sold ? 'Vendu' : 'Pas vendu';
+    }
+    return game.forSale ? 'Oui' : 'Non';
+  }
+
+  // Basculer la disponibilité de l’objet
+  toggleAvailability(game: any): void {
+    const sessionStatus = this.getSessionStatus(game.sessionId);
+    if (sessionStatus === 'clôturée') {
+      console.warn('Modification non autorisée pour ce jeu.');
+      return;
+    }
+
+    game.forSale = !game.forSale;
+    this.depositedGameService.updateDepositedGame(game._id, { forSale: game.forSale }).subscribe({
+      next: () => console.log('Disponibilité mise à jour avec succès'),
+      error: (err) => console.error('Erreur lors de la mise à jour', err),
+    });
+  }
+
+
 }

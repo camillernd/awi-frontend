@@ -72,16 +72,41 @@
   <div *ngIf="selectedCategory === 'games'" class="category-container">
     <h3>Jeux déposés</h3>
     <div *ngIf="depositedGames.length > 0; else noGames">
+
       <div *ngFor="let game of depositedGames" class="item-container">
-        <p><strong>Nom :</strong> {{ game.gameDescriptionId?.name || 'Nom inconnu' }}</p>
-        <p><strong>Prix :</strong> {{ game.salePrice}}€</p>
-        <p><strong>Session :</strong> {{ game.sessionId?.name || 'Session inconnue' }}</p>
-        <div class="picked-up-container">
-          <button class="picked-up-button" (click)="openPickUpConfirmation(game)" [disabled]="game.pickedUp">
-            {{ game.pickedUp ? "Récupéré" : "Récupéré ?" }}
-          </button>
-        </div>            
+        <div class="game-header">
+          <h4>{{ game.gameDescriptionId?.name }} | {{ game.salePrice | currency }}</h4>
+        </div>
+      
+        <div class="game-body">
+          <!-- Infos du jeu -->
+          <div class="game-info">
+            <h3>Session</h3>
+            <p><strong>Nom :</strong> {{ game.sessionId?.name }}</p>
+            <p><strong>Statut :</strong> 
+              <span [class]="getSessionClass(game.sessionId)">
+                {{ getSessionStatus(game.sessionId) }}
+              </span>
+            </p>
+            <h3>Statut du Jeu</h3>
+            <p><strong>Vendu : </strong>{{ game.sold ? "Oui" : "Non" }}</p>
+            <p><strong>Disponible : </strong>{{ game.forSale ? "Oui" : "Non" }}</p>
+            <p><strong>Récupéré : </strong>{{ game.pickedUp ? "Oui" : "Non, stocké" }}</p>
+          </div>
+      
+          <!-- Image du jeu -->
+          <div class="game-image">
+            <div class="image-container">
+              <img [src]="game.gameDescriptionId?.photoURL || 'default-image.png'" alt="Image du jeu">
+            </div>
+            <button class="picked-up-button" (click)="openPickUpConfirmation(game)" [disabled]="game.pickedUp">
+              {{ game.pickedUp ? "Récupéré" : "Récupérer ?" }}
+            </button>
+          </div>
+    
+        </div>
       </div>
+      
     </div>
     <ng-template #noGames>
       <p>Aucun jeu déposé pour ce vendeur.</p>
@@ -94,9 +119,14 @@
     <h3>Transactions</h3>
     <div *ngIf="transactions.length > 0; else noTransactions">
       <div *ngFor="let transaction of transactions" class="item-container">
+        <h4>ID Transaction : {{ transaction._id }}</h4>
+        <p><strong>Date :</strong> {{ formatDate(transaction.transactionDate) }}</p>
         <p><strong>Jeu :</strong> {{ transaction.labelId?.gameDescriptionId?.name }}</p>
-        <p><strong>Prix de vente :</strong> {{ transaction.labelId?.salePrice}}€</p>
-        <p><strong>Client :</strong> {{ transaction.clientId?.name }}</p>
+        <p><strong>Prix de vente :</strong> {{ transaction.labelId?.salePrice }}€ </p>
+        <p><strong>Nom client :</strong> {{ transaction.clientId?.name }}</p>
+        <p><strong>Email client :</strong> {{ transaction.clientId?.email }}</p>
+        <p><strong>Session :</strong> {{ transaction.sessionId?.name }}</p>
+        <p><strong>Manager en charge :</strong> {{ transaction.managerId?.firstName }} {{ transaction.managerId?.lastName }}</p>
       </div>
     </div>
     <ng-template #noTransactions>
@@ -109,9 +139,11 @@
     <h3>Remboursements</h3>
     <div *ngIf="refunds.length > 0; else noRefunds">
       <div *ngFor="let refund of refunds" class="item-container">
+        <h4>ID Remboursement : {{ refund._id }}</h4>
+        <p><strong>Date :</strong> {{ formatDate(refund.refundDate) }}</p>
         <p><strong>Montant :</strong> {{ refund.refundAmount}}€</p>
         <p><strong>Session :</strong> {{ refund.sessionId?.name }}</p>
-        <p><strong>Date :</strong> {{ refund.refundDate | date }}</p>
+        <p><strong>Manager en charge :</strong> {{ refund.managerId?.email}}</p>
       </div>
     </div>
     <ng-template #noRefunds>

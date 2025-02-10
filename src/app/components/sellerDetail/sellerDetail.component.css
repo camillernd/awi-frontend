@@ -264,6 +264,7 @@ button:hover {
   margin: 5px 0;
 }
 
+
 .transaction-card strong {
   font-weight: bold;
 }
@@ -478,6 +479,7 @@ button:hover {
   border: 1px solid #000;
   transition: transform 0.2s ease-in-out;
   margin-bottom: 30px;
+  text-align: left;
 }
 
 .item-container:hover {
@@ -486,6 +488,11 @@ button:hover {
 
 .item-container p {
   font-size: 16px;
+  margin: 5px 0
+}
+
+.item-container h4 {
+  font-size: 20px;
   margin: 5px 0;
 }
 
@@ -542,7 +549,7 @@ button:hover {
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
-  max-width: 150px;
+  max-width: 110px;
 }
 
 .picked-up-button:hover {
@@ -552,7 +559,7 @@ button:hover {
 
 .picked-up-button:disabled {
   background-color: #ccc;
-  color: black;
+  color: rgb(255, 255, 255);
   cursor: not-allowed;
 }
 
@@ -590,4 +597,203 @@ button:hover {
   0% { opacity: 1; }
   80% { opacity: 1; }
   100% { opacity: 0; }
+}
+
+
+/* Titre du jeu et prix */
+.game-header {
+  font-size: 20px;
+  font-weight: 700;
+  text-align: left;
+  padding-bottom: 2px;
+  height: 60px; /* Hauteur fixe pour éviter les différences de taille */
+  display: flex;
+  align-items: left;
+  justify-content: left;
+  margin-bottom: 0px;
+}
+
+.game-header h4{
+  font-size: 20px;
+  margin: 5px 0;
+  text-align: left;
+}
+
+/* Ajustement du conteneur des informations du jeu */
+.game-body {
+  display: flex;
+  flex-wrap: wrap; /* Permet un meilleur alignement sur petits écrans */
+  justify-content: space-between;
+  align-items: left;
+  gap: 15px; /* Réduction de l'espace entre les éléments */
+  width: 100%;
+  align-items: flex-start; /* Alignement en haut pour uniformiser */
+  margin-top: 0px;
+}
+
+
+/* Infos du jeu */
+.game-info {
+  flex: 1;
+  margin-top: -30px;
+  
+}
+
+.game-info h3 {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 5px;
+  text-align: left;
+}
+
+.game-info h4 {
+  font-size: 20px;
+  margin: 5px 0;
+  text-align: left;
+}
+
+.game-info p {
+  font-size: 14px;
+  margin: 5px 0;
+}
+
+
+
+
+
+
+/* Image + Disponibilité */
+.game-image {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-top: -70px;
+  margin-left: 230px;
+}
+
+/* Conteneur blanc pour l'image */
+.image-container {
+  background-color: #ffffff;
+  border-radius: 15px;
+  width: 150px;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+  transition: transform 0.2s ease-in-out;
+}
+
+.image-container:hover {
+  transform: scale(1.05);
+}
+
+.image-container img {
+  width: 80%;
+  height: auto;
+  object-fit: contain;
+}
+
+
+
+
+
+
+/* Disponibilité sous l'image */
+.availability {
+  margin-top: 5px;
+}
+
+.availability h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+
+
+
+
+
+
+
+
+.game-image img {
+  width: 120px; /* Taille contrôlée */
+  height: auto;
+  max-height: 120px; /* Empêcher que ça devienne trop grand */
+  border-radius: 10px;
+  object-fit: contain;
+}
+
+
+/* Boutons toggle-switch */
+.toggle-switch {
+  width: 120px;
+  height: 35px;
+  text-align: center;
+  line-height: 35px;
+  font-size: 16px;
+  font-weight: 500;
+  color: white;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  transition: transform 0.2s ease-in-out;
+}
+
+
+
+.toggle-switch:hover {
+  transform: scale(1.05);
+}
+
+
+/* Session ouverte (vert) */
+.session-open {
+  color: #0D9C0B;
+}
+
+/* Session à venir (bleu) */
+.session-upcoming {
+  color: #0056b3;
+}
+
+/* Session clôturée (rose) */
+.session-closed {
+  color: #FF6E8E;
+}
+
+/* A vendre ? Oui (vert) */
+.available {
+  background-color: rgba(13, 156, 11, 0.7);
+  color: white;
+}
+
+/* A vendre ? Non (rouge) */
+.not-available {
+  background-color: rgba(255, 49, 38, 0.8);
+  color: white;
+}
+
+/* Vendu ? Oui (gris) */
+.sold {
+  background-color: #b0b0b0;
+  color: white;
+  cursor: not-allowed;
+}
+
+/* Vendu ? Non (noir) */
+.not-sold {
+  background-color: black;
+  color: white;
+  cursor: not-allowed;
+}
+
+/* Espacement entre les sections */
+.seller-info, .session-info, .deposit-info {
+  margin-bottom: 15px;
 }
