@@ -1,0 +1,76 @@
+<app-navbar></app-navbar>
+
+<!-- Message de succès -->
+<div *ngIf="successMessage" class="success-message">
+  {{ successMessage }}
+</div>
+
+<!-- Message d'erreur -->
+<div *ngIf="errorMessage" class="error-message">
+  {{ errorMessage }}
+</div>
+
+<div class="page-title-container">
+  <h1 class="page-title">Créer une description de jeu</h1>
+</div>
+
+<div class="page-container">
+  <!-- Conteneur gauche -->
+  <div class="left-container">
+    <div class="form-group">
+      <label for="name">Nom du jeu</label>
+      <input id="name" [(ngModel)]="gameDescriptionData.name" name="name" required />
+    </div>
+
+    <div class="form-group">
+      <label for="publisher">Éditeur</label>
+      <input id="publisher" [(ngModel)]="gameDescriptionData.publisher" name="publisher" required />
+    </div>
+
+    <div class="form-group">
+      <label for="photoURL">URL de la photo</label>
+      <input id="photoURL" type="url" [(ngModel)]="gameDescriptionData.photoURL" name="photoURL" required />
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea
+        id="description"
+        [(ngModel)]="gameDescriptionData.description"
+        name="description"
+        maxlength="250"
+      ></textarea>
+      <p class="max-words-info">Max 250 mots</p>
+    </div>
+  </div>
+
+  <!-- Conteneur droit -->
+  <div class="right-container">
+    <div class="form-group">
+      <label for="minPlayers">Nombre minimum de joueurs</label>
+      <input id="minPlayers" type="number" [(ngModel)]="gameDescriptionData.minPlayers" name="minPlayers" required />
+    </div>
+
+    <div class="form-group">
+      <label for="maxPlayers">Nombre maximum de joueurs</label>
+      <input id="maxPlayers" type="number" [(ngModel)]="gameDescriptionData.maxPlayers" name="maxPlayers" required />
+    </div>
+
+    <div class="form-group">
+      <label for="ageRange">Tranche d'âge</label>
+      <select id="ageRange" [(ngModel)]="gameDescriptionData.ageRange" name="ageRange">
+        <option value="0-5">0-5</option>
+        <option value="5-10">5-10</option>
+        <option value="8-12">8-12</option>
+        <option value="12-18">12-18</option>
+        <option value="18+">18+</option>
+      </select>      
+    </div>
+  </div>
+</div>
+
+<div class="button-container">
+  <button type="submit" class="submit-button" (click)="createGameDescription()">
+    CRÉER
+  </button>
+</div>

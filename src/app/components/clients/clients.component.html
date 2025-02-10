@@ -1,11 +1,25 @@
 <app-navbar></app-navbar>
 
+<!-- Message de succès -->
+<div *ngIf="successMessage" class="success-message">
+  {{ successMessage }}
+</div>
+
+<!-- Message d'erreur -->
+<div *ngIf="errorMessage" class="error-message">
+  {{ errorMessage }}
+</div>
+
+<div class="page-title-container">
+  <h1 class="page-title">Clients</h1>
+</div>
+
 <div class="page-container">
   <!-- Section gauche -->
   <div class="left-container">
     <div class="create-client-container">
       <h3>Créer un nouveau client</h3>
-
+      <div class="create-client-input-container">
       <form (ngSubmit)="createClient()">
         <label for="name">Nom</label>
         <input
@@ -43,9 +57,9 @@
           placeholder="Entrez l'adresse"
         />
 
-        <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
         <button type="submit" class="submit-button">Créer</button>
       </form>
+    </div>
     </div>
   </div>
 

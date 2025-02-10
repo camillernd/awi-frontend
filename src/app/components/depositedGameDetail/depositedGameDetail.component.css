@@ -1,3 +1,8 @@
+/*   
+transition: transform 0.2s ease-in-out;
+transform: scale(1.02);
+ */
+
 /* Style général de la page */
 body {
     background-color: #fff6eb; /* Couleur de fond */
@@ -18,6 +23,7 @@ body {
     display: flex;
     justify-content: center;
   }
+
   
   .image-container {
     background-color: #ffffff;
@@ -28,6 +34,11 @@ body {
     justify-content: center;
     align-items: center;
     box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+  }
+
+  .image-container:hover {
+    transform: scale(1.02);
   }
   
   .game-photo {
@@ -51,19 +62,37 @@ body {
   }
   
   .game-status {
+    display: flex;
+    gap: 5px; /* Espacement entre les éléments */
     font-family: "Poppins", sans-serif;
     font-size: 14px;
     font-weight: 700;
-    margin-bottom: 20px;
   }
   
-  .game-status.in-stock {
+  /* Styles des textes */
+  .status-text.in-stock {
     color: #82a450;
   }
   
-  .game-status.sold {
+  .status-text.sold {
     color: #d9534f;
   }
+  
+  .status-text.for-sale {
+    color: #82a450;
+  }
+  
+  .status-text.not-for-sale {
+    color: #d9534f;
+  }
+  
+  /* Style du "&" */
+  .black-symbol {
+    color: black;
+    font-weight: bold;
+  }
+  
+  
   
   .game-description {
     font-family: "Poppins", sans-serif;

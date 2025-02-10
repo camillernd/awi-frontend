@@ -1,5 +1,13 @@
 <app-navbar></app-navbar>
+
+<!-- Message de succès -->
+<div *ngIf="successMessage" class="success-message">
+  {{ successMessage }}
+</div>
+
+
 <h2>Liste des sessions</h2>
+
 <div class="sessions-grid">
   <div 
     *ngFor="let session of sessions" 
@@ -9,14 +17,50 @@
       'session-aVenir': session.status === 'aVenir',
       'session-cloturee': session.status === 'cloturee'
     }"
+    (click)="goToDepositedGames(session._id)"  
   >
     <h3 class="session-title">{{ session.name }}</h3>
     <p><strong>Date :</strong> {{ session.formattedStartDate }} - {{ session.formattedEndDate }}</p>
     <p><strong>Horaires :</strong> {{ session.formattedStartTime }} - {{ session.formattedEndTime }}</p>
     <p><strong>Lieu :</strong> {{ session.location }}</p>
+    
+    <p class="session-status">
+      <strong>Status : </strong> 
+      <span *ngIf="session.status === 'aVenir'">À venir</span>
+      <span *ngIf="session.status === 'ouverte'">En cours</span>
+      <span *ngIf="session.status === 'cloturee'">Clôturée</span>
+    </p>
+
     <div class="session-actions">
-      <button class="session-button" (click)="goToSessionReport(session._id)">Voir Bilan</button>
-      <button class="session-button" (click)="goToDepositedGames(session._id)">Catalogue</button>
+      <a
+        *ngIf="admin && session.status === 'aVenir'" 
+        class="delete-link" 
+        (click)="openDeleteModal(session._id, session.status); $event.stopPropagation()"
+      >
+        Supprimer ?
+      </a>
+
+      <button 
+        *ngIf="session.status === 'ouverte' || session.status === 'cloturee'" 
+        class="catalogue-button" 
+        (click)="goToDepositedGames(session._id); $event.stopPropagation()"
+      >
+        Catalogue
+      </button>
     </div>
   </div>
 </div>
+
+
+<!-- MODAL DE CONFIRMATION -->
+<!-- Modal de confirmation de suppression -->
+<div *ngIf="showModal" class="modal-backdrop"></div>
+<div *ngIf="showModal" class="modal">
+  <h3>Confirmer la suppression</h3>
+  <p>Êtes-vous sûr de vouloir supprimer cette session ?</p>
+  <div class="modal-buttons">
+    <button class="confirm-button" (click)="confirmDeleteSession()">Oui, supprimer</button>
+    <button class="cancel-button" (click)="closeModal()">Annuler</button>
+  </div>
+</div>
+

@@ -18,7 +18,8 @@ import { ClientDetailComponent } from './components/clientDetail/clientDetail.co
 import { ManagersComponent } from './components/managers/managers.component';
 import { AdminsComponent } from './components/admins/admins.component';
 import { TransactionsComponent } from './components/transactions/transactions.component';
-import { SessionReportComponent } from './components/sessionReport/sessionReport.component';
+import { TreasuryComponent } from './components/treasury/treasury.component';
+import { CreateGameDescriptionComponent } from './components/createGameDescription/createGameDescription.component';
 
 export const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -31,7 +32,6 @@ export const routes: Routes = [
   { path: 'depositedGames/:sessionId', component: DepositedGameComponent },
   { path: 'createDepositedGame', component: CreateDepositedGameComponent },
   { path: 'depositedGameDetail/:id', component: DepositedGameDetailComponent },
-  { path: 'session/:sessionId/report', component: SessionReportComponent },
   { path: 'depositedGamesAdmin', component: DepositedGamesAdminComponent},
   { path: 'checkout', component: CheckoutComponent},
   { path: 'sellers', component: SellersComponent},
@@ -41,5 +41,7 @@ export const routes: Routes = [
   { path: 'managers', component: ManagersComponent},
   { path: 'admins', component: AdminsComponent},
   { path: 'transactions', component: TransactionsComponent},
+  { path: 'treasury', component: TreasuryComponent},
+  { path: 'createGameDescription', component: CreateGameDescriptionComponent},
   { path: '', redirectTo: '/home', pathMatch: 'full' },
 ];

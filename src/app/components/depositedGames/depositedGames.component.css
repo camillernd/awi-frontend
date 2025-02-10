@@ -2,24 +2,27 @@
 .page-title {
   text-align: center;
   font-family: "Poppins", sans-serif;
-  font-size: 24px;
-  margin-top: 20px;
+  font-size: 30px;
+  margin-top: 30px;
+  font-weight: bold;
 }
 
 .games-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 20px;
-  padding: 20px;
-  justify-items: center;
+  grid-template-columns: repeat(4, 1fr); /* Forcer 3 colonnes */
+  gap: 30px; /* Espacement plus équilibré */
+  padding: 0 200px;
+  justify-content: center; /* Centre les cartes si elles sont en sous-nombre */
+  margin-top: 30px;
+  margin-bottom: 100px;
 }
 
 /* Carte pour chaque jeu */
 .game-card {
   width: 230px;
-  height: 350px;
+  height: 320px;
   background: #ffffff;
-  box-shadow: 0px 8px 4px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 6px 2px rgba(0, 0, 0, 0.1);
   border-radius: 20px;
   display: flex;
   flex-direction: column;
@@ -40,7 +43,7 @@
   height: 150px; /* Définit une hauteur fixe */
   object-fit: contain; /* Conserve les proportions de l'image sans la déformer */
   border-radius: 10px;
-  margin-top: 10px;
+  margin-top: 35px;
 }
 
 /* Détails du jeu */
@@ -70,4 +73,107 @@
   font-weight: 600;
   color: #000000;
   margin-top: 10px;
+}
+
+/* Barre de recherche */
+.search-container {
+  display: flex;
+  justify-content: center; /* Centre l'input */
+  margin: 20px 0;
+}
+
+/* Conteneur des filtres */
+.filters-wrapper {
+  display: flex;
+  flex-direction: row; /* Les filtres sont alignés en ligne */
+  align-items: center; /* Alignement vertical */
+  gap: 20px; /* Espacement entre les filtres */
+  margin-left: 200px; /* Aligner à gauche */
+  margin-top: 10px;
+}
+
+.search-input {
+  width: 25%; /* Même largeur */
+  padding: 10px;
+  font-family: "Poppins", sans-serif;
+  font-size: 13px; /* Même taille de texte */
+  font-weight: 200;
+  border-radius: 20px;
+  border: 1px solid #000;
+  outline: none;
+  background: rgba(255, 255, 255, 0.5);
+  box-shadow: 0px 3px 1px rgba(0, 0, 0, 0.1);
+}
+
+.search-input::placeholder {
+  font-style: italic;
+  color: #888;
+}
+
+
+
+/* Conteneur des filtres */
+.filters-container {
+  display: flex;
+  flex-direction: row; /* Alignement en ligne */
+  align-items: center; /* Alignement vertical */
+  gap: 10px; /* Espacement entre les groupes de filtres */
+  margin-left: 200px; /* Aligner à gauche */
+  margin-top: 50px;
+}
+
+/* Conteneur de chaque groupe de filtres (prix et session) */
+.filter-group {
+  display: flex;
+  flex-direction: column; /* Empile label et dropdown */
+}
+
+/* Labels des filtres */
+.filter-label {
+  font-size: 14px;
+  font-weight: bold;
+  color: #000;
+  margin-bottom: 15px;
+  font-family: "Poppins", sans-serif;
+}
+
+/* Style des dropdowns */
+.filter-dropdown {
+  padding: 6px;
+  font-size: 14px;
+  border-radius: 10px;
+  border: 1px solid #000;
+  background: rgba(255, 255, 255, 0.7);
+  font-family: "Poppins", sans-serif;
+  box-shadow: 0px 3px 1px rgba(0, 0, 0, 0.1);
+}
+
+/* Taille spécifique pour le tri par prix */
+.filter-price {
+  width: 150px;
+}
+
+/* Taille spécifique pour le tri par session */
+.filter-session {
+  width: 250px;
+}
+
+/* Styles pour colorer le texte des sessions dans le dropdown */
+.filter-dropdown option {
+  color: black; /* Couleur par défaut */
+}
+
+/* Sessions en cours → Vert */
+.filter-dropdown option.session-ouverte {
+  color: #0D9C0B; 
+}
+
+/* Sessions à venir → Bleu */
+.filter-dropdown option.session-aVenir {
+  color: #238FF2; 
+}
+
+/* Sessions clôturées → Rouge */
+.filter-dropdown option.session-cloturee {
+  color: #000000;
 }

@@ -1,38 +1,107 @@
 <app-navbar></app-navbar>
 
+<!-- Message de succès -->
+<div *ngIf="successMessage" class="success-message">
+  {{ successMessage }}
+</div>
+
+<!-- Message d'erreur -->
+<div *ngIf="errorMessage" class="error-message">
+  {{ errorMessage }}
+</div>
+
+
 <div class="client-detail-container">
-  <h2>Détails du Client</h2>
-  <div *ngIf="client">
-    <!-- Section affichée lorsque l'utilisateur n'est pas en mode édition -->
+
+  <!-- Conteneur du titre et du bouton -->
+  <div class="title-container">
+    <!-- Bouton de retour -->
+    <button class="back-button" (click)="goBack()">
+      <span>&larr;</span> <!-- Flèche vers la gauche -->
+    </button>
+
+    <!-- Titre principal -->
+    <h2 class="page-title">Détails du Client</h2>
+  </div>
+
+  <!-- Section Infos Client -->
+  <div *ngIf="client" class="client-info-container">
     <div *ngIf="!isEditing">
       <p><strong>Nom :</strong> {{ client.name }}</p>
       <p><strong>Email :</strong> {{ client.email }}</p>
       <p><strong>Téléphone :</strong> {{ client.phone }}</p>
       <p><strong>Adresse :</strong> {{ client.address }}</p>
 
-      <button class="edit-button" (click)="editClient()">Modifier</button>
-      <button class="delete-button" (click)="deleteClient()">Supprimer</button>
-      <button class="transactions-button" (click)="goToTransactions()">Voir Transactions</button>
+      <div class="button-container">
+        <button class="edit-button" (click)="editClient()">Modifier</button>
+        <button class="delete-button" (click)="confirmDelete()">Supprimer</button>
+      </div>      
     </div>
 
-    <!-- Section affichée lorsque l'utilisateur est en mode édition -->
-    <div *ngIf="isEditing">
-      <label>Nom</label>
-      <input [(ngModel)]="client.name" />
+    <!-- Section affichée en mode édition -->
+    <div *ngIf="isEditing" class="edit-form">
+      <div class="edit-field">
+        <label>Nom</label>
+        <input [(ngModel)]="client.name" />
+      </div>
 
-      <label>Email</label>
-      <input [(ngModel)]="client.email" />
+      <div class="edit-field">
+        <label>Email</label>
+        <input [(ngModel)]="client.email" />
+      </div>
 
-      <label>Téléphone</label>
-      <input [(ngModel)]="client.phone" />
+      <div class="edit-field">
+        <label>Téléphone</label>
+        <input [(ngModel)]="client.phone" />
+      </div>
 
-      <label>Adresse</label>
-      <input [(ngModel)]="client.address" />
+      <div class="edit-field">
+        <label>Adresse</label>
+        <input [(ngModel)]="client.address" />
+      </div>
 
-      <button class="save-button" (click)="saveChanges()">Enregistrer</button>
-      <button class="cancel-button" (click)="cancelEdit()">Annuler</button>
+      <!-- Boutons enregistrer et annuler côte à côte -->
+      <div class="button-container-modif">
+        <button class="save-button" (click)="saveChanges()">Enregistrer</button>
+        <button class="cancel-button" (click)="cancelEdit()">Annuler</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+    <!-- Section Transactions -->
+    <div class="transactions-container" *ngIf="transactions.length > 0">
+      <h2 class="transactions-title">Transactions du Client</h2>
+    
+      <div class="transactions-list">
+        <div *ngFor="let transaction of transactions" class="transaction-card">
+          <h4>ID Transaction : {{ transaction._id }}</h4>
+          <p><strong>Date :</strong> {{ formatDate(transaction.transactionDate) }}</p>
+          <p><strong>Jeu :</strong> {{ transaction.labelId?.gameDescriptionId?.name }}</p>
+          <p><strong>Prix de vente :</strong> {{ transaction.labelId?.salePrice }}€ </p>
+          <p><strong>Nom vendeur :</strong> {{ transaction.sellerId?.name }}</p>
+          <p><strong>Email vendeur :</strong> {{ transaction.sellerId?.email }}</p>
+          <p><strong>Session :</strong> {{ transaction.sessionId?.name }}</p>
+          <p><strong>Manager en charge :</strong> {{ transaction.managerId?.firstName }} {{ transaction.managerId?.lastName }}</p>
+        </div>
+      </div>
+    </div>
+    
+
+    <div *ngIf="transactions.length === 0" class="no-transactions">
+      <p>Aucune transaction enregistrée pour ce client.</p>
+    </div>
+
+  <!-- Modale de confirmation -->
+<div *ngIf="showDeleteConfirmation" class="modal-overlay">
+  <div class="modal">
+    <h3>Confirmer la suppression</h3>
+    <p>Êtes-vous sûr de vouloir supprimer <strong>{{ client.name }}</strong> ?</p>
+
+    <div class="modal-buttons">
+      <button class="confirm-button" (click)="confirmDeleteClient()">Oui, supprimer</button>
+      <button class="cancel-delete-button" (click)="showDeleteConfirmation = false">Annuler</button>
     </div>
   </div>
-
-  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
 </div>

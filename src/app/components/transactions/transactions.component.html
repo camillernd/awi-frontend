@@ -1,7 +1,10 @@
 <app-navbar></app-navbar>
 
+<div class="page-title-container">
+  <h1 class="page-title">Liste des transactions</h1>
+</div>
+
 <div class="page-container">
-  <h2>Liste des Transactions</h2>
 
   <!-- Filtres -->
   <div class="filters-container">
@@ -11,20 +14,74 @@
       <option *ngFor="let session of sessions" [value]="session._id">{{ session.name }}</option>
     </select>
 
+
+    <label for="transactionIdFilter">Transaction :</label>
+    <input 
+      id="transactionIdFilter"
+      type="text"
+      [(ngModel)]="transactionIdInput"
+      (input)="filterTransactionIdSuggestions()"
+      (change)="applyTransactionIdFilter()"
+      placeholder="Rechercher une transaction..."
+      list="transactionIdOptions"
+      class="filter-dropdown"
+    />
+    <datalist id="transactionIdOptions">
+      <option *ngFor="let transaction of filteredTransactionIds" [value]="transaction._id"></option>
+    </datalist>
+
+
+  
     <label for="clientFilter">Client :</label>
-    <select id="clientFilter" [(ngModel)]="selectedClient" (change)="applyFilters()">
-      <option value="">Tous les clients</option>
-      <option *ngFor="let client of clients" [value]="client._id">{{ client.name }}</option>
-    </select>
-
+    <input 
+      id="clientFilter"
+      type="text"
+      [(ngModel)]="clientInput"
+      (input)="filterClientSuggestions()"
+      (change)="applyClientFilter()"
+      placeholder="Rechercher un client..."
+      list="clientOptions"
+      class="filter-dropdown"
+    />
+    <datalist id="clientOptions">
+      <option *ngFor="let client of filteredClients" [value]="client.email"></option>
+    </datalist>
+  
     <label for="sellerFilter">Vendeur :</label>
-    <select id="sellerFilter" [(ngModel)]="selectedSeller" (change)="applyFilters()">
-      <option value="">Tous les vendeurs</option>
-      <option *ngFor="let seller of sellers" [value]="seller._id">{{ seller.name }}</option>
-    </select>
+    <input 
+      id="sellerFilter"
+      type="text"
+      [(ngModel)]="sellerInput"
+      (input)="filterSellerSuggestions()"
+      (change)="applySellerFilter()"
+      placeholder="Rechercher un vendeur..."
+      list="sellerOptions"
+      class="filter-dropdown"
+    />
+    <datalist id="sellerOptions">
+      <option *ngFor="let seller of filteredSellers" [value]="seller.email"></option>
+    </datalist>
 
-    <button (click)="resetFilters()">Réinitialiser</button>
+
+
+    <label for="gameFilter">Jeu :</label>
+  <input 
+    id="gameFilter"
+    type="text"
+    [(ngModel)]="gameInput"
+    (input)="filterGameSuggestions()"
+    (change)="applyGameFilter()"
+    placeholder="Rechercher un jeu..."
+    list="gameOptions"
+    class="filter-dropdown"
+  />
+  <datalist id="gameOptions">
+    <option *ngFor="let game of filteredGames" [value]="game.name"></option>
+  </datalist>
+  
+    <button (click)="resetFilters()">R</button>
   </div>
+  
 
   <!-- Liste des transactions -->
   <div *ngIf="filteredTransactions.length === 0 && !errorMessage" class="no-data">
@@ -34,12 +91,15 @@
   <div *ngIf="filteredTransactions.length > 0" class="transactions-list">
     <div *ngFor="let transaction of filteredTransactions" class="transaction-card">
       <h4>ID Transaction : {{ transaction._id }}</h4>
-      <p><strong>Date :</strong> {{ transaction.transactionDate | date }}</p>
-      <p><strong>Client :</strong> {{ transaction.clientId?.name }}</p>
-      <p><strong>Vendeur :</strong> {{ transaction.sellerId?.name }}</p>
-      <p><strong>Session :</strong> {{ transaction.sessionId?.name }}</p>
+      <p><strong>Date :</strong> {{ formatDate(transaction.transactionDate) }}</p>
       <p><strong>Jeu :</strong> {{ transaction.labelId?.gameDescriptionId?.name }}</p>
-      <p><strong>Manager :</strong> {{ transaction.managerId?.firstName }} {{ transaction.managerId?.lastName }}</p>
+      <p><strong>Prix de vente :</strong> {{ transaction.labelId?.salePrice }}€ </p>
+      <p><strong>Nom client :</strong> {{ transaction.clientId?.name }}</p>
+      <p><strong>Email client :</strong> {{ transaction.clientId?.email }}</p>
+      <p><strong>Nom vendeur :</strong> {{ transaction.sellerId?.name }}</p>
+      <p><strong>Email vendeur :</strong> {{ transaction.sellerId?.email }}</p>
+      <p><strong>Session :</strong> {{ transaction.sessionId?.name }}</p>
+      <p><strong>Manager en charge :</strong> {{ transaction.managerId?.firstName }} {{ transaction.managerId?.lastName }}</p>
     </div>
   </div>
 </div>

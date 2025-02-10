@@ -2,60 +2,340 @@
     max-width: 600px;
     margin: 50px auto;
     padding: 20px;
-    border: 1px solid #ddd;
     border-radius: 10px;
-    background: #fff;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    background:rgba(255, 255, 255, 0);
   }
+
+  /* 🏷️ Conteneur du titre et du bouton de retour */
+.title-container {
+  display: flex;
+  align-items: center; /* Aligne verticalement */
+  justify-content: center; /* Centre le titre horizontalement */
+  position: relative;
+  margin-bottom: 30px;
+}
+
+/* 🎯 Titre de la page */
+.page-title {
+  font-size: 30px;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* 🔙 Bouton Retour en cercle */
+.back-button {
+  position: absolute;
+  left: 0; /* Aligne tout à gauche */
+  width: 50px;
+  height: 50px;
+  background-color: rgba(255, 255, 255, 0.7);
+  border: 1px solid #000000;
+  color: #000000; /* Couleur de la flèche */
+  border-radius: 50%; /* Rend le bouton circulaire */
+  font-size: 20px;
+  font-weight: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out, background-color 0.3s ease-in-out;
+  z-index: 100; /* Assure qu'il est au-dessus des autres éléments */
+}
+
+/* 🌀 Effet au survol */
+.back-button:hover {
+  transform: scale(1.2); /* Agrandissement léger */
+  background-color: rgba(255, 255, 255, 0.9);
+}
   
-  .manager-detail-container h2 {
-    text-align: center;
-    margin-bottom: 20px;
-  }
+
+
+
+
+/* 📦 Conteneur des informations du manager */
+.manager-info-container {
+  background: rgba(255, 255, 255, 0.7);
+  padding: 20px;
+  border-radius: 15px;
+  border: 1px solid #000;
+  transition: transform 0.2s ease-in-out;
+  margin-bottom: 0px;
+}
+
+.manager-info-container:hover {
+  transform: scale(1.02);
+}
+
+/* 📌 Texte des infos du manager */
+.manager-info-container p {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.manager-info-container strong {
+  font-weight: bold;
+}
+
+/* Conteneur des boutons Modifier et Supprimer */
+.button-container {
+  display: flex;
+  justify-content: center; /* Centrer les boutons */
+  gap: 15px; /* Espacement entre les boutons */
+  margin-top: 15px;
+}
+
+/* Ajustement des boutons pour qu'ils aient la même largeur */
+.button-container button {
+  flex: 1; /* Permet aux boutons de prendre une largeur égale */
+  max-width: 200px; /* Limite la largeur max pour ne pas trop s'étirer */
+}
+
+
+/* 🎨 Boutons */
+button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 16px;
+  transition: transform 0.2s ease-in-out, background-color 0.3s ease-in-out;
+  font-family: 'Poppins', sans-serif;
+}
+
+button:hover {
+  transform: scale(1.05);
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+/* 🎨 Bouton Modifier */
+.edit-button {
+  background-color: rgba(255, 255, 255, 0.7);
+  color: #4caf50;
+  border: 1px solid #4caf50;
+}
+
+/* 🎨 Bouton Supprimer */
+.delete-button {
+  background-color: rgba(255, 255, 255, 0.7);
+  color: #f44336;
+  border: 1px solid #f44336;
+}
+
+
+
+
+
+/* 📌 Mode édition du manager */
+.edit-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centre les inputs */
+  gap: 15px;
+  padding: 20px;
+  border-radius: 15px;
+  transition: transform 0.2s ease-in-out;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* 📝 Champs du formulaire */
+.edit-field {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centre les inputs dans la div */
+  width: 100%;
+  max-width: 400px; /* Définir une largeur max pour ne pas étirer sur toute la page */
+}
+
+.edit-field label {
+  align-self: flex-start; /* Aligne les labels à gauche */
+  font-size: 14px;
+  font-weight: bold;
+  color: #000;
+  margin-bottom: 5px;
+}
+
+.edit-field input {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #000;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.5);
+  transition: transform 0.2s ease-in-out;
+  font-family: 'Poppins', sans-serif;
+  text-align: center; /* Texte centré dans les inputs */
+}
+
+.edit-field input:hover,
+.edit-field input:focus {
+  transform: scale(1.02);
+}
+
+
+
+
+
+/* 🎨 Boutons Enregistrer & Annuler alignés */
+.button-container-modif {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.button-container-modif button {
+  flex: 1;
+  min-width: 200px;
+}
+
+/* 🎨 Bouton Enregistrer */
+.save-button {
+  background-color: rgba(255, 255, 255, 0.5);
+  color: #238FF2;
+  border: 1px solid #238FF2;
+  transition: transform 0.2s ease-in-out, background-color 0.3s ease-in-out;
+}
+
+.save-button:hover {
+  transform: scale(1.02);
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+/* 🎨 Bouton Annuler */
+.cancel-button {
+  background-color: rgba(255, 255, 255, 0.5);
+  color: #FF6E8E;
+  border: 1px solid #FF6E8E;
+  transition: transform 0.2s ease-in-out, background-color 0.3s ease-in-out;
+}
+
+.cancel-button:hover {
+  transform: scale(1.02);
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
   
-  label {
-    display: block;
-    margin-top: 10px;
-  }
-  
-  input {
-    width: 100%;
-    padding: 8px;
-    margin: 5px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  button {
-    margin: 10px 5px 0 0;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .edit-button {
-    background-color: #4caf50;
-    color: white;
-  }
-  
-  .delete-button {
-    background-color: #f44336;
-    color: white;
-  }
-  
-  .save-button {
-    background-color: #2196f3;
-    color: white;
-  }
-  
-  .cancel-button {
-    background-color: #757575;
-    color: white;
-  }
-  
-  .error-message {
-    color: red;
-    margin-top: 20px;
-  }
-  
+
+
+
+
+
+/* 🌑 Fond semi-transparent pour la modale */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+/* 🏠 Style de la modale */
+.modal {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  max-width: 400px;
+  width: 90%;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* 📌 Texte d'avertissement */
+.warning-text {
+  color: #d9534f;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+/* 🎨 Boutons de la modale */
+.modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.confirm-button {
+  background: #d9534f;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: transform 0.2s ease-in-out, background 0.2s ease-in-out;
+}
+
+.confirm-button:hover {
+  background: #c9302c;
+  transform: scale(1.05);
+}
+
+.cancel-delete-button {
+  background: #ccc;
+  color: black;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: transform 0.2s ease-in-out, background 0.2s ease-in-out;
+}
+
+.cancel-delete-button:hover {
+  background: #bbb;
+  transform: scale(1.05);
+}
+
+/* Effet d'apparition */
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+
+
+
+
+
+
+
+
+.success-message {
+  background-color: #d4edda;
+  color: #155724;
+  padding: 15px;
+  border-radius: 5px;
+  margin: 20px auto;
+  width: 80%;
+  text-align: center;
+  font-weight: bold;
+  border: 1px solid #c3e6cb;
+  animation: fadeOut 3s ease-in-out forwards;
+}
+
+.error-message {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 15px;
+  border-radius: 5px;
+  margin: 20px auto;
+  width: 80%;
+  text-align: center;
+  font-weight: bold;
+  border: 1px solid #f5c6cb;
+}
+
+@keyframes fadeOut {
+  0% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { opacity: 0; }
+}

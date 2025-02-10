@@ -14,18 +14,22 @@ import { NavbarComponent } from '../navbar/navbar.component';
 })
 export class SessionsComponent implements OnInit {
   sessions: any[] = [];
+  admin: boolean = false; // À remplacer par la vraie vérification d'admin
+  sessionToDelete: { id: string, status: string } | null = null; // Stocke la session à supprimer
+  showModal: boolean = false; // Affichage du modal
+  successMessage: string | null = null; // Message de succès temporaire
 
   constructor(private sessionService: SessionService, private router: Router) {}
 
   ngOnInit(): void {
     document.body.style.overflow = 'visible';
     this.loadSessions();
+    this.checkAdminStatus();
   }
 
   loadSessions(): void {
     this.sessionService.getAllSessions().subscribe({
       next: (sessions) => {
-        // Ajouter le tri des sessions par date décroissante
         this.sessions = sessions
           .map((session) => ({
             ...session,
@@ -40,7 +44,11 @@ export class SessionsComponent implements OnInit {
       error: (err) => console.error('Erreur lors du chargement des sessions', err),
     });
   }
-  
+
+  checkAdminStatus(): void {
+    // Exemple : récupère l'état admin depuis un service d'authentification
+    this.admin = localStorage.getItem('isAdmin') === 'true'; // Assurez-vous que ça renvoie bien 'true' ou 'false'
+  }
 
   formatDate(dateString: string): string {
     const date = new Date(dateString);
@@ -65,11 +73,11 @@ export class SessionsComponent implements OnInit {
     const endDate = new Date(session.endDate);
 
     if (now >= startDate && now <= endDate) {
-      return 'ouverte'; // Session en cours
+      return 'ouverte';
     } else if (now < startDate) {
-      return 'aVenir'; // Session à venir
+      return 'aVenir';
     } else {
-      return 'cloturee'; // Session clôturée
+      return 'cloturee';
     }
   }
 
@@ -78,10 +86,49 @@ export class SessionsComponent implements OnInit {
   }
 
   goToDepositedGames(sessionId: string): void {
-    this.router.navigate([`/depositedGames/${sessionId}`]); // Navigue avec l'identifiant
+    this.router.navigate([`/depositedGames/${sessionId}`]);
   }
 
-  goToSessionReport(sessionId: string): void {
-    this.router.navigate([`/session/${sessionId}/report`]);
+  openDeleteModal(sessionId: string, status: string): void {
+    if (status !== 'aVenir') {
+      alert("❌ Impossible de supprimer une session déjà commencée ou clôturée.");
+      return;
+    }
+    
+    this.sessionToDelete = { id: sessionId, status };
+    this.showModal = true; // Affiche le modal
   }
+
+  closeModal(): void {
+    this.showModal = false;
+    this.sessionToDelete = null;
+  }
+
+  confirmDeleteSession(): void {
+    if (!this.sessionToDelete) return;
+  
+    this.sessionService.hasDepositedGames(this.sessionToDelete.id).subscribe({
+      next: (hasGames) => {
+        if (hasGames) {
+          alert("❌ Impossible de supprimer cette session car des jeux y sont déposés.");
+        } else {
+          this.sessionService.deleteSession(this.sessionToDelete!.id).subscribe({
+            next: () => {
+              this.successMessage = "Session supprimée avec succès.";
+              this.loadSessions();
+              this.closeModal();
+  
+              // Efface le message après 3 secondes
+              setTimeout(() => {
+                this.successMessage = null;
+              }, 3000);
+            },
+            error: (err) => console.error("Erreur lors de la suppression", err),
+          });
+        }
+      },
+      error: (err) => console.error("Erreur lors de la vérification des jeux déposés", err),
+    });
+  }
+  
 }

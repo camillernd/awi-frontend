@@ -72,13 +72,29 @@
         </div>
       </div>
 
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" id="password" formControlName="password" />
+
+
+
+      <div class="form-group password-group">
+        <label for="password">Mot de passe</label>
+        <div class="password-container">
+          <input 
+            [type]="showPassword ? 'text' : 'password'" 
+            id="password" 
+            formControlName="password" 
+            placeholder="Entrez votre mot de passe"
+          />
+        </div>
+        <span class="eye-icon" (click)="togglePasswordVisibility()">
+          <img *ngIf="!showPassword" src="assets/icons/eye-open.svg" alt="Afficher">
+          <img *ngIf="showPassword" src="assets/icons/eye-closed.svg" alt="Masquer">
+        </span>
         <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="error">
           Le mot de passe doit contenir au moins 6 caractères.
         </div>
       </div>
+
+
 
       <div class="button-container">
         <button type="submit" [disabled]="loginForm.invalid">Connexion</button>

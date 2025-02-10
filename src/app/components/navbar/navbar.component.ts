@@ -14,6 +14,7 @@ export class NavbarComponent implements OnInit {
   managerConnected = false; // Vérifie si le manager est connecté
   adminConnected = false; // Vérifie si le manager est un administrateur
   isDropdownOpen = false;
+  showLogoutModal = false; // État pour la modal de déconnexion
 
   constructor(private router: Router, private authService: AuthService) {}
 
@@ -90,9 +91,29 @@ export class NavbarComponent implements OnInit {
     this.router.navigate(['/transactions']);
   }
 
-  logout() {
+  goToTreasury() {
+    this.router.navigate(['/treasury']);
+  }
+
+  goToCreateGameDescription(){
+    this.router.navigate(['/createGameDescription'])
+  }
+
+// Afficher la modal de déconnexion
+  confirmLogout(): void {
+    this.showLogoutModal = true;
+  }
+
+  // Annuler la déconnexion
+  cancelLogout(): void {
+    this.showLogoutModal = false;
+  }
+
+  // Confirmer et exécuter la déconnexion
+  logout(): void {
     this.authService.logout();
     this.managerConnected = false;
+    this.showLogoutModal = false;
     this.router.navigate(['/home']);
   }
 }

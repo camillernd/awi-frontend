@@ -1,63 +1,54 @@
 <app-navbar></app-navbar>
 
+<!-- Message de succès -->
+<div *ngIf="successMessage" class="success-message">
+  {{ successMessage }}
+</div>
+
+<!-- Message d'erreur -->
+<div *ngIf="errorMessage" class="error-message">
+  {{ errorMessage }}
+</div>
+
+<div class="page-title-container">
+  <h1 class="page-title">Vendeurs</h1>
+</div>
+
 <div class="page-container">
+  <!-- Section gauche -->
   <div class="left-container">
     <div class="create-seller-container">
       <h3>Créer un nouveau vendeur</h3>
-      <form (ngSubmit)="createSeller()">
-        <label for="name">Nom</label>
-        <input
-          id="name"
-          [(ngModel)]="newSeller.name"
-          name="name"
-          required
-          placeholder="Entrez le nom"
-        />
+      
+      <div class="create-seller-input-container">
+        <form (ngSubmit)="createSeller()">
+          <label for="name">Nom</label>
+          <input id="name" [(ngModel)]="newSeller.name" name="name" required placeholder="Entrez le nom" />
 
-        <label for="email">Email</label>
-        <input
-          id="email"
-          [(ngModel)]="newSeller.email"
-          name="email"
-          required
-          placeholder="Entrez l'email"
-        />
+          <label for="email">Email</label>
+          <input id="email" [(ngModel)]="newSeller.email" name="email" required placeholder="Entrez l'email" />
 
-        <label for="phone">Téléphone</label>
-        <input
-          id="phone"
-          [(ngModel)]="newSeller.phone"
-          name="phone"
-          required
-          placeholder="Entrez le numéro de téléphone"
-        />
+          <label for="phone">Téléphone</label>
+          <input id="phone" [(ngModel)]="newSeller.phone" name="phone" required placeholder="Entrez le numéro de téléphone" />
 
-        <label for="amountOwed">Montant dû (USD)</label>
-        <input
-          id="amountOwed"
-          [(ngModel)]="newSeller.amountOwed"
-          name="amountOwed"
-          type="number"
-          placeholder="Montant dû (0 par défaut)"
-        />
+          <label for="amountOwed">Montant dû (€)</label>
+          <input id="amountOwed" [(ngModel)]="newSeller.amountOwed" name="amountOwed" type="number" placeholder="Montant dû (0 par défaut)" />
 
-        <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
-        <button type="submit" class="submit-button">Créer</button>
-      </form>
+          <button type="submit" class="submit-button">Créer</button>
+        </form>
+      </div>
     </div>
   </div>
 
+  <!-- Section droite -->
   <div class="right-container">
     <h3>Liste des vendeurs</h3>
-    <div
-      *ngFor="let seller of sellers"
-      class="seller-card"
-      (click)="viewSellerDetail(seller._id)"
-    >
+
+    <div *ngFor="let seller of sellers" class="seller-card" (click)="viewSellerDetail(seller._id)">
       <h4>{{ seller.name }}</h4>
       <p><strong>Email:</strong> {{ seller.email }}</p>
       <p><strong>Téléphone:</strong> {{ seller.phone }}</p>
-      <p><strong>Montant dû:</strong> {{ seller.amountOwed }}</p>
+      <p><strong>Montant dû:</strong> {{ seller.amountOwed }}€</p>
     </div>
   </div>
 </div>

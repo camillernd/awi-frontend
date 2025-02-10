@@ -1,8 +1,16 @@
 <app-navbar></app-navbar>
 
+<!-- Affichage des messages -->
+<div *ngIf="successMessage" class="success-message">
+  {{ successMessage }}
+</div>
+
+<div *ngIf="errorMessage" class="error-message">
+  {{ errorMessage }}
+</div>
+
 <div class="page-title-container">
-  <h1 class="page-title">CREER UNE SESSION</h1>
-  <p class="user-info">Connecté en tant que : {{ firstName }} {{ lastName }}</p>
+  <h1 class="page-title">Créer une session</h1>
 </div>
 
 <div class="page-container">
@@ -85,5 +93,5 @@
 </div>
 
 <div class="button-container">
-  <button type="submit" class="submit-button" (click)="createSession()">CREER LA SESSION</button>
+  <button type="submit" class="submit-button" (click)="createSession()">CRÉER</button>
 </div>

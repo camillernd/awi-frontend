@@ -2,11 +2,6 @@
 <app-navbar></app-navbar>
 <div class="welcome-container">
   <!-- Formes SVG ajoutées -->
-  <div class="svg-container blue-shape">
-    <svg xmlns="http://www.w3.org/2000/svg" width="376" height="277" viewBox="0 0 376 277" fill="none">
-        <path fill-rule="evenodd" clip-rule="evenodd" d="M406.859 0.600841C433.421 41.1124 407.179 1.08893 448.302 63.8086C473.104 101.636 473.584 102.368 489.426 126.528C505.267 150.689 521.748 175.825 554.871 226.343C525.686 261.431 475.024 262.459 432.01 264.454C388.995 266.45 136.701 283.679 86.5289 272.179C35.985 260.593 -18.4974 209.263 6.37784 177.494C108.771 46.7265 173.953 159.919 257.491 134.006C320.727 114.39 364.415 2.31345 406.859 0.600841Z" fill="rgba(35, 143, 242, 0.7)"/>
-    </svg>
-  </div>
   
   <div class="svg-container yellow-shape">
     <svg xmlns="http://www.w3.org/2000/svg" width="378" height="229" viewBox="0 0 378 229" fill="none">
@@ -63,9 +58,10 @@
   </div>
   
   <!-- Cas : Session en cours -->
-  <div *ngIf="currentSession">
-    <h2>Session <strong>{{ currentSession.name }}</strong> en cours !</h2>
-    <p>A vos marques... Prêts... Partez...</p>
+  <div *ngIf="currentSession" class="session-container">
+    <h2><strong>{{ currentSession.name }}</strong> en cours !</h2>
+    <h3>Rendez vous <strong>{{ currentSession.location }}</strong></h3>
+    <p>A vos marques... Prêts... Partez !!</p>
   </div>
 
   <!-- Cas : Prochaine session avec compte à rebours -->

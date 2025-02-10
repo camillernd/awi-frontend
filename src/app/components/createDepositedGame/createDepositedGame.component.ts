@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { DepositedGameService } from '../../services/depositedGame.service';
 import { SellerService } from '../../services/seller.service';
 import { SessionService } from '../../services/session.service';
+import { DepositFeePaymentService } from '../../services/depositFeePayment.service';
 import { GameDescriptionService } from '../../services/gameDescription.service';
 import { NavbarComponent } from '../navbar/navbar.component';
 
@@ -19,8 +20,14 @@ export class CreateDepositedGameComponent implements OnInit {
   selectedSeller: any = null;
   selectedSession: any = null;
   sellers: any[] = [];
-  sessions: any[] = [];
   gameDescriptions: any[] = [];
+  sellerInput: string = ''; // Valeur tapée par l'utilisateur
+  filteredSellers: any[] = []; // Liste des vendeurs filtrés
+  gameInput: string[] = [];
+  filteredGameDescriptions: any[][] = [];
+  errorMessage: string | null = null;  // Gestion des erreurs
+  successMessage: string | null = null;  // Gestion du succès
+
 
   // Liste dynamique des jeux
   depositedGames: any[] = [
@@ -38,6 +45,7 @@ export class CreateDepositedGameComponent implements OnInit {
 
   constructor(
     private depositedGameService: DepositedGameService,
+    private depositFeePaymentService: DepositFeePaymentService,
     private sellerService: SellerService,
     private sessionService: SessionService,
     private gameDescriptionService: GameDescriptionService,
@@ -47,7 +55,7 @@ export class CreateDepositedGameComponent implements OnInit {
   ngOnInit(): void {
     document.body.style.overflow = 'visible';
     this.loadSellers();
-    this.loadSessions();
+    this.loadOpenSession();
     this.loadGameDescriptions();
   }
 
@@ -55,38 +63,70 @@ export class CreateDepositedGameComponent implements OnInit {
     this.sellerService.getAllSellers().subscribe({
       next: (sellers) => {
         this.sellers = sellers;
+        this.filteredSellers = sellers; // On initialise avec tous les vendeurs
       },
       error: (error) => console.error('Erreur lors du chargement des vendeurs', error),
     });
   }
 
-  loadSessions(): void {
-    this.sessionService.getActiveSessions().subscribe({
-      next: (sessions) => {
-        this.sessions = sessions;
-      },
-      error: (error) => console.error('Erreur lors du chargement des sessions actives', error),
-    });
+  filterSellerSuggestions(): void {
+    this.filteredSellers = this.sellers.filter(seller =>
+      seller.email.toLowerCase().includes(this.sellerInput.toLowerCase())
+    );
+  }
+
+  onSellerSelectByEmail(): void {
+    const foundSeller = this.sellers.find(seller => seller.email === this.sellerInput);
+    if (foundSeller) {
+      this.selectedSeller = foundSeller;
+    }
   }
   
+  loadOpenSession(): void {
+    this.sessionService.getActiveSessions().subscribe({
+      next: (sessions) => {
+        if (sessions.length === 1) {
+          this.selectedSession = sessions[0]; // La seule session ouverte
+          this.updateTotals();
+        } else {
+          console.warn('Aucune session ouverte trouvée ou plusieurs sessions ouvertes détectées.');
+        }
+      },
+      error: (error) => console.error('Erreur lors du chargement de la session ouverte', error),
+    });
+  }
+
   loadGameDescriptions(): void {
     this.gameDescriptionService.getAllGameDescriptions().subscribe({
       next: (gameDescriptions) => {
         this.gameDescriptions = gameDescriptions;
+        this.filteredGameDescriptions = this.depositedGames.map(() => gameDescriptions);
       },
       error: (error) => console.error('Erreur lors du chargement des descriptions de jeu', error),
     });
   }
 
+
+  filterGameSuggestions(index: number): void {
+    this.filteredGameDescriptions[index] = this.gameDescriptions.filter(game =>
+      game.name.toLowerCase().includes(this.gameInput[index]?.toLowerCase() || '')
+    );
+  }
+
+  onGameSelectByName(index: number): void {
+    const foundGame = this.gameDescriptions.find(game => game.name === this.gameInput[index]);
+    if (foundGame) {
+      this.depositedGames[index].gameDescriptionId = foundGame._id;
+    } else {
+      this.depositedGames[index].gameDescriptionId = ''; // Réinitialisation en cas d'erreur
+      alert("Le jeu sélectionné n'existe pas dans la base. Veuillez en choisir un dans la liste ou en créer un nouveau.");
+    }
+  }
+  
+
   onSellerSelect(event: any): void {
     const sellerId = event.target.value;
     this.selectedSeller = this.sellers.find((seller) => seller._id === sellerId);
-  }
-
-  onSessionSelect(event: any): void {
-    const sessionId = event.target.value;
-    this.selectedSession = this.sessions.find((session) => session._id === sessionId);
-    this.updateTotals();
   }
 
   addGame(): void {
@@ -95,8 +135,11 @@ export class CreateDepositedGameComponent implements OnInit {
       salePrice: 0,
       forSale: false,
     });
+    this.gameInput.push('');
+    this.filteredGameDescriptions.push(this.gameDescriptions);
     this.updateTotals();
-  }
+  }  
+  
 
   removeGame(index: number): void {
     if (this.depositedGames.length > 1) {
@@ -119,9 +162,35 @@ export class CreateDepositedGameComponent implements OnInit {
   }
 
   createDepositedGames(): void {
-    if (!this.selectedSeller || !this.selectedSession) {
-      alert('Veuillez sélectionner un vendeur et une session.');
+    this.errorMessage = null;
+    this.successMessage = null;
+
+    // 🛑 Vérifications avant soumission
+    if (!this.selectedSeller) {
+      this.errorMessage = "Veuillez sélectionner un vendeur.";
       return;
+    }
+    
+    if (!this.selectedSession) {
+      this.errorMessage = "Aucune session ouverte trouvée.";
+      return;
+    }
+
+    if (this.depositedGames.length === 0) {
+      this.errorMessage = "Veuillez ajouter au moins un jeu.";
+      return;
+    }
+
+    for (let game of this.depositedGames) {
+      if (!game.gameDescriptionId) {
+        this.errorMessage = "Un ou plusieurs jeux n'ont pas été correctement sélectionnés.";
+        return;
+      }
+
+      if (game.salePrice < 0 || isNaN(game.salePrice)) {
+        this.errorMessage = "Le prix de vente doit être un nombre positif.";
+        return;
+      }
     }
 
     const requests = this.depositedGames.map((game) => ({
@@ -130,36 +199,61 @@ export class CreateDepositedGameComponent implements OnInit {
       sessionId: this.selectedSession._id,
     }));
 
-    requests.forEach((gameData) => {
-      this.depositedGameService.createDepositedGame(gameData).subscribe({
-        next: () => {
-          console.log('Jeu déposé créé avec succès');
-        },
-        error: (error) => console.error('Erreur lors de la création du jeu déposé', error),
-      });
+    const paymentData = {
+      sellerId: this.selectedSeller._id,
+      sessionId: this.selectedSession._id,
+      depositFeePayed: this.totalAfterDiscount,
+      depositDate: new Date(),
+    };
+
+    // 🔄 Paiement des frais de dépôt
+    this.depositFeePaymentService.createPayment(paymentData).subscribe({
+      next: () => {
+        requests.forEach((gameData) => {
+          this.depositedGameService.createDepositedGame(gameData).subscribe({
+            next: () => {
+              this.successMessage = "Jeux déposés avec succès ! Redirection...";
+              
+              setTimeout(() => {
+                this.router.navigate(['/depositedGames']);
+              }, 3000); // ⏳ Redirection après 3s
+            },
+            error: (error) => {
+              console.error("Erreur lors de la création du jeu déposé", error);
+              this.errorMessage = "Erreur lors de l'ajout d'un jeu déposé.";
+            },
+          });
+        });
+      },
+      error: (error) => {
+        console.error("Erreur lors de la création de la transaction", error);
+        this.errorMessage = "Une erreur est survenue lors de la création de la transaction.";
+      },
     });
+  }
+  
 
-    this.router.navigate(['/depositedGames']);
+  goToSellers(): void {
+    this.router.navigate(['/sellers']);
+  }
+  
+  goToCreateGameDescription(): void {
+    this.router.navigate(['/createGameDescription']);
   }
 
-  finalizeTotals(): void {
-    if (!this.selectedSession) {
-      alert('Veuillez sélectionner une session pour calculer les totaux.');
-      return;
-    }
+  formatDate(dateString: string): string {
+    if (!dateString) return '';
   
-    const { depositFee, depositFeeLimitBeforeDiscount, depositFeeDiscount } = this.selectedSession;
-  
-    // Calcul des totaux
-    this.totalDepositFee = this.depositedGames.length * depositFee;
-    const eligibleForDiscount = this.depositedGames.length >= depositFeeLimitBeforeDiscount;
-    this.totalDiscount = eligibleForDiscount
-      ? (this.totalDepositFee * depositFeeDiscount) / 100
-      : 0;
-    this.totalAfterDiscount = this.totalDepositFee - this.totalDiscount;
-
-    console.log('Totaux mis à jour après finalisation');
+    const date = new Date(dateString);
+    return date.toLocaleString('fr-FR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    }).replace(',', '');
   }
-
-
+  
+  
 }

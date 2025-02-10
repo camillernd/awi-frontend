@@ -3,6 +3,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators'; // Import nécessaire pour `tap`
+import { map } from 'rxjs/operators';
+import { HttpHeaders } from '@angular/common/http';
+
 
 @Injectable({
   providedIn: 'root',
@@ -22,6 +25,11 @@ export class DepositedGameService {
   // Récupérer un jeu déposé par ID
   getDepositedGameById(depositedGameId: string): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${depositedGameId}`);
+  }
+
+  // Récupérer les détails d'un jeu par son ID
+  getGameDescriptionById(gameDescriptionId: string): Observable<any> {
+    return this.http.get<any>(`http://localhost:8000/gameDescription/${gameDescriptionId}`);
   }
 
   // Créer un jeu déposé
@@ -45,9 +53,31 @@ export class DepositedGameService {
   }
 
   // Mettre à jour un jeu déposé
-  updateDepositedGame(id: string, updateData: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}`, updateData);
+  updateDepositedGame(gameId: string, gameData: any, headers?: HttpHeaders): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/${gameId}`, gameData, { headers });
   }
+  
+
+  createDepositedGameWithoutSession(data: {
+    sellerId: string;
+    gameDescriptionId: string;
+    salePrice: number;
+  }): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/createWithoutSession`, data);
+  }
+  
+  getOpenSession(): Observable<any> {
+    return this.http.get<any[]>('http://localhost:8000/session/active').pipe(
+      map((sessions: any[]) => {
+        const today = new Date();
+        return sessions.find(
+          (session: any) =>
+            new Date(session.startDate) <= today && new Date(session.endDate) >= today
+        );
+      })
+    );
+  }
+  
 
   // Récupérer tous les jeux déposés pour une session spécifique
   getDepositedGamesBySessionId(sessionId: string): Observable<any[]> {
@@ -78,4 +108,11 @@ export class DepositedGameService {
   getSellers(): Observable<any[]> {
     return this.http.get<any[]>(this.sellerUrl);
   }
+
+  getDepositedGamesBySellerId(sellerId: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/seller/${sellerId}`).pipe(
+      tap((games) => console.log(`🔄 Jeux récupérés pour le vendeur ${sellerId}:`, games))
+    );
+  }
+  
 }

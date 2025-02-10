@@ -14,10 +14,13 @@ import { FormsModule } from '@angular/forms';
 export class DepositedGamesAdminComponent implements OnInit {
   depositedGames: any[] = [];
   filteredGames: any[] = [];
+  filteredSellers: any[] = []; // Liste des vendeurs filtrés
   sessions: any[] = [];
   sellers: any[] = [];
-  selectedSession: string = '';
-  selectedSeller: string = '';
+  selectedSession: string = 'all'; // Filtre par défaut
+  selectedSeller: string = 'Tous les vendeurs'; // Filtre par défaut (Tous les vendeurs)
+  searchQuery: string = ''; // Recherche par nom ou ID
+
 
   constructor(private depositedGameService: DepositedGameService) {}
 
@@ -31,28 +34,45 @@ export class DepositedGamesAdminComponent implements OnInit {
   loadDepositedGames(): void {
     this.depositedGameService.getAllDepositedGamesWithSessions().subscribe({
       next: (games) => {
-        console.log('Jeux déposés récupérés :', games); // Log ajouté
+        console.log('Jeux déposés récupérés :', games);
         this.depositedGames = games;
-        this.filteredGames = games; // Initialement, afficher tous les jeux
+        this.filteredGames = games;
+        this.applyFilters(); // Appliquer le filtre par défaut
+
+        // Charger les descriptions et les images des jeux
+        this.depositedGames.forEach((game) => {
+          console.log(`Données du vendeur pour ${game._id}:`, game.sellerId);
+          if (game.gameDescriptionId && typeof game.gameDescriptionId === 'string') {
+            this.depositedGameService.getGameDescriptionById(game.gameDescriptionId).subscribe({
+              next: (gameDescription) => {
+                game.gameDescriptionId = gameDescription;
+                console.log(`Détails du jeu récupérés pour ${game._id}:`, gameDescription);
+              },
+              error: (err) => console.error(`Erreur lors du chargement du jeu ${game._id}`, err),
+            });
+          }
+        });
       },
       error: (err) => console.error('Erreur lors du chargement des jeux déposés', err),
     });
   }
 
-  // Charger les données pour les filtres
+  // Charger les sessions et vendeurs
   loadFiltersData(): void {
     this.depositedGameService.getSessions().subscribe({
       next: (sessions) => {
-        console.log('Sessions chargées :', sessions); // Log ajouté
-        this.sessions = sessions;
+        this.sessions = sessions.map((session) => ({
+          ...session,
+          status: this.getSessionStatus(session)
+        }));
       },
       error: (err) => console.error('Erreur lors du chargement des sessions', err),
     });
 
     this.depositedGameService.getSellers().subscribe({
       next: (sellers) => {
-        console.log('Vendeurs chargés :', sellers); // Log ajouté
         this.sellers = sellers;
+        this.filteredSellers = [{ email: 'Tous les vendeurs' }, ...sellers];
       },
       error: (err) => console.error('Erreur lors du chargement des vendeurs', err),
     });
@@ -60,90 +80,88 @@ export class DepositedGamesAdminComponent implements OnInit {
 
   // Appliquer les filtres
   applyFilters(): void {
+    const query = this.searchQuery.toLowerCase().trim();
+
     this.filteredGames = this.depositedGames.filter((game) => {
-      const matchesSession = this.selectedSession ? game.sessionId?._id === this.selectedSession : true;
-      const matchesSeller = this.selectedSeller ? game.sellerId?._id === this.selectedSeller : true;
-      return matchesSession && matchesSeller;
+      const matchesSession = this.selectedSession === 'all' || game.sessionId?._id === this.selectedSession;
+      const matchesSeller = this.selectedSeller === 'Tous les vendeurs' || game.sellerId?.email === this.selectedSeller;
+      const matchesSearch =
+        !query ||
+        (game.gameDescriptionId?.name?.toLowerCase().includes(query) || game._id.includes(query));
+
+      return matchesSession && matchesSeller && matchesSearch;
     });
   }
 
-  // Réinitialiser les filtres
-  resetFilters(): void {
-    this.selectedSession = '';
-    this.selectedSeller = '';
-    this.filteredGames = [...this.depositedGames];
+  // Filtrer dynamiquement la liste des vendeurs
+  filterSellerSuggestions(): void {
+    const query = this.selectedSeller.toLowerCase().trim();
+    this.filteredSellers = [{ email: 'Tous les vendeurs' }, ...this.sellers.filter(seller =>
+      seller.email.toLowerCase().includes(query)
+    )];
   }
+
+  // Appliquer le filtre vendeur après sélection
+  applySellerFilter(): void {
+    if (this.selectedSeller === 'Tous les vendeurs') {
+      this.selectedSeller = 'Tous les vendeurs'; // Valeur par défaut
+    }
+    this.applyFilters();
+  }
+
+  
 
   // Déterminer le statut de la session
   getSessionStatus(session: any): string {
     if (!session) {
-      console.error('Session inexistante ou invalide:', session); // Log ajouté
-      return 'unknown'; // Gérer les cas où la session est inexistante
+      console.error('Session inexistante ou invalide:', session);
+      return 'unknown';
     }
 
     const now = new Date().getTime();
     const startDate = new Date(session.startDate).getTime();
     const endDate = new Date(session.endDate).getTime();
 
-    if (now < startDate) return 'upcoming'; // Session à venir (bleu)
-    if (now > endDate) return 'closed'; // Session clôturée (noir)
-    return 'open'; // Session en cours (vert ou rouge)
+    if (now < startDate) return 'à venir';
+    if (now > endDate) return 'clôturée';
+    return 'ouverte';
   }
 
-  // Déterminer la classe CSS du bouton
-  getAvailabilityClass(game: any): string {
+  // Déterminer la classe CSS pour le statut de la session
+  getSessionClass(session: any): string {
+    const status = this.getSessionStatus(session);
+
+    switch (status) {
+      case 'ouverte': return 'session-open';
+      case 'clôturée': return 'session-closed';
+      case 'à venir': return 'session-upcoming';
+      default: return '';
+    }
+  }
+
+  // Déterminer le statut de l’objet
+  getObjectStatusClass(game: any): string {
     const sessionStatus = this.getSessionStatus(game.sessionId);
 
-    const result = game.sold
-      ? 'sold'
-      : sessionStatus === 'closed'
-      ? 'closed'
-      : sessionStatus === 'upcoming'
-      ? 'upcoming'
-      : game.forSale
-      ? 'available'
-      : 'not-available';
-
-    console.log('Classe pour le jeu :', {
-      gameId: game._id,
-      sessionStatus,
-      forSale: game.forSale,
-      sold: game.sold,
-      result,
-    });
-
-    return result;
+    if (sessionStatus === 'clôturée') {
+      return game.sold ? 'sold' : 'not-sold';
+    }
+    return game.forSale ? 'available' : 'not-available';
   }
 
-  // Déterminer le texte du bouton
-  getAvailabilityText(game: any): string {
+  getObjectStatusText(game: any): string {
     const sessionStatus = this.getSessionStatus(game.sessionId);
 
-    const result = game.sold
-      ? 'Vendu'
-      : sessionStatus === 'closed'
-      ? 'Session clôturée'
-      : sessionStatus === 'upcoming'
-      ? 'Session à venir'
-      : game.forSale
-      ? 'Oui'
-      : 'Non';
-
-    console.log('Texte pour le jeu :', {
-      gameId: game._id,
-      sessionStatus,
-      forSale: game.forSale,
-      sold: game.sold,
-      result,
-    });
-
-    return result;
+    if (sessionStatus === 'clôturée') {
+      return game.sold ? 'Vendu' : 'Pas vendu';
+    }
+    return game.forSale ? 'Oui' : 'Non';
   }
 
-  // Basculer la disponibilité
+  // Basculer la disponibilité de l’objet
   toggleAvailability(game: any): void {
     const sessionStatus = this.getSessionStatus(game.sessionId);
-    if (game.sold || sessionStatus === 'upcoming' || sessionStatus === 'closed') {
+    if (sessionStatus === 'clôturée') {
       console.warn('Modification non autorisée pour ce jeu.');
       return;
     }

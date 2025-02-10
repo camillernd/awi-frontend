@@ -3,15 +3,31 @@
   justify-content: space-between;
   gap: 20px;
   max-width: 1200px;
-  margin: 50px auto;
+  margin: 0px auto;
   padding: 20px;
 }
 
-.left-container{
+/* Titre de la page */
+.page-title-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.page-title {
+  font-size: 30px;
+  font-weight: bold;
+  color: #000000;
+  margin-bottom: 0px;
+  margin-top: 30px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.left-container {
   flex: 1;
   max-width: 350px;
   padding: 20px;
   border-radius: 20px;
+  font-family: 'Poppins', sans-serif;
 }
 
 .right-container {
@@ -19,7 +35,12 @@
   max-width: 700px;
   padding: 20px;
   border-radius: 20px;
+  font-family: 'Poppins', sans-serif;
 }
+
+
+
+
 
 .create-seller-container h3,
 .right-container h3 {
@@ -28,48 +49,111 @@
   margin-bottom: 20px;
 }
 
-.create-seller-container label,
-.create-seller-container input {
+.create-seller-container label {
   display: block;
   width: 100%;
-  margin-bottom: 10px;
+  margin-bottom: 0px;
+  font-family: 'Poppins', sans-serif;
 }
 
+
+
+/* Conteneur formulaire */
+.create-seller-input-container {
+  background: rgba(255, 255, 255, 0.7);
+  padding: 20px;
+  border: 1px solid #000000;
+  border-radius: 20px;
+  transition: transform 0.2s ease-in-out;
+}
+
+.create-seller-input-container:hover {
+  transform: scale(1.02);
+}
+
+/* Inputs */
 .create-seller-container input {
-  padding: 8px;
-  border: 1px solid #000;
-  border-radius: 5px;
-}
-
-.error-message {
-  color: red;
-  font-size: 14px;
-  margin-bottom: 10px;
-}
-
-.submit-button {
-  background-color: #ff97aa;
-  color: white;
-  border: none;
+  display: block;
+  width: 90%;
   padding: 10px;
-  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 200;
+  border: 1px solid #000000;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  transition: border 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  font-family: 'Poppins', sans-serif;
+}
+
+.create-seller-container input:focus {
+  outline: none;
+}
+
+/* Bouton */
+.submit-button {
+  background-color: rgb(255, 255, 255, 0.5);
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  color: rgb(0, 0, 0);
+  border: 1px solid #000000;
+  padding: 8px 20px;
+  border-radius: 15px;
   cursor: pointer;
+  display: block;  /* Le bouton prendra toute la largeur du parent */
+  margin: 20px auto;  /* Centrage horizontal */
+  width: fit-content;  /* Ajuste la largeur au contenu */
+  margin-bottom: 0px;
+  transition: transform 0.2s ease-in-out;
 }
 
 .submit-button:hover {
-  background-color: #ff3152;
+  transform: scale(1.05);
 }
 
+/* Cartes vendeurs */
 .seller-card {
-  margin-bottom: 20px;
+  background: rgba(255, 255, 255, 0.7);
   padding: 15px;
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  margin-bottom: 15px;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+  border: 1px solid #000000;
+}
+
+.seller-card:hover {
+  transform: scale(1.03);
 }
 
 .seller-card h4 {
   margin: 0 0 10px;
   font-size: 18px;
+}
+
+/* Messages */
+/* Message de succès */
+.success-message {
+  background-color: #d4edda;
+  color: #155724;
+  padding: 15px;
+  border-radius: 5px;
+  margin: 20px auto;
+  width: 80%;
+  text-align: center;
+  font-weight: bold;
+  border: 1px solid #c3e6cb;
+}
+
+/* Message d'erreur */
+.error-message {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 15px;
+  border-radius: 5px;
+  margin: 20px auto;
+  width: 80%;
+  text-align: center;
+  font-weight: bold;
+  border: 1px solid #f5c6cb;
 }

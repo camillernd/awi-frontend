@@ -13,4 +13,9 @@ export class GameDescriptionService {
   getAllGameDescriptions(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}`);
   }
+
+  createGameDescription(data: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}`, data);
+  }
+  
 }
