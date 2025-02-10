@@ -3,10 +3,13 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "./out-tsc/app",
+    "outDir": "./dist/temp-angular/server",
+    "target": "ES2022",
+    "module": "CommonJS",
     "types": [
       "node"
-    ]
+    ],
+    "declaration": false
   },
   "files": [
     "src/main.ts",
