@@ -2,6 +2,8 @@
 
 Ah Oui est une application web complète pour la gestion des systèmes de dépôt-vente de jeux de société. Elle est destinée à simplifier les interactions entre vendeurs, acheteurs, et administrateurs lors d'événements tels que des festivals de jeux. Cette application couvre la gestion des stocks, des transactions financières et des bilans tout en garantissant une ergonomie optimale.
 
+L'application est disponible à l'adresse suivante : https://ahoui-front.cluster-ig4.igpolytech.fr/
+
 ## Fonctionnalités Clés
 
 ### 1. Gestion des Sessions
