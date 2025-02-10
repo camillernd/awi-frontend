@@ -5,15 +5,15 @@ import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators'; // Import nécessaire pour `tap`
 import { map } from 'rxjs/operators';
 import { HttpHeaders } from '@angular/common/http';
-
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DepositedGameService {
-  private apiUrl = 'http://localhost:8000/depositedGame';
-  private sessionUrl = 'http://localhost:8000/depositedGame/sessions'; // Endpoint corrigé pour récupérer les sessions
-  private sellerUrl = 'http://localhost:8000/depositedGame/sellers'; // Endpoint corrigé pour récupérer les vendeurs
+  private apiUrl = `${environment.BACKEND_URL}/depositedGame`;
+  private sessionUrl = `${environment.BACKEND_URL}/depositedGame/sessions`; // Endpoint corrigé pour récupérer les sessions
+  private sellerUrl = `${environment.BACKEND_URL}/depositedGame/sellers`; // Endpoint corrigé pour récupérer les vendeurs
 
   constructor(private http: HttpClient) {}
 
@@ -29,7 +29,7 @@ export class DepositedGameService {
 
   // Récupérer les détails d'un jeu par son ID
   getGameDescriptionById(gameDescriptionId: string): Observable<any> {
-    return this.http.get<any>(`http://localhost:8000/gameDescription/${gameDescriptionId}`);
+    return this.http.get<any>(`${environment.BACKEND_URL}/gameDescription/${gameDescriptionId}`);
   }
 
   // Créer un jeu déposé
@@ -67,7 +67,7 @@ export class DepositedGameService {
   }
   
   getOpenSession(): Observable<any> {
-    return this.http.get<any[]>('http://localhost:8000/session/active').pipe(
+    return this.http.get<any[]>(`${environment.BACKEND_URL}/session/active`).pipe(
       map((sessions: any[]) => {
         const today = new Date();
         return sessions.find(

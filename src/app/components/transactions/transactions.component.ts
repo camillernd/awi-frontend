@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-transactions',
@@ -61,7 +62,7 @@ export class TransactionsComponent implements OnInit {
 
     const headers = { Authorization: `Bearer ${token}` };
 
-    this.http.get<any[]>('http://localhost:8000/transaction', { headers }).subscribe({
+    this.http.get<any[]>(`${environment.BACKEND_URL}/transaction`, { headers }).subscribe({
       next: (data) => {
         // Trier les transactions par date décroissante (de la plus récente à la plus ancienne)
         this.transactions = data.sort((a, b) => new Date(b.transactionDate).getTime() - new Date(a.transactionDate).getTime());
@@ -89,12 +90,12 @@ export class TransactionsComponent implements OnInit {
 
     const headers = { Authorization: `Bearer ${token}` };
 
-    this.http.get<any[]>('http://localhost:8000/session', { headers }).subscribe({
+    this.http.get<any[]>(`${environment.BACKEND_URL}/session`, { headers }).subscribe({
       next: (data) => (this.sessions = data),
       error: (err) => console.error('Erreur lors du chargement des sessions', err),
     });
 
-    this.http.get<any[]>('http://localhost:8000/client', { headers }).subscribe({
+    this.http.get<any[]>(`${environment.BACKEND_URL}/client`, { headers }).subscribe({
       next: (data) => {
         this.clients = data;
         this.filteredClients = [{ email: 'Tous les clients' }, ...data];
@@ -102,7 +103,7 @@ export class TransactionsComponent implements OnInit {
       error: (err) => console.error('Erreur lors du chargement des clients', err),
     });
 
-    this.http.get<any[]>('http://localhost:8000/seller', { headers }).subscribe({
+    this.http.get<any[]>(`${environment.BACKEND_URL}/seller`, { headers }).subscribe({
       next: (data) => {
         this.sellers = data;
         this.filteredSellers = [{ email: 'Tous les vendeurs' }, ...data];
@@ -110,7 +111,7 @@ export class TransactionsComponent implements OnInit {
       error: (err) => console.error('Erreur lors du chargement des vendeurs', err),
     });
 
-    this.http.get<any[]>('http://localhost:8000/gameDescription', { headers }).subscribe({
+    this.http.get<any[]>(`${environment.BACKEND_URL}/gameDescription`, { headers }).subscribe({
       next: (data) => {
         this.games = data;
         this.filteredGames = [{ name: 'Tous les jeux' }, ...data];

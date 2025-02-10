@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RefundService {
-  private apiUrl = 'http://localhost:8000/refund'; // Endpoint des remboursements
+  private apiUrl = `${environment.BACKEND_URL}/refund`; // Endpoint des remboursements
 
   constructor(private http: HttpClient) {}
 

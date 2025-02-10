@@ -3,12 +3,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SessionService {
-  private apiUrl = 'http://localhost:8000/session';
+  private apiUrl = `${environment.BACKEND_URL}/session`;
 
   constructor(private http: HttpClient) {}
 
@@ -30,7 +31,7 @@ export class SessionService {
   }
 
   getSessionReport(sessionId: string): Observable<any> {
-    return this.http.get<any>(`http://localhost:8000/session/${sessionId}/report`);
+    return this.http.get<any>(`${environment.BACKEND_URL}/session/${sessionId}/report`);
   }
 
   getActiveSessions(): Observable<any[]> {

@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root', // Permet l'injection du service dans toute l'application
 })
 export class ClientService {
-  private apiUrl = 'http://localhost:8000/client'; // URL de l'API backend pour les clients
+  private apiUrl = `${environment.BACKEND_URL}/client`; // URL de l'API backend pour les clients
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 

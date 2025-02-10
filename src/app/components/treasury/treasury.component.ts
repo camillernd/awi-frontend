@@ -5,6 +5,7 @@ import { DepositFeePaymentService } from '../../services/depositFeePayment.servi
 import { RefundService } from '../../services/refund.service';
 import { HttpClient } from '@angular/common/http';
 import { NavbarComponent } from '../navbar/navbar.component';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-treasury',
@@ -99,7 +100,7 @@ export class TreasuryComponent implements OnInit {
 
     const headers = { Authorization: `Bearer ${token}` };
 
-    this.http.get<any[]>('http://localhost:8000/session', { headers }).subscribe({
+    this.http.get<any[]>(`${environment.BACKEND_URL}/session`, { headers }).subscribe({
       next: (sessions) => {
         this.sessions = sessions.sort(
           (a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime()
@@ -137,7 +138,7 @@ export class TreasuryComponent implements OnInit {
 
     const headers = { Authorization: `Bearer ${token}` };
 
-    this.http.get<any[]>('http://localhost:8000/depositedGame', { headers }).subscribe({
+    this.http.get<any[]>(`${environment.BACKEND_URL}/depositedGame`, { headers }).subscribe({
       next: (games) => {
         this.depositedGames = games;
         if (callback) callback();
@@ -168,7 +169,7 @@ export class TreasuryComponent implements OnInit {
 
     const headers = { Authorization: `Bearer ${token}` };
 
-    this.http.get<any[]>('http://localhost:8000/transaction', { headers }).subscribe({
+    this.http.get<any[]>(`${environment.BACKEND_URL}/transaction`, { headers }).subscribe({
       next: (transactions) => {
         this.transactions = transactions.map((transaction) => ({
           ...transaction,
