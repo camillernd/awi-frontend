@@ -1,0 +1,9 @@
+{
+    "environments": {
+      "NODE_ENV": "production"
+    },
+    "scripts": {
+      "postdeploy": "npm run build"
+    }
+  }
+  

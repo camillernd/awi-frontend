@@ -3,10 +3,11 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
+    "start": "node dist/temp-angular/server/server.mjs",
+    "build": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
+    "heroku-postbuild": "ng build --configuration production && ng run temp-angular:server:production",
     "serve:ssr:temp-angular": "node dist/temp-angular/server/server.mjs"
   },
   "private": true,
@@ -28,7 +29,7 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^18.2.3",
-    "@angular/cli": "^18.2.3",
+    "@angular/cli": "^18.2.14",
     "@angular/compiler-cli": "^18.2.0",
     "@types/express": "^4.17.17",
     "@types/jasmine": "~5.1.0",
@@ -42,7 +43,7 @@
     "typescript": "~5.5.2"
   },
   "engines": {
-  "node": "22.x",
-  "npm": "10.x"
-}
+    "node": "22.x",
+    "npm": "10.x"
+  }
 }
